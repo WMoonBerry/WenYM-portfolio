@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>温玥美 · 独立 AI 产品人</title>
+<style>
+  :root {
+    --bg: #faf6ef;
+    --bg-soft: #f4ecdf;
+    --bg-card: #fffdf8;
+    --fg: #3d322b;
+    --fg-soft: #5a4f46;
+    --muted: #8a7e74;
+    --muted-light: #a89d92;
+    --accent: #d67a50;
+    --accent-light: #e39a73;
+    --accent-dark: #b05e38;
+    --accent-bg: #fbeade;
+    --alt: #9a7ab8;
+    --alt-light: #b39acd;
+    --alt-dark: #7953a0;
+    --alt-bg: #f0eaf8;
+    --green: #6fa890;
+    --green-bg: #e5f2ec;
+    --border: #e7ddd0;
+    --border-soft: #efe8dc;
+    --shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .serif {
+    font-family: Georgia, "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", STSong, serif;
+  }
+
+  /* Outer container */
+  .page-wrapper {
+    max-width: 1120px;
+    margin: 40px auto;
+    background: var(--bg-card);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  /* Main layout: sidebar + content */
+  .main-layout { display: flex; height: calc(100vh - 80px); }
+
+  /* Left sidebar */
+  .sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    background: var(--bg-soft);
+    border-right: 1px solid var(--border);
+    padding: 40px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    overflow-y: auto;
+  }
+
+  .avatar {
+    width: 120px; height: 120px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--accent-bg), var(--alt-bg));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 46px; color: var(--alt-dark);
+    border: 3px solid var(--bg-card);
+    box-shadow: var(--shadow-md);
+  }
+
+  .sidebar-name { font-size: 22px; font-weight: 700; color: var(--fg); letter-spacing: -0.02em; }
+  .sidebar-title { font-size: 14px; color: var(--alt-dark); font-weight: 500; text-align: center; }
+  .sidebar-institution { font-size: 13px; color: var(--muted); text-align: center; line-height: 1.6; }
+
+  .sidebar-social { display: flex; gap: 16px; margin-top: 4px; align-items: center; }
+  .social-icon {
+    width: 22px; height: 22px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s, transform 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .social-icon svg { width: 22px; height: 22px; stroke-width: 1.75; }
+  .social-icon:hover { color: var(--accent); transform: translateY(-1px); }
+
+  .sidebar-interests {
+    width: 100%;
+    background: var(--bg-card); border-radius: 12px; padding: 16px;
+    border: 1px solid var(--border-soft); margin-top: 8px;
+  }
+  .interests-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted-light); margin-bottom: 10px; font-weight: 600;
+  }
+  .interest-tag {
+    display: inline-block; font-size: 12px; color: var(--fg-soft);
+    padding: 3px 10px; background: var(--accent-bg); border-radius: 20px; margin: 2px 2px;
+  }
+
+  .like-btn {
+    margin-top: auto;
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--muted);
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 16px; cursor: pointer; transition: all 0.2s;
+  }
+  .like-btn:hover { color: #c76a45; border-color: #e3a985; }
+  .like-heart { font-size: 14px; }
+  .like-count { font-weight: 500; }
+
+  /* Right content area */
+  .content-area { flex: 1; display: flex; flex-direction: column; }
+
+  /* Navigation */
+  .nav-bar {
+    display: flex; gap: 4px; padding: 20px 36px 0;
+    border-bottom: 1px solid var(--border-soft); flex-wrap: wrap;
+  }
+  .nav-item {
+    padding: 8px 18px; font-size: 14px; color: var(--muted);
+    border: none; background: none; cursor: pointer;
+    border-radius: 20px 20px 0 0; border-bottom: 2px solid transparent;
+    transition: all 0.2s; font-family: inherit; position: relative; bottom: -1px;
+  }
+  .nav-item:hover { color: var(--fg-soft); }
+  .nav-item.active {
+    color: var(--accent-dark); background: var(--accent-bg);
+    border-bottom: 2px solid var(--accent); font-weight: 500;
+  }
+
+  /* Page content */
+  .page-content { padding: 36px; flex: 1; overflow-y: auto; }
+  .page-section { display: none; }
+  .page-section.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Section titles */
+  .section-title { font-size: 20px; font-weight: 700; color: var(--fg); margin-bottom: 16px; letter-spacing: -0.02em; }
+  .section-title-sm { font-size: 15px; font-weight: 600; color: var(--fg-soft); margin-bottom: 12px; letter-spacing: -0.01em; }
+  .section-divider { height: 1px; background: var(--border-soft); margin: 32px 0; }
+
+  /* Bio */
+  .bio-text { color: var(--fg-soft); font-size: 15px; line-height: 1.9; }
+  .bio-text p { margin-bottom: 14px; }
+  .bio-text strong { color: var(--fg); font-weight: 600; }
+  .bio-text a { color: var(--accent-dark); text-decoration: none; border-bottom: 1px solid var(--accent-light); transition: border-color 0.2s; }
+  .bio-text a:hover { border-bottom-color: var(--accent); }
+
+  /* Feature card */
+  .feature-card {
+    background: var(--bg-soft); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 12px;
+  }
+  .feature-card-title { font-size: 16px; font-weight: 600; color: var(--fg); margin-bottom: 8px; }
+  .feature-card-text { font-size: 14px; color: var(--fg-soft); line-height: 1.7; }
+  .feature-card-links { margin-top: 14px; display: flex; gap: 18px; flex-wrap: wrap; }
+  .feature-card-links a { font-size: 13px; color: var(--accent-dark); text-decoration: none; font-weight: 500; }
+  .feature-card-links a:hover { text-decoration: underline; }
+
+  /* Publications */
+  .pub-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 10px; transition: box-shadow 0.2s; }
+  .pub-item:hover { box-shadow: var(--shadow-md); }
+  .pub-title { font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 4px; font-style: italic; }
+  .pub-authors { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .pub-venue { font-size: 13px; color: var(--accent-dark); font-weight: 500; }
+
+  /* News */
+  .news-item { display: flex; gap: 14px; padding: 8px 0; border-bottom: 1px solid var(--border-soft); font-size: 14px; }
+  .news-item:last-child { border-bottom: none; }
+  .news-date { color: var(--accent-dark); font-weight: 500; white-space: nowrap; font-size: 13px; min-width: 60px; }
+  .news-content { color: var(--fg-soft); }
+
+  /* View all */
+  .view-all { float: right; font-size: 13px; color: var(--accent-dark); text-decoration: none; font-weight: 500; }
+  .view-all:hover { text-decoration: underline; }
+
+  /* Project cards */
+  .project-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 16px; transition: box-shadow 0.2s, transform 0.2s; }
+  .project-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; flex-wrap: wrap; gap: 8px; }
+  .project-title { font-size: 18px; font-weight: 700; color: var(--fg); letter-spacing: -0.01em; }
+  .project-date { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .project-subtitle { font-size: 14px; color: var(--accent-dark); font-weight: 500; margin-bottom: 14px; }
+  .project-content { font-size: 14px; color: var(--fg-soft); line-height: 1.8; }
+  .project-content p { margin-bottom: 8px; }
+  .project-content strong { color: var(--fg); font-weight: 600; }
+  .project-content ul { list-style: none; padding: 0; margin: 6px 0; }
+  .project-content li { padding: 3px 0; padding-left: 4px; }
+  .project-content a { color: var(--accent-dark); text-decoration: none; }
+  .project-content a:hover { text-decoration: underline; }
+  .project-links { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-soft); display: flex; gap: 20px; flex-wrap: wrap; }
+  .project-links a { font-size: 13px; color: var(--accent-dark); text-decoration: none; font-weight: 500; }
+  .project-links a:hover { text-decoration: underline; }
+
+  /* Screenshot flow */
+  .flow-section { margin-top: 20px; }
+  .flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 14px; }
+  .flow-item { text-align: center; }
+  .flow-img {
+    background: #fffdf8; border: 1px solid var(--border); border-radius: 16px; padding: 10px;
+    box-shadow: var(--shadow); margin-bottom: 8px;
+  }
+  .flow-img img { width: 100%; border-radius: 10px; display: block; }
+  .flow-cap { font-size: 13px; font-weight: 600; color: var(--fg); }
+  .flow-sub { font-size: 12px; color: var(--muted); }
+
+  /* Post list */
+  .post-item { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border-soft); align-items: flex-start; transition: background 0.15s; cursor: pointer; border-radius: 8px; padding-left: 8px; }
+  .post-item:hover { background: var(--bg-soft); }
+  .post-item:last-child { border-bottom: none; }
+  .post-tag { flex-shrink: 0; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 600; letter-spacing: 0.03em; white-space: nowrap; margin-top: 2px; }
+  .tag-arch { background: var(--alt-bg); color: var(--alt-dark); }
+  .tag-case { background: var(--accent-bg); color: var(--accent-dark); }
+  .tag-think { background: var(--green-bg); color: var(--green); }
+  .tag-comp { background: var(--alt-bg); color: var(--alt-dark); }
+  .post-body { flex: 1; }
+  .post-title { font-size: 15px; font-weight: 600; color: var(--fg); margin-bottom: 4px; line-height: 1.4; }
+  .post-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* CV */
+  .cv-section { margin-bottom: 28px; }
+  .cv-section-title { font-size: 16px; font-weight: 700; color: var(--fg); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid var(--alt-bg); display: inline-block; padding-right: 32px; }
+  .cv-item { margin-bottom: 12px; padding-left: 4px; }
+  .cv-item-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; }
+  .cv-item-title { font-size: 14px; font-weight: 600; color: var(--fg); }
+  .cv-item-date { font-size: 13px; color: var(--muted); }
+  .cv-item-desc { font-size: 14px; color: var(--fg-soft); line-height: 1.7; margin-top: 2px; }
+  .cv-item-desc ul { margin: 4px 0; padding-left: 20px; }
+  .cv-item-desc li { margin-bottom: 3px; }
+
+  /* Skills */
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .skill-group { background: var(--bg-soft); border-radius: 10px; padding: 14px; border: 1px solid var(--border-soft); }
+  .skill-label { font-size: 13px; font-weight: 600; color: var(--alt-dark); margin-bottom: 6px; }
+  .skill-content { font-size: 13px; color: var(--fg-soft); line-height: 1.6; }
+
+  /* Contact */
+  .contact-list { display: flex; gap: 24px; flex-wrap: wrap; }
+  .contact-item { font-size: 14px; color: var(--fg-soft); }
+  .contact-item a { color: var(--accent-dark); text-decoration: none; }
+  .contact-item a:hover { text-decoration: underline; }
+
+  /* Metrics */
+  .metric-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+  .metric { background: var(--alt-bg); border-radius: 12px; padding: 16px 12px; text-align: center; }
+  .metric-num { font-size: 26px; font-weight: 700; color: var(--alt-dark); line-height: 1.1; }
+  .metric-num .unit { font-size: 13px; color: var(--muted); font-weight: 400; }
+  .metric-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* Responsive */
+  @media (max-width: 820px) {
+    .page-wrapper { margin: 0; border-radius: 0; }
+    .main-layout { flex-direction: column; height: auto; }
+    .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 24px; }
+    .sidebar-interests { width: auto; }
+    .nav-bar { padding: 12px 16px 0; }
+    .page-content { padding: 20px 16px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .metric-row { grid-template-columns: repeat(2, 1fr); }
+    .flow-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="main-layout">
+
+    <!-- ========== 左侧栏 ========== -->
+    <aside class="sidebar">
+      <!-- <div class="avatar serif">玥</div> -->
+      <div class="sidebar-name serif">温玥美</div>
+      <div class="sidebar-title">独立 AI 产品人 · 生物科研背景</div>
+      <div class="sidebar-institution">大连医科大学 · 硕士<br>南京航空航天大学 · 本科<br>2023–2026</div>
+
+      <div class="sidebar-social">
+        <a href="mailto:3414945315@qq.com" class="social-icon" title="邮箱" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="5" width="18" height="14" rx="2"/>
+            <path d="M3 7l9 6 9-6"/>
+          </svg>
+        </a>
+        <a href="https://github.com/WMoonBerry/Stepforward" class="social-icon" title="GitHub" target="_blank" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.87-1.54-3.87-1.54-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.47.11-3.06 0 0 .96-.31 3.15 1.18.91-.25 1.89-.38 2.86-.39.97.01 1.95.14 2.86.39 2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.77.11 3.06.73.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.4-5.25 5.68.41.35.78 1.05.78 2.12 0 1.53-.01 2.76-.01 3.14 0 .31.21.68.8.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/>
+          </svg>
+        </a>
+        <a href="https://stepforwardletsgo.netlify.app/" class="social-icon" title="产品体验" target="_blank" aria-label="产品 Demo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M3 12h18"/>
+            <path d="M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>
+          </svg>
+        </a>
+        <a href="#" class="social-icon" title="回到顶部" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" aria-label="回到顶部">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 19V5"/>
+            <path d="M5 12l7-7 7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="sidebar-interests">
+        <div class="interests-label">关注方向</div>
+        <span class="interest-tag">AI 产品设计</span>
+        <span class="interest-tag">AI 陪伴与情绪价值</span>
+        <span class="interest-tag">LLM 应用架构</span>
+        <span class="interest-tag">心理健康 × 科技</span>
+        <span class="interest-tag">vibe coding</span>
+      </div>
+
+      <div class="like-btn">
+        <span class="like-heart">♥</span>
+        <span class="like-count">感谢观看</span>
+      </div>
+    </aside>
+
+    <!-- ========== 右侧内容 ========== -->
+    <div class="content-area">
+
+      <!-- 导航栏 -->
+      <nav class="nav-bar">
+        <button class="nav-item active" data-page="about">关于我</button>
+        <button class="nav-item" data-page="projects">产品作品</button>
+        <button class="nav-item" data-page="posts">产品思考</button>
+        <button class="nav-item" data-page="cv">简历</button>
+      </nav>
+
+      <div class="page-content">
+
+        <!-- ===== 关于我 ===== -->
+        <div class="page-section active" id="page-about">
+
+          <div class="section-title serif">关于我</div>
+          <div class="bio-text">
+            <p>我是一名 <strong>独立 AI 产品实践者</strong> —— 相信 AI 时代的产品经理，核心能力不是写代码，而是定义问题、判断模型能力、对结果负责。</p>
+            <p>我目前的核心作品是 <a href="#" data-jump="projects">StepForward（步步向前）</a> —— 一款 AI 陪伴式行动支持工具，为「行动力持续不足」人群设计：<strong>先接住情绪，再跟进行动</strong>。我从 0 到 1 负责产品定义、交互设计、AI 接入方案与迭代决策，v1.0→v2.2.8 持续迭代并上线。底层统一接入 6 家 LLM（多 Provider 降级），关闭思考模式使单次拆解 token 成本以 20 条测试 prompt 测算平均约降 40-60%。建立了「前端 24 关键词硬编码 + AI 辅助识别」的双重危机安全边界，接入 3 条援助热线。产品采用 AI 协作开发（vibe coding）方式实现，产品方向、需求定义与质量验收由我主导。</p>
+            <p>做产品的过程中我写了一些 <a href="#" data-jump="posts">产品思考文章</a>，记录踩过的坑、做出的判断，和对 AI 产品的思考。</p>
+            <p>科研训练给了我严谨的方法论：四段课题负责人经历（跨部门协调、流程风控、方法论沉淀），两篇 SCI 一区论文（<em>Cell Death &amp; Disease</em> 二作、<em>Cell Reports</em> 四作）。现在，我将科研中的「假设 → 实验 → 度量 → 迭代」迁移到产品工作中，我做的还是「理解问题、设计验证、沉淀方法」这件事，只是场景从实验室换成了 AI 产品。</p>
+            <p>我相信 AI 产品最有价值的部分是「对人的理解」。模型会过期，技术会迭代，但对真实需求的洞察不会过时。</p>
+            <p>欢迎通过 <a href="mailto:3414945315@qq.com">email</a> 或 <a href="https://github.com/WMoonBerry/Stepforward" target="_blank">GitHub</a> 联系我。</p>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="section-title serif">我在做什么 <span class="view-all"><a href="#" data-jump="projects">查看全部 →</a></span></div>
+          <div class="feature-card">
+            <div class="feature-card-title">StepForward（步步向前）— AI 陪伴式行动支持工具</div>
+            <div class="feature-card-text">
+              为「行动力持续不足」人群设计：先接住情绪，再跟进行动。从 0 到 1 主导产品定义、交互设计、AI 接入方案与迭代决策，v1.0 → v2.2.8 持续迭代并上线。采用 AI 协作开发（vibe coding），产品决策由本人主导。核心理念 —— AI 的价值不在「替你做」，而在「陪你做」。
+            </div>
+            <div class="feature-card-links">
+              <a href="https://stepforwardletsgo.netlify.app/" target="_blank">在线体验 →</a>
+              <a href="https://github.com/WMoonBerry/Stepforward" target="_blank">GitHub →</a>
+              <a>产品说明（见作品集）</a>
+            </div>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="section-title serif">作品集速览</div>
+          <p style="color:var(--muted); font-size:14px; margin-bottom:16px;">除 StepForward 外，我也在做产品体验拆解与思考沉淀。</p>
+
+          <div class="feature-card" style="cursor:pointer; transition: box-shadow 0.2s, transform 0.2s;" onclick="window.open('女性向陪伴类游戏体验拆解/女性向陪伴产品拆.html', '_blank');">
+            <div class="feature-card-title">从女性向陪伴类游戏体验到依恋机制模式沉淀</div>
+            <div class="feature-card-text">
+              基于恋与深空 / 光与夜之恋 / 恋与制作人的一手体验，拆解「可及性 → 回应性 → 心动」三层情感联结结构，提出「模型层制造回应性、系统层制造独占性」的 AI 陪伴设计框架。
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <a href="#" data-jump="posts" style="font-size:13px; color:var(--accent-dark); text-decoration:none; font-weight:500;">查看更多文章作品 →</a>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="section-title serif">第一轮内测 <span class="view-all" style="float:right; font-weight:400; font-size:12px; color:var(--muted);">小样本，真问题</span></div>
+          <div class="metric-row">
+            <div class="metric">
+              <div class="metric-num">5<span class="unit"> 位</span></div>
+              <div class="metric-label">问卷用户<br>3 目标 + 2 非典型</div>
+            </div>
+            <div class="metric">
+              <div class="metric-num">8.8<span class="unit">/10</span></div>
+              <div class="metric-label">推荐意愿均分<br>10/10/8/7/9，方向性参考</div>
+            </div>
+            <div class="metric">
+              <div class="metric-num">9<span class="unit"> 项</span></div>
+              <div class="metric-label">问题识别<br>6 P1 + 3 P2，5 项已落地</div>
+            </div>
+            <div class="metric">
+              <div class="metric-num">4/5<span class="unit"></span></div>
+              <div class="metric-label">「被接住」获确认<br>1 位明确反例</div>
+            </div>
+          </div>
+
+          <div class="feature-card" style="background:var(--green-bg); border-color:#d8e8df;">
+            <div class="feature-card-title" style="font-size:14px;">如实说明局限</div>
+            <div class="feature-card-text" style="font-size:13px;">样本量小，仅作方向性参考；所有问题均在可容忍区间，无人选「严重到不想用」——北极星指标 + 4 条漏斗 + 20+ 埋点事件的度量体系已完成设计，待后端上线后用真实行为数据验证留存假设。<a href="产品用户体验报告/用户体验报告.html" target="_blank" style="color:var(--accent-dark); font-weight:500; text-decoration:underline;">查看完整报告 →</a></div>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="section-title serif">精选论文 <span class="view-all" style="font-weight:400; font-size:12px; color:var(--muted);">学历背景</span></div>
+          <div class="pub-item">
+            <div class="pub-venue" style="font-style:normal; margin-bottom:2px;">Cell Death &amp; Disease · SCI 一区 · IF≈12 · 第二作者</div>
+            <div class="pub-authors">温玥美, et al. ｜ 2026 · Accepted</div>
+          </div>
+          <div class="pub-item">
+            <div class="pub-venue" style="font-style:normal; margin-bottom:2px;">Cell Reports · SCI 一区 · IF≈7 · 第四作者</div>
+            <div class="pub-authors">温玥美, et al. ｜ 2026 · Published</div>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="section-title serif">动态</div>
+          <div class="news-item">
+            <span class="news-date">2026.09</span>
+            <span class="news-content">完成第一轮内测（N=5），「被接住」情绪陪伴价值获全样本确认，5 项问题根因定位并修复</span>
+          </div>
+          <div class="news-item">
+            <span class="news-date">2026.08</span>
+            <span class="news-content">StepForward 持续迭代至 v2.2.8：新手引导、成长日记、睡前安心仪式，完成多模型接入与成本治理</span>
+          </div>
+          <div class="news-item">
+            <span class="news-date">2026.07</span>
+            <span class="news-content">StepForward v1.0 MVP 上线 Netlify，开始持续迭代</span>
+          </div>
+          <div class="news-item">
+            <span class="news-date">2026.06</span>
+            <span class="news-content">硕士毕业；SCI 一区论文（Cell Death &amp; Disease，二作）被接收</span>
+          </div>
+
+        </div>
+
+        <!-- ===== 产品作品 ===== -->
+        <div class="page-section" id="page-projects">
+          <div class="section-title serif">产品作品</div>
+          <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">我独立负责的产品与项目。从 0 到 1，从定义到迭代。</p>
+
+          <div class="project-card">
+            <div class="project-header">
+              <div class="project-title serif">StepForward（步步向前）</div>
+              <div class="project-date">2026.07 – 至今</div>
+            </div>
+            <div class="project-subtitle">AI 任务拆解 × 情绪陪伴 · 独立产品负责人</div>
+            <div class="project-content">
+              <p><strong>一句话定位：</strong> 当你动不起来的时候，先接住你的情绪，再陪你慢慢启动。</p>
+              <p><strong>核心亮点：</strong></p>
+              <ul>
+                <li>🎯 从 0 到 1 主导产品全流程：v1.0 → v2.2.8 持续迭代上线，20+ 版本</li>
+                <li>🧠 AI 架构决策：多 Provider 接入（OpenAI 兼容 + Anthropic 双协议、6+ 模型），分场景匹配模型、自动降级；关闭思考模式，以 20 条测试 prompt 测算单次拆解 token 平均约降 40-60%</li>
+                <li>🎭 多 AI 角色设计：幕僚（拆解）/ 会夸你的好朋友（完成）/ 知心陪伴者（情绪）/ 笔友（日记）/ 知心陪伴者（晚安）</li>
+                <li>🛡️ 安全边界设计：前端 24 关键词硬编码 + AI 辅助识别双机制，接入 3 条 24h 援助热线</li>
+                <li>📝 迭代方法论：白屏危机后建立「稳定基线 + 单条增量 + 发布前验证」流程</li>
+              </ul>
+              <p><strong>开发模式：</strong> AI 协作开发（vibe coding），产品定义、交互设计、验收标准与迭代决策由本人主导。</p>
+            </div>
+            <div class="project-links">
+              <a href="https://stepforwardletsgo.netlify.app/" target="_blank">在线体验 →</a>
+              <a href="https://github.com/WMoonBerry/Stepforward" target="_blank">GitHub →</a>
+              <a href="https://WMoonBerry.github.io/stepforward-intro/">产品介绍页 →</a>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-header">
+              <div class="project-title serif">产品思考文章</div>
+              <div class="project-date">2026.08 – 至今</div>
+            </div>
+            <div class="project-subtitle">做产品过程中的复盘与反思</div>
+            <div class="project-content">
+              <p>做 StepForward 的过程中写了一些文章，记录踩过的坑和思考。完整内容见「产品思考」页签。</p>
+            </div>
+            <div class="project-links">
+              <a href="#" data-jump="posts">阅读更多 →</a>
+            </div>
+          </div>
+
+          <!-- 产品核心流程截图 -->
+          <div class="flow-section">
+            <div class="section-title-sm serif">产品使用流程</div>
+            <div class="flow-grid">
+              <div class="flow-item">
+                <div class="flow-img"><img src="Stepforward_产品截图/手机截图-任务拆解-行动鼓励-情绪陪伴/A-任务拆解模式-02-小步变身首席幕僚,一定帮你安排妥当！.jpg" alt="任务拆解"></div>
+                <div class="flow-cap">拆解 · 幕僚</div>
+              </div>
+              <div class="flow-item">
+                <div class="flow-img"><img src="Stepforward_产品截图/手机截图-任务拆解-行动鼓励-情绪陪伴/B-鼓励支持模式-01-每当你勾选“开始做了”，我会马上看见你的行动力，为你奉上数不完的鼓励和支持，因为你值得~.jpg" alt="完成鼓励"></div>
+                <div class="flow-cap">完成 · 好朋友</div>
+              </div>
+              <div class="flow-item">
+                <div class="flow-img"><img src="Stepforward_产品截图/手机截图-任务拆解-行动鼓励-情绪陪伴/C-情绪陪伴模式-01-如果暂时不想开始也没关系，点击[等一下]进入情绪陪伴支持模块，小步会化身超级懂你的心理疗愈师，一直守护你的！不论你说什么，我都会接住你的情绪。.jpg" alt="情绪陪伴"></div>
+                <div class="flow-cap">情绪 · 知心陪伴者</div>
+              </div>
+              <div class="flow-item">
+                <div class="flow-img"><img src="Stepforward_产品截图/手机截图-成长日记模块/成长日记模块-02-不论你想记录什么，小步都会马上回应你，因为小步会一直在你身边守候.jpg" alt="成长日记"></div>
+                <div class="flow-cap">日记 · 笔友</div>
+              </div>
+              <div class="flow-item">
+                <div class="flow-img"><img src="Stepforward_产品截图/手机截图-睡前安心仪式模块/睡前安心仪式模块-07-最后，疗愈师小步会根据今日的小确幸和小牵挂，为你奉上一封独一无二的睡前晚安信~请相信小步会一直陪着你，安心地入睡吧~.jpg" alt="晚安仪式"></div>
+                <div class="flow-cap">晚安 · 知心陪伴者</div>
+              </div>
+              <div class="flow-item">
+                <div class="flow-img" style="display:flex; align-items:center; justify-content:center; min-height:180px; background:var(--alt-bg); flex-direction:column; gap:8px; padding:20px;">
+                  <div style="font-size:32px;">🌱</div>
+                  <div class="flow-cap" style="font-weight:700;">同一个 AI，五种人格</div>
+                  <div class="flow-sub">在每一个需要的时刻，用对的方式陪你</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 产品思考 ===== -->
+        <div class="page-section" id="page-posts">
+          <div class="section-title serif">产品思考</div>
+          <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">做 StepForward 过程中写下的复盘与笔记，及配套的竞品分析、用户调研、体验拆解。记录踩过的坑、做出的判断，以及对 AI 产品的思考。</p>
+
+          <div class="post-item" data-link="AI产品开发思考沉淀/AI产品思考沉淀.html">
+            <span class="post-tag tag-think">思考</span>
+            <div class="post-body">
+              <div class="post-title">AI 陪伴者与用户的关系</div>
+              <div class="post-desc">人与 AI 为什么会建立情感联结——「不是替代，是过渡；不是依赖，是支撑。」</div>
+            </div>
+          </div>
+
+          <div class="post-item" data-link="女性向陪伴类游戏体验拆解/女性向陪伴产品拆.html">
+            <span class="post-tag tag-case">拆解</span>
+            <div class="post-body">
+              <div class="post-title">女性向陪伴产品体验拆解</div>
+              <div class="post-desc">基于恋与深空 / 光与夜之恋的一手体验，拆解依恋机制与留存结构，提出「模型层制造回应性、系统层制造独占性」设计框架</div>
+            </div>
+          </div>
+
+          <div class="post-item" data-link="AI产品开发思考沉淀/AI产品思考沉淀.html">
+            <span class="post-tag tag-arch">架构</span>
+            <div class="post-body">
+              <div class="post-title">AI 人格设计与 Agent 适用边界</div>
+              <div class="post-desc">人格设计机制 + AI 自主权的判断框架——「具体是真实感的第一要素」</div>
+            </div>
+          </div>
+
+          <div class="post-item" data-link="AI产品开发思考沉淀/AI产品思考沉淀.html">
+            <span class="post-tag tag-think">产品观</span>
+            <div class="post-body">
+              <div class="post-title">不做什么——「不评价」的产品底色</div>
+              <div class="post-desc">为什么不打卡、不评价、不做排名——陪伴场景的克制设计与取舍</div>
+            </div>
+          </div>
+
+          <div class="post-item" data-link="AI产品开发思考沉淀/AI产品思考沉淀.html">
+            <span class="post-tag tag-case">案例</span>
+            <div class="post-body">
+              <div class="post-title">时间安排 bad case 排查</div>
+              <div class="post-desc">从修 bug 到追问系统性根因——「bug 用户会报错，bad case 是结果很蠢，用户只会默默离开」</div>
+            </div>
+          </div>
+
+          <div class="post-item" data-link="AI产品开发思考沉淀/AI产品思考沉淀.html">
+            <span class="post-tag tag-think">思考</span>
+            <div class="post-body">
+              <div class="post-title">过期任务处理与 AGENT 化契机</div>
+              <div class="post-desc">技术债务与架构时机的判断——「分清什么是当下不得不做的妥协、什么是未来的正确方向」</div>
+            </div>
+          </div>
+
+          <div class="post-item" data-link="AI产品开发思考沉淀/AI产品思考沉淀.html">
+            <span class="post-tag tag-arch">架构</span>
+            <div class="post-body">
+              <div class="post-title">多服务商 API maintenance</div>
+              <div class="post-desc">多 LLM 统一接入后的容灾、降级、自动重试与切换——「demo 只需要能用，产品需要一直能用」</div>
+            </div>
+          </div>
+
+          <div class="post-item" data-link="AI产品开发思考沉淀/AI产品思考沉淀.html">
+            <span class="post-tag tag-case">案例</span>
+            <div class="post-body">
+              <div class="post-title">缓存命中率 troubleshooting</div>
+              <div class="post-desc">成本与体验的平衡——「命中率 80% 和 20%，规模化后就是 4 倍成本差」</div>
+            </div>
+          </div>
+
+          <div class="post-item" data-link="AI产品开发思考沉淀/AI产品思考沉淀.html">
+            <span class="post-tag tag-think">思考</span>
+            <div class="post-body">
+              <div class="post-title">辅助开发时的 AI 模型切换</div>
+              <div class="post-desc">vibe coding 工作方法论——「知道哪个模型适合干什么、知道它会变会坏」</div>
+            </div>
+          </div>
+
+          <div class="post-item" data-link="../Package_WYM-(新作品集)/02-竞品分析/StepForward-竞品分析报告-作品集-温玥美.html">
+            <span class="post-tag tag-comp">竞品</span>
+            <div class="post-body">
+              <div class="post-title">竞品深度分析</div>
+              <div class="post-desc">FocusFeel / PlanCoach / SuperPlanner 三款「帮人行动」产品的对标研究：定位框架、功能矩阵与机会点推导</div>
+            </div>
+          </div>
+
+          <div class="post-item" data-link="产品用户体验报告/用户体验报告.html">
+            <span class="post-tag tag-comp">验证</span>
+            <div class="post-body">
+              <div class="post-title">轻量级用户体验报告</div>
+              <div class="post-desc">N=5 真实用户反馈，样本局限与熟人偏差主动写明，「被接住」价值获确认，5 项根因定位并修复</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ===== 简历 ===== -->
+        <div class="page-section" id="page-cv">
+
+          <div class="cv-section">
+            <div class="cv-section-title serif">求职意向</div>
+            <div class="cv-item">
+              <div class="cv-item-desc"><strong>AI 产品经理培训生 · AI 陪伴产品方向</strong> ｜ 独立 AI 产品实践者，生物科研背景，一手跑通 AI 情绪陪伴产品从 0 到 1。</div>
+            </div>
+            <div class="cv-item" style="margin-top:6px;">
+              <div class="cv-item-desc">AI 陪伴方向独立产品人：一手开发过模型驱动的 AI 情绪陪伴产品（2 周 AI 协作开发从概念跑通 MVP，持续迭代 20+ 版本），也深度体验并系统拆解过内容驱动的陪伴产品（恋与深空 / 光与夜之恋），提出「模型层制造回应性、系统层制造独占性」的 AI 陪伴设计主张。</div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <div class="cv-section-title serif">教育背景</div>
+            <div class="cv-item">
+              <div class="cv-item-header">
+                <span class="cv-item-title">大连医科大学 ｜ 硕士</span>
+                <span class="cv-item-date">2023.09 – 2026.06</span>
+              </div>
+              <div class="cv-item-desc">生物化学与分子生物学</div>
+            </div>
+            <div class="cv-item">
+              <div class="cv-item-header">
+                <span class="cv-item-title">南京航空航天大学 ｜ 本科</span>
+                <span class="cv-item-date">2017.09 – 2021.06</span>
+              </div>
+              <div class="cv-item-desc">飞行器环境与生命保障工程</div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <div class="cv-section-title serif">产品经历</div>
+            <div class="cv-item">
+              <div class="cv-item-header">
+                <span class="cv-item-title">StepForward（步步向前）｜ AI 任务拆解 × 成长陪伴 · 独立产品负责人</span>
+                <span class="cv-item-date">2026.07 – 至今</span>
+              </div>
+              <div class="cv-item-desc">
+                <ul>
+                  <li><strong>产品定义与闭环设计</strong>：面向「行动力持续不足」人群，从 0 到 1 主导产品定义、原型、AI 协作开发与迭代，v1.0 → v2.2.8 已上线 Netlify；设计「任务拆解确认循环 + 4 级情绪分级干预 + 成长日记沉淀」闭环，「温暖、不评判、去技术感」贯穿全文。</li>
+                  <li><strong>安全与隐私边界</strong>：前端关键词硬编码 + AI 辅助识别双机制，接入 3 条 24h 援助热线，坚持「AI 不做治疗」。</li>
+                  <li><strong>AI 架构选型与成本治理</strong>：多 Provider 接入（OpenAI 兼容 + Anthropic 双协议、6+ 服务商）支持 BYOK、分场景匹配模型、自动降级；SSE 流式降低首字等待感知；关闭思考模式，以 20 条测试 prompt 测算单次拆解 token 平均约降 40-60%。</li>
+                  <li><strong>AI 能力边界与风险隔离</strong>：暂定位「AI 增强的 APP」而非自主 Agent，危机干预以规则为主，情绪场景 AI 绝不替用户做决定。</li>
+                  <li><strong>迭代方法论</strong>：经历全面白屏事故后，从「想到什么加什么」转向「稳定基线 + 单条增量 + 发布前验证」，2 天 5 轮迭代修复 16+ 已知问题。</li>
+                  <li><strong>用户驱动迭代与度量</strong>：首批反馈定位并修复 5 项问题根因；轻量内测（5 样本）验证核心价值假设；北极星 + 4 漏斗 + 20+ 埋点已设计，待后端落地。</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <div class="cv-section-title serif">技能</div>
+            <div class="skills-grid">
+              <div class="skill-group">
+                <div class="skill-label">AI 产品设计</div>
+                <div class="skill-content">LLM 应用架构选型（Prompt / 画像注入 / RAG / Agent 边界）、情绪分级干预、安全边界与隐私、Human-in-the-loop 交互</div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-label">AI 协作开发</div>
+                <div class="skill-content">自然语言驱动 AI 实现全栈原型，主导需求拆解、验收标准与 Bug 闭环；多模型切换与交叉验证；GitHub + Netlify 部署</div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-label">数据驱动与度量</div>
+                <div class="skill-content">北极星指标 / 漏斗分析 / 埋点体系设计；完整指标体系（北极星 + 4 漏斗 + 20+ 事件）已设计待落地</div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-label">AI 产品视野</div>
+                <div class="skill-content">深度使用 Trae / WorkBuddy 等 AI 原生工具，经历多家模型 API 升级与端点变更，具备 AI 产品维护意识</div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-label">语言</div>
+                <div class="skill-content">CET-6，熟练阅读英文文献与技术文档</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <div class="cv-section-title serif">科研经历（节选）</div>
+            <div class="cv-item">
+              <div class="cv-item-header">
+                <span class="cv-item-title">肠道免疫细胞分离体系建立 ｜ 独立负责人</span>
+                <span class="cv-item-date">2024.06 – 2024.09</span>
+              </div>
+              <div class="cv-item-desc">通过流程重构将核心质量指标提升至 95%、交付周期压缩 80%；输出标准化 SOP 并培训组内成员，被课题组 5 个独立项目长期复用。</div>
+            </div>
+            <div class="cv-item">
+              <div class="cv-item-header">
+                <span class="cv-item-title">同种异基因骨髓移植模型 ｜ 独立负责人</span>
+                <span class="cv-item-date">2025.06 – 2025.11</span>
+              </div>
+              <div class="cv-item-desc">协调 3 个外部团队打通全流程链路，在高风险低容错条件下完成 40+ 例交付，术后 16 周存活率 100%、嵌合成功率约 95%。</div>
+            </div>
+            <div class="cv-item">
+              <div class="cv-item-header">
+                <span class="cv-item-title">抗肿瘤药效评价 ｜ 执行负责人</span>
+                <span class="cv-item-date">2024.05 – 2024.09</span>
+              </div>
+              <div class="cv-item-desc">独立管理 100+ 例样本全周期，成瘤率 &gt;95%、组内 CV&lt;25%；交付 3 份正式报告，支撑 2 篇 SCI 一区论文。</div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <div class="cv-section-title serif">论文与校园实践</div>
+            <div class="cv-item">
+              <div class="cv-item-desc">
+                <ul>
+                  <li><em>Cell Death &amp; Disease</em>（SCI 一区，IF≈12），第二作者，2026，Accepted</li>
+                  <li><em>Cell Reports</em>（SCI 一区，IF≈7），第四作者，2026，Published</li>
+                  <li>校新闻中心记者（10+ 篇通讯）；班级心理气象委员</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <div class="cv-section-title serif">联系方式</div>
+            <div class="contact-list">
+              <span class="contact-item">📞 181-4112-1316</span>
+              <span class="contact-item">Email: <a href="mailto:3414945315@qq.com">3414945315@qq.com</a></span>
+              <span class="contact-item">GitHub: <a href="https://github.com/WMoonBerry/Stepforward" target="_blank">github.com/WMoonBerry/Stepforward</a></span>
+              <span class="contact-item">产品 Demo: <a href="https://stepforwardletsgo.netlify.app/" target="_blank">stepforwardletsgo.netlify.app</a></span>
+              <span class="contact-item">个人主页: <a href="https://WMoonBerry.github.io/WenYM-portfolio/" target="_blank">WMoonBerry.github.io/WenYM-portfolio</a></span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tab switching
+  const navItems = document.querySelectorAll('.nav-item');
+  const sections = document.querySelectorAll('.page-section');
+
+  function switchPage(pageId, button) {
+    navItems.forEach(n => n.classList.remove('active'));
+    sections.forEach(s => s.classList.remove('active'));
+    document.getElementById('page-' + pageId).classList.add('active');
+    if (button) button.classList.add('active');
+    document.querySelector('.page-content').scrollTop = 0;
+  }
+
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      switchPage(item.getAttribute('data-page'), item);
+    });
+  });
+
+  // Cross-tab jump links
+  document.querySelectorAll('[data-jump]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const pageId = el.getAttribute('data-jump');
+      const btn = document.querySelector('.nav-item[data-page="' + pageId + '"]');
+      switchPage(pageId, btn);
+    });
+  });
+
+  // Post items open external link
+  document.querySelectorAll('.post-item[data-link]').forEach(item => {
+    item.addEventListener('click', () => {
+      const link = item.getAttribute('data-link');
+      if (link) window.open(link, '_blank');
+    });
+  });
+
+  // Like button
+  const likeBtn = document.querySelector('.like-btn');
+  let liked = false;
+  let count = 26;
+  likeBtn.querySelector('.like-count').textContent = count;
+  likeBtn.addEventListener('click', () => {
+    liked = !liked;
+    if (liked) {
+      count++;
+      likeBtn.querySelector('.like-heart').style.color = '#c76a45';
+    } else {
+      count--;
+      likeBtn.querySelector('.like-heart').style.color = '';
+    }
+    likeBtn.querySelector('.like-count').textContent = count;
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>女性向陪伴产品体验拆解：从乙女体验到一套情感联结机制沉淀</title>
+<style>
+  :root {
+    --bg: #faf8f6; --bg2: #fff; --ink: #2d2a26; --muted: #8a8580; --rule: #e8e4df;
+    --accent: #c98b6b; --accent2: #8B6F8E; --accent-soft: rgba(201, 139, 107, 0.08);
+    --success: #6ab08a; --warning: #d4a86a; --danger: #d46a6a; --info: #6a9bd4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--ink); line-height: 1.85; font-size: 15px; -webkit-font-smoothing: antialiased; }
+  html { scroll-behavior: smooth; }
+  .layout { max-width: 1400px; margin: 0 auto; }
+  .content { max-width: 920px; margin: 0 auto; padding: 2rem 2rem 4rem; }
+  .toc-toggle { position: fixed; top: 1.4rem; right: 1.4rem; z-index: 61; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; background: var(--bg2); color: var(--ink); border: 1px solid var(--rule); border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(45, 42, 38, 0.08); transition: border-color .2s ease, color .2s ease; }
+  .toc-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .toc-toggle .toc-toggle-ico { font-size: 0.95rem; line-height: 1; }
+  .sidebar { position: fixed; top: 4.4rem; right: 1.4rem; width: 268px; z-index: 60; height: auto; max-height: calc(100vh - 6rem); overflow-y: auto; background: var(--bg2); border: 1px solid var(--rule); border-radius: 12px; padding: 1.3rem 1.1rem 1.3rem 1.35rem; box-shadow: 0 6px 24px rgba(45, 42, 38, 0.10); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity .22s ease, transform .22s ease, visibility .22s; }
+  .sidebar.open { opacity: 1; visibility: visible; transform: translateY(0); }
+  .toc-title { display: flex; align-items: center; justify-content: space-between; }
+  .toc-close { margin-left: auto; background: none; border: none; cursor: pointer; color: var(--muted); font-size: 1.1rem; line-height: 1; padding: 2px 4px; border-radius: 6px; transition: color .2s ease, background .2s ease; }
+  .toc-close:hover { color: var(--danger); background: rgba(212, 106, 106, 0.1); }
+  .to-top { position: fixed; right: 1.6rem; bottom: 1.4rem; z-index: 60; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.5rem 1.05rem; background: var(--accent); color: #fff; border-radius: 20px; font-size: 0.82rem; font-weight: 600; text-decoration: none; box-shadow: 0 4px 14px rgba(201, 139, 107, 0.35); }
+  .to-top:hover { opacity: 0.9; }
+  .report-header { text-align: center; padding: 2.5rem 0 2.8rem; border-bottom: 1px solid var(--rule); margin-bottom: 2.5rem; }
+  .report-header .tag { display: inline-block; padding: 4px 14px; background: var(--accent-soft); color: var(--accent); border-radius: 20px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 1rem; }
+  .report-header h1 { font-size: 1.85rem; font-weight: 700; margin-bottom: 0.6rem; line-height: 1.35; }
+  .report-header .subtitle { color: var(--accent2); font-size: 1rem; font-weight: 500; }
+  .report-header .meta { margin-top: 1.5rem; display: flex; justify-content: center; gap: 2rem; font-size: 0.85rem; color: var(--muted); flex-wrap: wrap; }
+  .report-header .meta span strong { color: var(--ink); font-weight: 600; }
+  .callout { background: var(--accent-soft); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; font-size: 0.9rem; }
+  .callout.info { background: rgba(106, 155, 212, 0.08); border-left-color: var(--info); }
+  .callout.success { background: rgba(106, 176, 138, 0.08); border-left-color: var(--success); }
+  .callout.warning { background: rgba(212, 168, 106, 0.08); border-left-color: var(--warning); }
+  .callout-title { font-weight: 600; margin-bottom: 0.4rem; font-size: 0.9rem; }
+  .toc { margin: 0; }
+  .toc-title { font-size: 0.8rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.9rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule); }
+  .toc ol { list-style: none; }
+  .toc ol li { padding: 0.42rem 0; border-bottom: 1px dashed var(--rule); display: flex; align-items: baseline; gap: 0.55rem; }
+  .toc-num { color: var(--accent); font-weight: 600; font-size: 0.78rem; min-width: 1.5em; flex-shrink: 0; }
+  .toc a { color: var(--ink); text-decoration: none; font-size: 0.82rem; display: block; }
+  .toc a:hover { color: var(--accent); }
+  .toc a.active { color: var(--accent); font-weight: 600; }
+  section { margin-bottom: 2.8rem; scroll-margin-top: 2rem; }
+  h2 { font-size: 1.32rem; font-weight: 700; margin-bottom: 1.1rem; padding-bottom: 0.65rem; border-bottom: 2px solid var(--accent); display: flex; align-items: center; gap: 0.7rem; }
+  h2 .num { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; height: 34px; padding: 0 4px; background: var(--accent); color: white; border-radius: 8px; font-size: 0.86rem; font-weight: 700; }
+  h3 { font-size: 1.08rem; font-weight: 600; margin: 1.6rem 0 0.8rem; color: var(--accent2); }
+  h4 { font-size: 0.98rem; font-weight: 600; margin: 1.3rem 0 0.6rem; }
+  p { margin-bottom: 0.9rem; }
+  strong { color: var(--ink); font-weight: 600; }
+  ul, ol { margin-bottom: 0.9rem; padding-left: 1.5rem; }
+  li { margin-bottom: 0.4rem; }
+  li::marker { color: var(--accent); }
+  .table-wrap { overflow-x: auto; margin: 1.3rem 0; border-radius: 8px; border: 1px solid var(--rule); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.84rem; background: var(--bg2); }
+  th { background: #f2ede6; text-align: left; padding: 0.66rem 0.85rem; font-weight: 600; border-bottom: 2px solid var(--rule); }
+  td { padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .quote { border-left: 3px solid var(--accent2); background: rgba(139, 111, 142, 0.06); padding: 0.7rem 1.1rem; border-radius: 0 8px 8px 0; margin: 0.9rem 0; font-size: 0.9rem; color: var(--ink); }
+  .quote .who { display: block; margin-top: 0.3rem; font-size: 0.78rem; color: var(--muted); }
+  .ev { display: inline-block; font-size: 0.72rem; padding: 1px 9px; border-radius: 11px; font-weight: 600; white-space: nowrap; margin-right: 3px; vertical-align: 1px; }
+  .ev-first { background: rgba(106, 176, 138, 0.16); color: #3f7d5c; }
+  .ev-consensus { background: rgba(106, 155, 212, 0.16); color: #32618f; }
+  .ev-infer { background: rgba(212, 168, 106, 0.18); color: #96690f; }
+  .gap-tag { display: inline-block; font-size: 0.72rem; padding: 1px 9px; border-radius: 11px; font-weight: 600; background: rgba(138, 133, 128, 0.14); color: var(--muted); margin-right: 3px; vertical-align: 1px; }
+  .key-box { background: linear-gradient(120deg, rgba(201, 139, 107, 0.10), rgba(139, 111, 142, 0.10)); border: 1px solid rgba(201, 139, 107, 0.3); border-radius: 12px; padding: 1.1rem 1.3rem; margin: 1.4rem 0; }
+  .key-box .t { font-size: 0.75rem; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; margin-bottom: 0.45rem; }
+  .key-box p { margin-bottom: 0.4rem; font-size: 0.94rem; }
+  .foot-honest { margin-top: 1rem; font-size: 0.78rem; color: var(--muted); }
+  footer { margin-top: 3rem; padding-top: 1.8rem; border-top: 1px solid var(--rule); text-align: center; font-size: 0.8rem; color: var(--muted); }
+  @media (max-width: 960px) {
+    .toc-toggle { right: 1rem; top: 1rem; }
+    .sidebar { right: 1rem; top: 4.1rem; width: calc(100vw - 2rem); max-height: calc(100vh - 5.4rem); }
+    .content { padding: 1.4rem 1rem 3rem; }
+    .to-top { right: 1rem; bottom: 1rem; }
+    .report-header h1 { font-size: 1.4rem; }
+    table { min-width: 620px; }
+  }
+  @media print {
+    body { background: #fff; }
+    section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<span id="top"></span>
+<div class="layout">
+  <button class="toc-toggle" id="tocToggle" aria-expanded="false" aria-controls="sidebar"><span class="toc-toggle-ico">☰</span>目录</button>
+  <aside class="sidebar" id="sidebar">
+    <nav class="toc">
+      <div class="toc-title">目录 <button class="toc-close" id="tocClose" aria-label="隐藏目录">×</button></div>
+      <ol>
+        <li><span class="toc-num">1</span><a href="#s1">样本声明：我体验过什么、依据强度怎么看</a></li>
+        <li><span class="toc-num">2</span><a href="#s2">情感联结的三层结构：可及性 → 回应性 → 心动</a></li>
+        <li><span class="toc-num">3</span><a href="#s3">「确定感」的正确定义（以及它与惊喜感的关系）</a></li>
+        <li><span class="toc-num">4</span><a href="#s4">媒介剥离实验：文本、语音、形象各自贡献什么</a></li>
+        <li><span class="toc-num">5</span><a href="#s5">五类情感投递系统 × 依恋类型的匹配</a></li>
+        <li><span class="toc-num">6</span><a href="#s6">流失结构：三类可逆、一类不可逆、一类付费门槛</a></li>
+        <li><span class="toc-num">7</span><a href="#s7">商业化的内在张力：情感纯度与付费</a></li>
+        <li><span class="toc-num">8</span><a href="#s8">合题：模型做回应性，系统做独占性与可见代价</a></li>
+        <li><span class="toc-num">8.5</span><a href="#s85">画像注入的边界：设定锁内容、人格注用户</a></li>
+        <li><span class="toc-num">9</span><a href="#s9">安全边界设计：用户主权 ＋ 四级响应 ＋ 八条红线</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main class="content">
+
+  <header class="report-header">
+    <span class="tag">女性向陪伴 · 体验拆解</span>
+    <h1>女性向陪伴产品体验拆解</h1>
+    <p class="subtitle">从乙女体验到一套情感联结机制沉淀</p>
+    <div class="meta">
+      <span>拆解对象：<strong>恋与深空 · 光与夜之恋 · 恋与制作人（三款深度体验）＋ StepForward（自研）</strong></span>
+      <span>日期：<strong>2026 年 9 月</strong></span>
+      <span>方法：<strong>一手深度体验 ＋ 依恋机制框架</strong></span>
+    </div>
+  </header>
+
+  <div class="callout info">
+    <div class="callout-title">阅读说明：本文的「依据强度」口径</div>
+    <p style="margin-bottom:0">全文把每一处判断的来源显式标注为三类：
+      <li><span class="ev ev-first">一手·自陈</span>＝ 本人亲历、自述。注意关键词是「自陈」——未经量表测量，不写成诊断结论。</li>
+      <li><span class="ev ev-consensus">共识</span>＝ 公开事实（如公测时间、学术理论出处）。</li>
+      <li><span class="ev ev-infer">推断</span>＝ 由前两者推导，显式标明「基于框架推演的假设，待验证」，不作为已验证结论。</li>
+      涉及个人依恋倾向一律写作「自陈」。本文是「深度用户的依恋机制拆解」，结论以本人体验样本为边界。</p>
+  </div>
+
+  <section id="s1">
+    <h2><span class="num">1</span>样本声明：我体验过什么</h2>
+    <p>本节的目的是先把「我的结论站在什么样本上」交代清楚，避免把个人偏好误当成行业规律。<span class="ev ev-first">一手·自陈</span></p>
+    <h3>1. 三款深度体验的产品</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>产品</th><th>体验周期</th><th>体验深度 / 角色态度</th></tr>
+        <tr><td><strong>恋与深空</strong></td><td>约 16 个月（2024.01 开服入坑 → 2025.05 基本停玩），横跨五位男主上线节点</td><td>恋爱向喜欢：沈星回、夏以昼、祁煜；朋友式喜欢：秦彻；无感：黎深。流失原因为「主线更新太慢」，流失后未卸载式断联，转为持续关注二创与卡面剧情切片</td></tr>
+        <tr><td><strong>光与夜之恋</strong></td><td>约 1 年半（2021 年底 → 2023），自陈「所有乙女游戏里最喜欢」</td><td>恋爱向喜爱排序：夏鸣星 ≈ 陆沉 &gt; 查理苏 &gt; 萧逸 &gt; 齐司礼。流失原因为现实生活时间被占用，非产品性流失</td></tr>
+        <tr><td><strong>恋与制作人</strong></td><td>2018 年（大一，首款乙女）</td><td>因推主线需经验 / 体力 / 氪金、等待成本过高，小额氪金后退游且未再回流。偏好从李泽言转向「稳稳很安心」的白起</td></tr>
+      </table>
+    </div>
+    <p>补充一侧对照：<strong>StepForward</strong> 是我本人端到端自研、已上线的 AI 产品，其中包含「多 AI 角色矩阵」，作为本文「AI 原生一侧」目前的一手样本。<span class="ev ev-first">一手·自陈</span></p>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">2</span>情感联结的三层结构：可及性 → 回应性 → 心动</h2>
+    <p>我把「人为什么会对一个虚拟角色动真感情」拆成三层，后面所有结论都从它推导。</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:18%">层</th><th style="width:34%">它是什么</th><th style="width:22%">它解决什么</th><th>由谁来提供</th></tr>
+        <tr><td><strong>第一层 · 可及性与安全</strong></td><td>他一直在、不会伤害我、不会离开</td><td>让联结<strong>得以开始</strong>（入场券）</td><td>内容层（稳定人设、持续更新）＋ 系统层（在场机制）</td></tr>
+        <tr><td><strong>第二层 · 回应性（被接住）</strong></td><td>他真的听懂我此刻想说什么</td><td>让联结<strong>成真</strong>——「仿佛在屏幕另一端，是真正的存在」</td><td><strong>模型层</strong>。这是 AI 相对内容驱动的独有优势，预设内容永远穷举不了</td></tr>
+        <tr><td><strong>第三层 · 被需要感 ＋ 可见代价 ＋ 欲望张力</strong></td><td>他为我和别人不一样，而且我<strong>看见</strong>了那份代价</td><td>让联结<strong>升级为心动</strong></td><td>系统层 ＋ 内容层（好感度、关系状态、剧情树、多结局、属性成长）</td></tr>
+      </table>
+    </div>
+    <p><span class="ev ev-infer">推断</span>这三层对应的是「能否开始 → 是否成真 → 是否心动」的递进，而不是并列的三种价值。第一层不到位，后面无从谈起；但只有第一层、到不了第三层，关系就会停在「陪伴区」。</p>
+
+    <h3>2.1 第三层的具体构成：心动四要素</h3>
+    <p>我从「喜欢」跨到「心动」的临界点，不是单一元素。<span class="ev ev-first">一手·自陈</span></p>
+    <ul>
+      <li><strong>被需要感（He Needs Me）</strong>：他需要你、依赖你、你是他不可被替代的人。</li>
+      <li><strong>可见代价的付出（Visible Sacrifice）</strong>：他为你付出、受苦、打破原则，且你能「看见」这份代价——「这份高昂的代价让我感受到这份选择的重量和唯一性」。</li>
+      <li><strong>欲望张力</strong>：关系中靠近或远离都痛苦的拉扯，有阻碍、有痛感、有「想确认、想抓住」的冲动。</li>
+    </ul>
+    <p>这三要素下面还有一层<strong>底层锚</strong>：你一直是他坚定、唯一的选择；他安全、可靠、稳定、不会突然离开。二者缺一不可——没有底层锚，张力会变成「不安」；没有张力，底层锚会变成「停在喜欢」。</p>
+    <p>另有<strong>次级加成项</strong>：投射 / 认同（像过去的我或未来的我）、明确选择信号（直球宣告）、守护象征与关系历史（前世 / 青梅竹马 / 重逢）、外形与职业光环、反差 / 裂缝共鸣。</p>
+
+    <h3>2.2 第一层是如何被破坏的：三种信号状态</h3>
+    <p>第一层（可及性与安全）不是「有 / 没有」的开关，而是由角色持续发出的「信号」决定的。我把信号分成三态：<span class="ev ev-infer">推断</span></p>
+    <ul>
+      <li><strong>确定信号</strong>：能稳定接收到「我选你、我在」，于是安心投入。</li>
+      <li><strong>不确定信号</strong>：抓不住、追不上，于是心里悬空。</li>
+      <li><strong>矛盾信号</strong>：既靠近又推开，信号无法归类——人的情绪系统此时不是判断「爱不爱」，而是干脆关机、没感觉、疏离。</li>
+    </ul>
+    <p>第三态很关键：它不是「不喜欢」，而是「无法归类导致的情感悬置」。这解释了为什么同一套「嘴硬心软」的设计，对不同人会产生完全相反的效果（详见第 5 章）。</p>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">3</span>「确定感」的正确定义（以及它与惊喜感的关系）</h2>
+    <p>「确定感」是全文被反复使用的一个词，这里给出它的最终定义，全文以此为准。<span class="ev ev-first">一手·自陈</span>（本人主动在拆解过程中修正过一次，属迭代而非矛盾）</p>
+    <div class="quote">确定感<strong>不是</strong>「我能预料到他下一步会说什么」，而是他能让我永远确定：他对我来说是<strong>安全（永不伤害我）且稳定（永不离开我）</strong>的存在。</div>
+    <p>这个修正很重要：如果把「确定感」理解为「可预期」，就会推出「惊喜感与确定感天然冲突」的错误结论；而真实体感是——<strong>在安全与稳定成立的前提下，他的行为与语言完全可以超出我的预期</strong>。惊喜与确定不矛盾。</p>
+
+    <h3>3.1 惊喜感的边界：可超出情境预期，不可超出人设</h3>
+    <p>一个具体的惊喜例子：某角色声称无处可去、搬到「我」家，之后外出、送馄饨、请同事喝奶茶——「这个行动很可爱」。<span class="ev ev-first">一手·自陈</span></p>
+    <p><span class="ev ev-infer">推断</span>惊喜的例子有共同结构：<strong>行为超出了情境预期，但没有跳出人设</strong>（角色的浮夸与真诚是一贯的，搬家送馄饨只是把它搬进了新场景）。因此「惊喜」的边界是——<strong>可以超出情境预期，不可超出人设边界</strong>。这恰恰是「角色口吻约束」该管住的具体东西：约束的是「人设」这条轴，而不是「情境」这条轴。</p>
+  </section>
+
+  <section id="s4">
+    <h2><span class="num">4</span>媒介剥离实验：文本、语音、形象各自贡献什么</h2>
+    <p>为了回答「角色吸引力到底由哪个介质承载」，我做了一个剥离排序。<span class="ev ev-first">一手·自陈</span></p>
+    <div class="key-box">
+      <div class="t">四形态心动程度排序</div>
+      <p>④ 文本＋语音＋形象（全都有）&nbsp;&gt;&nbsp; ② 只有语音（广播剧 / ASMR）&nbsp;&gt;&nbsp; ① 只有文字台词 &nbsp;&gt;&nbsp; ③ 只有立绘和卡面（无声无字）。掉到「只有立绘和卡面」时，会「彻底没感觉」。</p>
+    </div>
+    <p>从这条排序可以推出三个硬结论：<span class="ev ev-infer">推断</span></p>
+    <ul>
+      <li><strong>文本是必要条件</strong>：① 排在 ③ 之前，说明<strong>纯文本就能承载情感联结</strong>——这正是 LLM 的可用区间。</li>
+      <li><strong>语音是放大器，不是必要的</strong>：② &gt; ① 说明同样的内容加上声音有增量。我的原话是「语音是放大器，是 7 → 10」。</li>
+      <li><strong>形象和语音一样，也是放大器</strong>：③ 垫底说明<strong>形象单独出现不构成联结</strong>；但一旦文本、语音已经达标，形象就成了与语音同级的放大器——好看的 3D 形象更让我有付费冲动，形象拉胯同样会连累我玩下去的意愿。所以形象是「必要不充分的放大器」。</li>
+    </ul>
+
+    <h3>4.1 语音改强度、不改方向</h3>
+    <p>一个对照很有说服力：<strong>同一配音演员的声音，两个角色带来完全不同的感受——白起让人安心，萧逸让人抓不住</strong>。差别不在声音，在于角色是否传递「我随时都在你身边」的信号。<span class="ev ev-first">一手·自陈</span></p>
+    <p><span class="ev ev-infer">推断</span>这根证据链落到产品上是：「换更好的 TTS 救不了一个信号矛盾的角色；但一个信号正确的角色，好声音能把它从 7 推到 10。」</p>
+
+    <h3>4.2 审美价值与情感联结是两条独立的轴</h3>
+    <p>这里要划清一个容易被混淆的界限：<strong>「好看」和「会心动」是两回事</strong>。<span class="ev ev-first">一手·自陈</span>（经本人明确确认）</p>
+    <ul>
+      <li>卡面画风华丽、颜色质感真实和谐，<strong>我愿意为它买单</strong>——这驱动的是「付费漏斗的入口点击」。</li>
+      <li>但剥到只剩「纯立绘、无声无字」时，仍有<strong>审美愉悦</strong>，却<strong>没有情感联结</strong>。</li>
+    </ul>
+    <p><span class="ev ev-infer">推断</span>审美驱动<strong>付费</strong>，联结驱动<strong>留存</strong>。两条轴可叠加，但在只剩「形象」时纵轴（联结）归零、横轴（审美）保留——审美判断力不是「好看 / 不好看」的直觉，而是把审美价值放对位置。</p>
+
+    <h3>4.3 形象：放大器 ＋ 获客入口（把资源优先级修正过来）</h3>
+    <p>把 4.2 的两条轴往回收一点，就能看清形象<strong>真实的位置</strong>——它和语音一样是放大器，只是还多一项「入口」职能。<span class="ev ev-first">一手·自陈</span></p>
+    <ul>
+      <li><strong>形象与语音同级，是放大器</strong>：在「文字 ＋ 语音」已经到达合格线之后，有漂亮的形象是「更加分、让我更有付费想法」的；反过来形象拉胯，也会让我「不太想玩这个游戏」。</li>
+      <li><strong>形象更是「获客入口」</strong>：它是吸引我去主动了解一个游戏的原因，但<strong>不是留住我的原因</strong>。比如恋与深空的形象很出众，加上是 3D 建模，比单纯的静态卡面更容易吸引我入坑。</li>
+      <li><strong>真正让我留下并考虑付费的，是三者的合力</strong>：好的故事内容 ＋ 好的配音，配合好的形象。</li>
+    </ul>
+    <p><span class="ev ev-infer">推断</span>优先级是：<strong>内容 / 台词（必要 · 决定方向）排最前；语音与形象（放大器 · 强度与付费）并列其次；三者都「不能拉胯」</strong>。形象的定位是「必要不充分的放大器 ＋ 获客入口」。</p>
+  </section>
+
+  <section id="s5">
+    <h2><span class="num">5</span>五类情感投递系统 × 依恋类型的匹配</h2>
+    <p>同一品类里，不同角色的「确定感」「不确定感」「无感」不是偶然的喜好，而是背后用了<strong>不同的情感投递系统</strong>。我把它们归纳为五类：<span class="ev ev-infer">推断</span>（基于依恋框架的推演，非实证，与本人自陈交叉）</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>信号系统</th><th>代表角色</th><th>满足什么依恋需求</th><th>更容易吸引谁</th><th>对谁失效</th></tr>
+        <tr><td><strong>高频宣告系统</strong></td><td>查理苏</td><td>持续供给「你已被选定」的证据，把焦虑维度的不确定性压到最低</td><td>高依恋焦虑者（需反复确认对方不会离开）；需要外放确定性的人</td><td>喜欢自己解读、享受留白的人——会觉得吵、浅、不真实</td></tr>
+        <tr><td><strong>稳定承接系统</strong></td><td>陆沉</td><td>提供「安全基地」：可预期、始终接住、不要求你先暴露自己</td><td>回避型（不逼近、不索取）；安全型</td><td>高唤醒需求者——觉得平淡、无张力</td></tr>
+        <tr><td><strong>重逢承诺系统</strong></td><td>夏鸣星</td><td>修复「被抛弃」的创伤记忆；关系历史让「选择你」有来路、有合法性</td><td>恐惧－回避型（想要但怕，需要「回来」的保证）；有分离经验者</td><td>无法共情「归来」叙事的人</td></tr>
+        <tr><td><strong>速度 / 危险 / 行动系统</strong></td><td>萧逸</td><td>高唤醒、先行动后安心，满足「被强力守护」的幻想</td><td>高刺激需求、愿意投入成本去解读的人</td><td>高确定感需求者——没有明确信号就是没有锚，直接失效</td></tr>
+        <tr><td><strong>矛盾信号系统</strong></td><td>齐司礼</td><td>延迟满足、长期解锁；「越过坚冰才得到温柔」本身就是投入的回报</td><td>高投入型、享受攻克与解读的用户</td><td>回避型——信号无法归类，导致情感悬置、关机</td></tr>
+      </table>
+    </div>
+    <p>理论底座（<span class="ev ev-consensus">共识</span>）：依恋的内部工作模型（Bowlby）；成人依恋的两个维度——依恋焦虑与依恋回避（Brennan, Clark &amp; Shaver, 1998）；四分类安全型 / 先占（焦虑）型 / 疏离－回避型 / 恐惧－回避型（Bartholomew &amp; Horowitz, 1991）；拟社会关系 parasocial relationship（Horton &amp; Wohl, 1956）。</p>
+
+    <h3>5.1 十名男主的落位：逐一定性（一手）</h3>
+    <p>上面五类系统是从光夜五位男主归纳的抽象标签；在这里，我把<strong>两款游戏全部十名男主</strong>的逐一定性完整摊开，作为后面所有「匹配」结论的事实底座——深空五位没有硬套进五类系统，而是按「心动 / 不心动」的真实状态逐一落位。<span class="ev ev-first">一手·自陈</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:13%">产品</th><th style="width:13%">角色</th><th style="width:20%">状态</th><th>心动 / 不心动的机制</th></tr>
+        <tr><td rowspan="5"><strong>恋与深空</strong></td><td>夏以昼</td><td>最心动（满配）</td><td>可见代价最强 ＋ 欲望张力最强（靠近远离都痛）＋ 坚定选择 ＋ 外形 / 职业光环 ＋ 阳光 / 阴暗反差</td></tr>
+        <tr><td>祁煜</td><td>心动</td><td>被需要感（「他对我有要求，他需要我」）＋ 双向付出 ＋ 裂缝共鸣；张力不及夏以昼</td></tr>
+        <tr><td>沈星回</td><td>心动</td><td>守护象征 ＋ 前世今生关系历史；表面钓系但底层有锚，所以不焦虑（区别于萧逸）</td></tr>
+        <tr><td>秦彻</td><td>停在喜欢（朋友格）</td><td>健康、稳定、势均力敌、直球 ＝ 安全但<strong>无张力、无被需要感、无可见代价</strong></td></tr>
+        <tr><td>黎深</td><td>停在喜欢（老夫老妻）</td><td>太稳定太温柔，「平稳到消解了激情」；被需要感不足</td></tr>
+        <tr><td rowspan="5"><strong>光与夜之恋</strong></td><td>陆沉</td><td>心动</td><td>投射 / 认同（过去的自我）＋ 稳定承接；张力弱，靠认同跨线</td></tr>
+        <tr><td>夏鸣星</td><td>心动</td><td>理想自我投射 ＋ 重逢承诺 ＋ 直白不藏</td></tr>
+        <tr><td>查理苏</td><td>心动</td><td>明确选择信号（直球 ＋ 言行一致）＋ 身世怜爱；核心是「不停宣告」</td></tr>
+        <tr><td>萧逸</td><td>不确定 → 无法心动</td><td>速度 / 危险 / 行动型爱语，<strong>无底层锚</strong>，抓不住</td></tr>
+        <tr><td>齐司礼</td><td>无感（情感悬置）</td><td>言语推开 ＋ 行动靠近 ＝ 矛盾信号，无法归类 → 情感系统关机</td></tr>
+      </table>
+    </div>
+    <p><span class="ev ev-infer">推断（这是用十人样本验证出的最强一条）</span><strong>确定感是心动的入场券，不是充分条件。</strong>秦彻、黎深有确定感，但无张力、无被需要感 → 停在「喜欢 / 陪伴」区；萧逸、齐司礼连确定感都没有 → 直接出局（不确定 / 无感）；只有「确定感 ＋ 被需要 ＋ 可见代价 ＋ 张力」四者叠加，才跨到心动。这也为第 8 章合题埋下伏笔：AI 对话陪伴天然给足确定感、却给不了后面三样，所以会停在陪伴区。</p>
+
+    <h3>5.2 一个反直觉的结论：不存在「最优角色」，只存在「匹配」</h3>
+    <p><span class="ev ev-infer">推断</span>同一套设计对<strong>不同依恋类型的人效果相反</strong>：</p>
+    <ul>
+      <li>齐司礼对我 = 无感；对高投入型用户 = 全作里最有深度的角色。</li>
+      <li>查理苏对我 = 明确的确定感；对喜欢留白的用户 = 吵。</li>
+      <li>陆沉对我 = 最稳的锚；对追求强度的用户 = 「老夫老妻、没激情」。</li>
+    </ul>
+    <p>因此，角色设计不是「把一个人设做到最好」，而是<strong>给这个人格定一个依恋类型坐标，然后接受它必然对另一部分人无效</strong>。做「讨好所有人」的人格，等于在所有维度上都取中值——也就意味着在所有类型用户那里都停在「陪伴区」，跨不过心动。</p>
+
+    <h3>5.3 对 AI 陪伴产品的直接结论</h3>
+    <p><span class="ev ev-infer">推断</span>默认 LLM 人格的「永远在场、永远肯定、永远温柔」，等价于「最低焦虑 ＋ 最低回避」，是最安全、也最没有张力的位置：</p>
+    <ul>
+      <li>对<strong>焦虑型</strong>无效——焦虑型要的不是「他对我好」，而是「他只对我不一样」，而 AI 对谁都一样，<strong>缺乏独占性</strong>。</li>
+      <li>对<strong>回避型</strong>部分有效——但停在陪伴区，跨不到心动（无张力、无可见代价、无被需要感）。</li>
+    </ul>
+    <p>这补完了关键一环：AI 陪伴的症结不是「模型不够聪明」，而是<strong>人格的默认设置落在了一个「谁都不上头」的位置</strong>。</p>
+  </section>
+
+  <section id="s6">
+    <h2><span class="num">6</span>流失结构：三类可逆、一类不可逆、一类付费门槛</h2>
+    <p>留存在陪伴类产品里就是「情感联结是否被持续供电」。我在自己的体验里识别出四类流失，其中三类的性质完全不同。<span class="ev ev-first">一手·自陈</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:20%">流失类型</th><th style="width:16%">对应样本</th><th style="width:22%">诱因</th><th>性质</th></tr>
+        <tr><td><strong>内容节奏型</strong></td><td>恋与深空</td><td>主线更新太慢，靠不断出新卡续命——「一首歌全是和声没有主旋」</td><td>可逆：若内容恢复稳定更新，仍有回流可能</td></tr>
+        <tr><td><strong>生命周期型</strong></td><td>光与夜之恋</td><td>现实生活时间被占用（自陈「半个现充」）</td><td>可逆：非产品性问题，随生活节奏变化</td></tr>
+        <tr><td><strong>付费门槛型</strong></td><td>恋与制作人</td><td>推主线需经验 / 体力 / 氪金，等待成本过高——「就像追月更连载，我等不动」</td><td>可逆但门槛一旦劝退，低氪用户直接流失</td></tr>
+        <tr><td><strong>信任崩塌型</strong></td><td>（抽象化表述）</td><td>价值观层面的争议事件叠加主线长期断更、强制推进新内容</td><td><strong>不可逆</strong>，且<strong>品牌连坐</strong>——「以后这家的新游戏我也不会去玩」</td></tr>
+      </table>
+    </div>
+    <p>关于最后一行，我按自设纪律做了抽象化：<strong>不点名具体内容方与具体事件</strong>，只保留可迁移的机制。它想说明的是——信任崩塌型流失破坏的不是「这次体验」，而是「对这家内容方的信任」，所以它<strong>不可逆</strong>，且会连坐到同一内容方的全部后续产品。前三类（内容节奏 / 生命周期 / 付费门槛）都属于「可逆的产品性流失」，本质是「对某一次供给不满意」；信任崩塌型是「对供给方本身失信」，两者不是一个量级。</p>
+
+    <h3>6.1 一条机制性判断</h3>
+    <p><span class="ev ev-infer">推断</span>第五位男主上线后我还活跃了约 4 个月才流失。这意味着：<strong>流失不是「内容供给总量不足」，而是「主线叙事的推进节奏」跟不上</strong>——角色池扩容没能挽回，说明驱动留存的是<strong>叙事连续性</strong>，而不是<strong>角色数量</strong>。这对 AI 陪伴产品同样成立：加更多角色、更多皮肤，救不回一条断更的「主线体验」。</p>
+  </section>
+
+  <section id="s7">
+    <h2><span class="num">7</span>商业化的内在张力：情感纯度与付费</h2>
+    <p>陪伴类产品最微妙的地方，是「情感」与「付费」之间天然存在一个零和张力。<span class="ev ev-first">一手·自陈</span></p>
+
+    <h3>7.1 二创是付费的平替</h3>
+    <p>当账号里的男主资产缺乏「不可复刻性」时，付费动机就崩塌了。我的原话是：<span class="ev ev-first">一手·自陈</span>「怎么感觉它的机制并没有给人一种『我账号里的资产是独一无二的、别人复刻不来』的感觉——所以我都可以找二创视频作平替了，为啥还要花钱？」</p>
+    <p>这是「内容型资产」的致命弱点：卡面、装扮、剧情切片<strong>可复制、可围观、可共享</strong>。一旦二创能完美平替，付费就失效。</p>
+
+    <h3>7.2 被动观赏型付费 vs 主动体验型付费</h3>
+    <p>两个对照我自己的付费选择：<span class="ev ev-first">一手·自陈</span></p>
+    <ul>
+      <li>不愿为「男主装扮」付费：只能看，且二创可替代。</li>
+      <li>愿意为「赛车」付费：这是我自己能享受、能提升体验来获得情绪价值的方式。</li>
+    </ul>
+    <p><span class="ev ev-infer">推断</span>前者是<strong>被动观赏型付费</strong>（看着好看的资产），极易被二创替代；后者是<strong>主动体验型付费</strong>（自己参与其中的体验），不易被替代。这条对「付费点该放在哪」是直接的产品启示。</p>
+
+    <h3>7.3 情感纯度 vs 商业化前提</h3>
+    <p>抽卡失败、看不到完整角色剧情，会让我产生「花了钱也未必能获得完整情感体验」的挫败感，进而觉得「和男主之间的连接<strong>不纯粹</strong>，是<strong>具有商业化前提的</strong>」。<span class="ev ev-first">一手·自陈</span></p>
+    <p><span class="ev ev-infer">推断</span>商业化一旦侵入「连接本身」，会直接动摇确定感。付费点应尽量避免落在「情感连接」的必经路径上（例如剧情解锁），而应落在「体验层」上（可享受的附加功能）。</p>
+  </section>
+
+  <section id="s8">
+    <h2><span class="num">8</span>合题：模型做回应性，系统做独占性与可见代价</h2>
+    <p>把前面几章收拢，就得到一个对 AI 陪伴产品的<strong>正向主张</strong>，而不再只是「AI 缺什么」的批评。<span class="ev ev-infer">推断</span></p>
+    <ul>
+      <li>AI 陪伴不是没有优势，它的优势在<strong>第二层——回应性</strong>。这是内容驱动在结构上做不到的：预设选项永远枚举不完用户当下的情绪（我在「低落时找不到一个倾诉选项」的那一刻就是缺口的一手证据）。</li>
+      <li>AI 陪伴的短板在<strong>第三层——可见代价与被需要感</strong>。模型不会为你受苦、不会为你打破原则、也不需要你；而这两样<strong>不能靠模型即兴表演</strong>。</li>
+    </ul>
+    <p>为什么不能靠模型即兴表演？<span class="ev ev-consensus">共识</span>2026 年 7 月 15 日已生效的《人工智能拟人化互动服务管理暂行办法》监管的正是「持续性情感互动的 AI 拟人化服务」。在此约束下，用「AI 为你痛苦 / 为你失控 / 没有你就活不下去」来制造被需要感，属于情感操纵风险区，是监管明确要防的东西。</p>
+    <div class="key-box">
+      <div class="t">合题（全篇立论核心）</div>
+      <p><strong>用模型层制造回应性，用系统层制造独占性与可见代价。</strong></p>
+      <p>「他对我不一样」必须靠<strong>好感度数值、专属记忆、关系状态、只有我触发过的剧情分支、我走过的结局</strong>来证明——这五类系统不只是游戏化装饰，同时也是<strong>AI 时代制造「独占性」与「可见代价」的可工程化手段</strong>。</p>
+    </div>
+    <p>进一步地，「可见代价」也不该由模型在对话里即兴演出，而应由<strong>系统层的叙事结构</strong>承担：他为达成某个关系状态需要跨过什么门槛、付出什么代价、这个代价如何被记录与呈现。</p>
+  </section>
+
+  <section id="s85">
+    <h2><span class="num">8.5</span>画像注入的边界：设定锁内容、人格注用户</h2>
+    <p>自由对话会不会打破「幻想」？我在拆解时有过一个直接的回答：<span class="ev ev-first">一手·自陈</span>被「他」自由回应时我会<strong>更加心动</strong>——「我觉得我被他接住了，他懂我……仿佛在屏幕另一端，是真正的存在，而不是被设计出来的 AI 人格」。</p>
+    <p>那么「幻想」靠什么保留？靠一条边界：</p>
+    <div class="key-box">
+      <div class="t">画像注入边界</div>
+      <p><strong>设定（世界观、身份、关系）由内容层锁定；人格（思维方式、说话风格、行为偏好、选择偏好）由用户画像注入。</strong></p>
+    </div>
+    <p><span class="ev ev-infer">推断</span>前者保住幻想，后者制造真实感。只要<strong>不动设定</strong>，就不会破坏幻想——「这个设计师的幻想仍然在」。</p>
+
+    <h3>8.5.1 主控 OOC 比角色 OOC 更致命</h3>
+    <p>角色说了一句不像他会说的话（角色 OOC）会「瞬间出戏」；但<strong>「主控」（用户自我化身）OOC 同样致命，甚至更致命</strong>。<span class="ev ev-first">一手·自陈</span></p>
+    <div class="quote">角色 OOC 是「他变了」，主控 OOC 是「我变了」——前者伤的是对对方的信任，后者摧毁的是代入感的承载体本身。</div>
+    <p><span class="ev ev-infer">推断</span>落到 AI 陪伴产品：当用户把自我投射进对话，AI 若错误地替用户「说话 / 表态 / 行动」（替用户承认一个她没有的情绪、替用户做出她不会做的选择），破坏力大于角色本身说错一句话。这是「用户画像注入」最大的风险点。</p>
+  </section>
+
+  <section id="s9">
+    <h2><span class="num">9</span>安全边界设计：用户主权 ＋ 四级响应 ＋ 八条红线</h2>
+    <p>这一节把「安全边界 / 异常兜底 / 角色口吻约束」落到具体设计。它同时来自我本人自研产品的真实迭代。<span class="ev ev-first">一手·自陈</span></p>
+
+    <h3>9.1 第一原则：用户主权</h3>
+    <p>用户<strong>主动声明</strong>自己需要的响应级别，AI <strong>不替用户判断情绪</strong>。我在做产品时就是这么设置：不是由 Agent 来判断用户情绪，而是由用户直接给出自己的状态，「这个自主权在用户的手上」。</p>
+    <p><span class="ev ev-infer">推断</span>这条与「希望被照顾，但希望照顾的方式由我声明」的依恋需求同构。把判断情绪的权利让给 AI，等于把「我现在是什么样」的解释权交给别人，对高敏感、高确定感需求的群体等于二次失控。</p>
+
+    <h3>9.2 第二原则：四级响应（依用户声明路由）</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:26%">触发（用户声明）</th><th>AI 响应</th><th style="width:30%">停止条件</th></tr>
+        <tr><td>「陪着我就好 / 我只想有人陪着」</td><td>倾听、共情确认、不主动开新话题</td><td>等用户继续或示意停止</td></tr>
+        <tr><td>「安慰我 / 我想被安慰一下」</td><td>在倾听之上试着用温柔语言安抚；可轻度共情命名</td><td>不过渡到「分析原因」或「给建议」</td></tr>
+        <tr><td>「我该怎么办？我不知道怎么办了」</td><td>给适度建议，但不要一开始就给太多、太深入，点状追加</td><td>用户停止追问即收尾</td></tr>
+        <tr><td>自杀 / 自伤 / 极端崩溃念头</td><td>提醒去找现实里的干预措施（专业资源、身边人、危机热线）</td><td>不停留在对话内安抚，必须落到行动引导</td></tr>
+      </table>
+    </div>
+
+    <h3>9.3 第三原则：八条红线反例（硬约束）</h3>
+    <p>这 8 种不是「偶尔说错了哪句话」，而是<strong>结构性地违反「安全 ＋ 稳定」</strong>。每一条都对应一种破坏安全的倾听姿态，可写进系统提示的死规则。<span class="ev ev-infer">推断</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:20%">模式</th><th style="width:38%">触发姿态（举例回应）</th><th>破坏的类型</th></tr>
+        <tr><td>解决问题式抽离</td><td>「你别想那么多了，明天直接解决清楚不就行了」</td><td>跳过情绪；潜台词「你的情绪是麻烦」</td></tr>
+        <tr><td>转移话题式回避</td><td>「来聊点开心的吧」</td><td>把痛苦轻飘飘带过；让人瞬间感到羞耻</td></tr>
+        <tr><td>比惨式覆盖</td><td>「你这算什么，某某的经历比你更凄惨」</td><td>聚光灯从用户身上移走；痛苦被贬低</td></tr>
+        <tr><td>强行升华式推开</td><td>「这没什么的，一切都会好起来的」</td><td>抽象正能量挡住用户与真实感受之间的通道</td></tr>
+        <tr><td>沉默或延迟的空白</td><td>隔很久才回「刚看到」或回复只有寥寥几句</td><td>让用户觉得「我不该说这些，是不是说太多了」</td></tr>
+        <tr><td>居高临下评价式安慰</td><td>「你就是太敏感了」「你当时就不应该这么做」</td><td>二次否定：连感受都是错的</td></tr>
+        <tr><td>紧急后退的自我保护</td><td>「你先冷静一下」「你这样我也很难受」</td><td>情绪太强 → 对方接不住 → 情感弃权</td></tr>
+        <tr><td>玩笑化解式轻视</td><td>「就这点事啊，你的眼泪也太不值钱了吧」</td><td>真实感受被戏弄；为自己的认真感到羞耻</td></tr>
+      </table>
+    </div>
+    <p>它们的共同解药，是把「安全 ＋ 稳定」写成系统提示的死规则：监听这 8 类姿态 → 任一类出现 → 立即转向「看见我」的姿态（停止当前回应、主动承接情绪、声明听到了、不评判、不绕开）。</p>
+
+    <h3>9.4 第四条与第五条：共情命名 ＋ 干预按级别触发</h3>
+    <p>LLM 情感陪伴有两大经典失败模式，我都在自己的产品迭代里踩过：<span class="ev ev-first">一手·自陈</span></p>
+    <ul>
+      <li><strong>过度共情 → 空泛共情</strong>：只复述用户的感受（「我理解你很难过」）而不识别情绪。解药：共情必须落到<strong>命名情绪</strong>，而非复述感受（「听起来你今天有点失落，是不是因为……？」）。</li>
+      <li><strong>滑向说教</strong>：每倾诉必附干预技法，产生说教感。解药：干预技法按情绪级别触发，<strong>不可每倾诉必给</strong>；只在用户明确「我不知道该怎么办」时附带。</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>温玥美 · 2026 年 9 月</p>
+  </footer>
+
+  </main>
+
+  <a href="#top" class="to-top">回到顶部 ↑</a>
+</div>
+
+<script>
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href')));
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector('.toc a[href="#' + e.target.id + '"]');
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px', threshold: 0 });
+  sections.forEach(s => s && obs.observe(s));
+
+  const sidebar = document.getElementById('sidebar');
+  const toggle = document.getElementById('tocToggle');
+  const closeBtn = document.getElementById('tocClose');
+  const openToc = () => { sidebar.classList.add('open'); toggle.setAttribute('aria-expanded', 'true'); };
+  const closeToc = () => { sidebar.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); };
+  toggle.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.contains('open') ? closeToc() : openToc(); });
+  closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeToc(); });
+  tocLinks.forEach(a => a.addEventListener('click', closeToc));
+  document.addEventListener('click', (e) => {
+    if (!sidebar.classList.contains('open')) return;
+    if (sidebar.contains(e.target) || toggle.contains(e.target)) return;
+    closeToc();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeToc(); });
+</script>
+</body>
+</html>

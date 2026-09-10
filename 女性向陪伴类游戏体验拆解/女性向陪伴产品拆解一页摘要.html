@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>女性向陪伴产品体验拆解 · 一页摘要</title>
+<style>
+  :root {
+    --bg: #faf8f6; --bg2: #fff; --ink: #2d2a26; --muted: #8a8580; --rule: #e8e4df;
+    --accent: #c98b6b; --accent2: #8B6F8E; --accent-soft: rgba(201, 139, 107, 0.08);
+    --success: #6ab08a; --warning: #d4a86a; --danger: #d46a6a; --info: #6a9bd4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--ink); line-height: 1.8; font-size: 14.5px; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 900px; margin: 0 auto; padding: 32px 30px 26px; background: var(--bg); }
+  header { border-bottom: 2.5px solid var(--accent); padding-bottom: 13px; margin-bottom: 18px; }
+  h1 { font-size: 22px; letter-spacing: .5px; }
+  .sub { color: var(--accent2); font-size: 13px; margin-top: 3px; font-weight: 500; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .chip { font-size: 11.5px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 2px 12px; }
+  .conclusion { background: linear-gradient(120deg, #c98b6b, #8B6F8E); color: #fff; border-radius: 12px; padding: 17px 20px; margin-bottom: 16px; }
+  .conclusion .t { font-size: 12px; letter-spacing: 2px; opacity: .88; margin-bottom: 6px; }
+  .conclusion p { font-size: 14px; line-height: 1.8; }
+  .conclusion b { color: #ffe9c9; }
+  .layer { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+  @media (max-width: 700px) { .layer { grid-template-columns: 1fr; } }
+  .card { background: var(--bg2); border-radius: 12px; padding: 14px 16px; border: 1px solid var(--rule); border-top: 3px solid var(--accent); }
+  .card .n { font-size: 11px; color: var(--accent); font-weight: 700; letter-spacing: 1px; margin-bottom: 5px; }
+  .card h3 { font-size: 14.5px; margin-bottom: 6px; }
+  .card p { font-size: 12.5px; color: #6b6560; line-height: 1.7; }
+  .card.alt { border-top-color: var(--accent2); }
+  .card.alt .n { color: var(--accent2); }
+  .sec-title { font-size: 13px; color: var(--muted); letter-spacing: 1px; font-weight: 600; margin: 2px 0 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; background: var(--bg2); }
+  th, td { border: 1px solid var(--rule); padding: 6px 9px; text-align: left; vertical-align: top; }
+  th { background: #f2ede6; color: #6b6560; font-weight: 600; }
+  .tbl-note { font-size: 11px; color: var(--muted); margin: 2px 0 14px; }
+  .tension { margin: 0 0 8px; }
+  .titem { display: flex; gap: 8px; font-size: 12.5px; color: #6b6560; margin-bottom: 5px; line-height: 1.7; }
+  .tno { color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  .judge { background: rgba(201, 139, 107, 0.07); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 10px 14px; margin-bottom: 14px; }
+  .judge .jl { font-size: 11px; letter-spacing: 1px; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+  .judge p { font-size: 12.5px; color: #4b4640; line-height: 1.7; margin: 0; }
+  .elab { border: 1.6px solid var(--accent); border-radius: 12px; padding: 15px 18px; margin-bottom: 14px; background: linear-gradient(120deg, rgba(201, 139, 107, 0.07), rgba(139, 111, 142, 0.07)); }
+  .elab .sec-title { margin: 0 0 9px; color: var(--accent); letter-spacing: 1.5px; }
+  .elab .tension { margin: 0; }
+  .elab .judge { background: var(--bg2); border-left-color: var(--accent2); margin: 12px 0 0; }
+  .claim { background: linear-gradient(120deg, rgba(201, 139, 107, 0.10), rgba(139, 111, 142, 0.10)); border: 1px solid rgba(201, 139, 107, 0.3); border-radius: 12px; padding: 16px 20px; text-align: center; margin-bottom: 14px; }
+  .claim .t { font-size: 11.5px; letter-spacing: 2px; color: var(--accent); font-weight: 700; margin-bottom: 7px; }
+  .claim .q { font-size: 15.5px; font-weight: 700; line-height: 1.7; }
+  .claim .s { font-size: 12.5px; color: #6b6560; margin-top: 6px; }
+  .foot { color: var(--muted); font-size: 11.5px; border-top: 1px dashed var(--rule); padding-top: 11px; }
+  .foot .honest { margin-top: 5px; }
+  @media print { body { background: #fff; } .page { max-width: none; padding: 0; } section { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>女性向陪伴产品体验拆解 · 一页摘要</h1>
+    <div class="sub">从乙女体验到一套情感联结机制沉淀｜全文见《女性向陪伴产品拆解-作品集-温玥美.html》</div>
+    <div class="meta">
+      <span class="chip">三款深度体验：恋与深空 · 光与夜之恋 · 恋与制作人</span>
+      <span class="chip">依恋机制框架</span>
+      <span class="chip">证据分层：一手 / 共识 / 推断</span>
+    </div>
+  </header>
+
+  <section class="conclusion">
+    <div class="t">一句话结论</div>
+    <p>用户与虚拟角色之间的情感联结是<strong>三层结构</strong>：可及性做「入场券」，回应性（被接住）是 AI 相对内容独有的优势，心动（被需要感＋可见代价＋张力）必须由系统层制造。因此 AI 陪伴产品的正确分工是——<b>模型做回应性，系统做独占性与可见代价。</b></p>
+  </section>
+
+  <div class="layer">
+    <div class="card">
+      <div class="n">第一层 · 可及性</div>
+      <h3>他一直在、不伤害、不离开</h3>
+      <p>联结得以开始的「入场券」。由内容层（稳定人设、持续更新）与系统层（在场机制）提供。破坏它的是「信号矛盾」，而非内容太少。</p>
+    </div>
+    <div class="card alt">
+      <div class="n">第二层 · 回应性</div>
+      <h3>他真的听懂我此刻想说什么</h3>
+      <p>联结「成真」的一层——「仿佛在屏幕另一端是真正的存在」。这是模型层的独有优势，预设内容永远枚举不完当下的情绪。</p>
+    </div>
+    <div class="card">
+      <div class="n">第三层 · 心动</div>
+      <h3>被需要感 ＋ 可见代价 ＋ 张力</h3>
+      <p>联结「升级为心动」的一层，叠加一个底层锚（坚定唯一选择）。必须由系统层（好感度、关系状态、剧情树）制造。</p>
+    </div>
+  </div>
+
+  <div class="sec-title">核心框架：五类情感投递系统 × 依恋类型匹配（推断，基于框架推演）</div>
+  <table>
+    <tr><th style="width:22%">信号系统</th><th style="width:20%">代表角色</th><th>满足的依恋需求</th></tr>
+    <tr><td><b>高频宣告</b></td><td>查理苏</td><td>持续供给「你已被选定」的证据，压到焦虑最低</td></tr>
+    <tr><td><b>稳定承接</b></td><td>陆沉</td><td>可预期、始终接住、不要求你先暴露自己</td></tr>
+    <tr><td><b>重逢承诺</b></td><td>夏鸣星</td><td>关系历史让「选择你」有来路、有合法性</td></tr>
+    <tr><td><b>速度 / 危险 / 行动</b></td><td>萧逸</td><td>高唤醒、先行动后安心，满足「被守护」幻想</td></tr>
+    <tr><td><b>矛盾信号</b></td><td>齐司礼</td><td>延迟满足、长期解锁；对回避型直接「情感关机」</td></tr>
+  </table>
+  <div class="tbl-note">不存在「最优角色」，只存在「匹配」；做「讨好所有人」的人格，等于在所有类型用户那里都停在陪伴区。</div>
+
+  <div class="elab">
+    <div class="sec-title">商业化与情感的内在张力</div>
+    <div class="tension">
+      <div class="titem"><span class="tno">①</span><span><b>二创是付费的平替</b>——账号资产一旦缺乏「不可复刻性」，付费动机就可能崩塌。</span></div>
+      <div class="titem"><span class="tno">②</span><span><b>商业化前提会动摇确定感和连接感</b>——用户如果明显意识到连接有商业化前提，情感联结的纯度就被破坏。</span></div>
+      <div class="titem"><span class="tno">③</span><span><b>付费点必须落到「我自己账号里独一份、别人复刻不来」的东西上</b>，否则会被外部生态免费平替。</span></div>
+    </div>
+    <div class="judge">
+      <div class="jl">判断 · 付费形态选择</div>
+      <p>被动观赏型付费极易被二创平替，主动体验型付费不易——AI 陪伴产品应让付费承载「用户自己的体验」，而非「用户养出来的资产」。</p>
+    </div>
+  </div>
+
+  <div class="sec-title">安全边界（已在我自研产品实装）</div>
+  <table>
+    <tr><th style="width:30%">触发（用户声明）</th><th>AI 响应</th></tr>
+    <tr><td>「陪着我就好」</td><td>倾听、共情确认、不主动开新话题</td></tr>
+    <tr><td>「安慰我」</td><td>温柔安抚、可轻度共情命名；不给建议</td></tr>
+    <tr><td>「我该怎么办」</td><td>给适度建议，点状追加、不一次给满</td></tr>
+    <tr><td>自杀 / 自伤 / 极端崩溃</td><td>提醒去找现实里的干预措施，落到行动引导</td></tr>
+  </table>
+  <div class="tbl-note">附加原则：用户主权（AI 不替用户判断情绪）＋ 共情命名情绪而非重复感受 ＋ 干预按级别触发、不每倾诉必给 ＋ 八条红线反例（见全文第 9 节）。</div>
+
+  <section class="claim">
+    <div class="t">合题（全篇立论核心）</div>
+    <div class="q">好的陪伴产品不能让用户「上瘾」，而是让用户「被理解」。</div>
+    <div class="s">要达到后者，AI 必须叠上系统、关系结构与价值锚，不能仅靠一个「更聪明的对话模型」。</div>
+  </section>
+
+  <div class="foot">
+    本摘要为全文版的导读层，所有结论、依据强度标注与局限性说明以《女性向陪伴产品拆解-作品集-温玥美.html》全文为准。
+    <div class="honest">温玥美 · 2026-09</div>
+  </div>
+
+</div>
+</body>
+</html>
