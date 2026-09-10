@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StepForward 竞品分析 · 一页摘要</title>
+<style>
+  :root {
+    --ink: #26303b; --soft: #4d5a66; --muted: #8794a1;
+    --accent: #0f6b5f; --accent-soft: #e8f2ef;
+    --line: #dfe5ea; --card: #fff; --bg: #f5f7f8;
+    --warn: #b4700f; --warn-soft: #fdf3e3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Source Han Sans SC", sans-serif;
+    background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7;
+  }
+  .page { max-width: 900px; margin: 0 auto; padding: 34px 34px 28px; background: var(--bg); }
+  header { border-bottom: 2.5px solid var(--accent); padding-bottom: 14px; margin-bottom: 20px; }
+  h1 { font-size: 23px; letter-spacing: .5px; }
+  .sub { color: var(--muted); font-size: 12.5px; margin-top: 4px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .chip { font-size: 11.5px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 2px 12px; }
+
+  .conclusion {
+    background: var(--accent); color: #fff; border-radius: 12px; padding: 18px 22px; margin-bottom: 18px;
+  }
+  .conclusion .t { font-size: 12px; letter-spacing: 2px; opacity: .85; margin-bottom: 6px; }
+  .conclusion p { font-size: 14.5px; line-height: 1.8; }
+  .conclusion b { color: #ffe9c9; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+  @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border-radius: 12px; padding: 16px 18px; border: 1px solid var(--line); }
+  .card h3 { font-size: 14.5px; margin-bottom: 8px; color: var(--accent); }
+  .card p, .card li { font-size: 13px; color: var(--soft); }
+  .card ul { list-style: none; }
+  .card li { padding-left: 14px; position: relative; margin-bottom: 4px; }
+  .card li::before { content: "·"; position: absolute; left: 2px; font-weight: 900; color: var(--accent); }
+
+  .persona { border-top: 3px solid var(--accent); }
+  .persona .tag { display: inline-block; font-size: 11px; border: 1px solid var(--accent); color: var(--accent); border-radius: 999px; padding: 0 10px; margin-bottom: 6px; }
+  .persona.alt { border-top-color: var(--warn); }
+  .persona.alt .tag { color: var(--warn); border-color: var(--warn); }
+  .persona .vs { font-size: 12px; color: var(--muted); margin-top: 8px; font-style: italic; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 4px; }
+  th, td { border: 1px solid var(--line); padding: 6px 9px; text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); font-weight: 700; white-space: nowrap; }
+  td { color: var(--soft); }
+  .card .tbl-note { font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+
+  .swot { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+  @media (max-width: 700px) { .swot { grid-template-columns: 1fr; } }
+  .swot .q { background: var(--card); border-radius: 12px; padding: 14px 16px; border: 1px solid var(--line); }
+  .swot h4 { font-size: 13.5px; margin-bottom: 6px; }
+  .swot .s h4 { color: #1d7a34; } .swot .w h4 { color: #b03a2e; }
+  .swot .o h4 { color: #155e8f; } .swot .t h4 { color: #8f4b0f; }
+  .swot li { font-size: 12.5px; color: var(--soft); }
+
+  .positioning {
+    background: linear-gradient(120deg, #0f6b5f, #136a83); color: #fff;
+    border-radius: 12px; padding: 18px 22px; text-align: center; margin-bottom: 16px;
+  }
+  .positioning .t { font-size: 11.5px; letter-spacing: 2px; opacity: .85; margin-bottom: 8px; }
+  .positioning .q { font-size: 16.5px; font-weight: 700; line-height: 1.7; }
+
+  .foot { color: var(--muted); font-size: 11.5px; border-top: 1px dashed var(--line); padding-top: 12px; }
+  .foot a { color: var(--accent); text-decoration: none; }
+  .foot .honest { margin-top: 6px; }
+  @media print {
+    body { background: #fff; }
+    .page { max-width: none; padding: 0; }
+    section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>StepForward 竞品分析与差异化定位 · 一页摘要</h1>
+    <div class="sub">对标对象：FocusFeel · PlanCoach · SuperPlanner（三款均为真实在营产品，来源可核验，链接见文末）｜全文版见《StepForward-竞品分析报告》</div>
+    <div class="meta">
+      <span class="chip">分析基线 v2.2.8</span>
+      <span class="chip">检索截至 2026-09</span>
+      <span class="chip">方法：公开资料 + 一手体验（PlanCoach，单用户样本）+ 结构化对比</span>
+    </div>
+  </header>
+
+  <section class="conclusion">
+    <div class="t">一句话结论</div>
+    <p>三款竞品的共同默认假设是「用户想做，只是缺帮手」；而<b>「能量耗竭、先接住状态再谈行动」</b>的人群需求，在本次调研范围内未见产品针对性满足。StepForward 的差异化基础是人群假设之争——服务<b>「动不起来也不想被催」</b>的人——且已有情绪分级、循证干预、危机安全边界等能力作为支撑。结论以已调研样本为边界，随竞品动态持续修正。</p>
+  </section>
+
+  <div class="grid2">
+    <div class="card persona">
+      <span class="tag">类型 A · 策略缺失型</span>
+      <p>能量足以支撑行动，面对模糊庞大的任务不知从何开始。痛点是任务模糊、启动门槛高、缺执行反馈。<b>督促对他们有效甚至受欢迎</b>。→ PlanCoach 的主要目标人群。</p>
+    </div>
+    <div class="card persona alt">
+      <span class="tag">类型 B · 能量耗竭型</span>
+      <p>能量不足以支撑「动起来」本身；启动失败即刻触发「我又不行了」，形成耗竭循环。需要<b>先承接情绪、不评判、把最小一步的成本压到极低、允许今天不动</b>。→ 现有产品的空位，StepForward 的人群。</p>
+      <p class="vs">框架为高置信度假设而非已验证结论（证据与反面证据见全文 2.1 节）。</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:18px">
+    <h3>三款竞品速览</h3>
+    <table>
+      <tr><th style="width:16%">产品</th><th style="width:34%">公开定位</th><th>对 StepForward 的关键启示</th></tr>
+      <tr><td><b>PlanCoach</b><br><span style="font-size:11px;color:var(--muted)">iOS · 4.8 分 · 声量最大</span></td>
+        <td>「用极致的具体杀死拖延症」——AI 教练拆到无需思考的颗粒度 + 游戏化激励</td>
+        <td>人群假设与我们不同（推一把 vs 接住）；可借鉴拆解颗粒度、「被看见感」动效、社区冷启动</td></tr>
+      <tr><td><b>FocusFeel</b><br><span style="font-size:11px;color:var(--muted)">Web · Freemium</span></td>
+        <td>Emotional Copilot：执行中识别情绪阻塞，完成后沉淀「情绪记忆」</td>
+        <td>路线与我们最像，竞争在功能厚度与个性化积累速度；可借鉴干预效果回环</td></tr>
+      <tr><td><b>SuperPlanner</b><br><span style="font-size:11px;color:var(--muted)">Android · 10 万+ 安装</span></td>
+        <td>轻量 ADHD 日常 AI：语音输入、心情签到、三档 AI 语气可选</td>
+        <td>情绪功能以签到为主；语音快速捕捉恰是我们的能力空白；语气可选验证「温柔是一种产品选择」</td></tr>
+    </table>
+    <div class="tbl-note">竞品事实均来自公开渠道（官网 / 商店页 / 媒体报道，2026-09 检索）；对「能量不足人群」的覆盖度判断多为推断，依据强度标注见全文。</div>
+  </div>
+
+  <div class="swot">
+    <div class="q s"><h4>S 优势（相对三竞品）</h4>
+      <ul><li>唯一具备情绪分级 + 循证干预 + 危机安全边界组合（自评）</li><li>唯一「记录-回顾-成长」闭环：成长日记 + 睡前仪式</li><li>跨日排期与冲突确定性顺延为三竞品未见</li><li>免费 + 本地存储 + 演示模式，门槛低</li><li>6 家模型服务商兼容，抗供应商变更</li></ul></div>
+    <div class="q w"><h4>W 劣势</h4>
+      <ul><li>体量与声量差距明显（PlanCoach 用户超六位数）</li><li>执行期陪伴弱于 PlanCoach，任务中情绪介入弱于 FocusFeel</li><li>数据导出/备份缺失，竞品普遍已有云同步</li><li>「不催促」优势是隐性默认值，未产品化、未传播</li></ul></div>
+    <div class="q o"><h4>O 机会</h4>
+      <ul><li>「低牵引 × 深承接」定位带暂无占位者</li><li>督促型产品评论区的潜在迁移用户（待验证假设 H2）</li><li>语气可选类功能已开始教育市场</li><li>FocusFeel 未见中文版本，存在时间窗口</li></ul></div>
+    <div class="q t"><h4>T 威胁</h4>
+      <ul><li>PlanCoach 若推温和人设或「强制执行模式」落地</li><li>FocusFeel 若补齐排期能力或推中文版</li><li>SuperPlanner 十天一版的迭代速度</li><li>竞品商业化跑通后的营销资源优势</li></ul></div>
+  </div>
+
+  <section class="positioning">
+    <div class="t">定位主张（可对外传播，供打磨）</div>
+    <div class="q">「不催你的行动伙伴——先接住你的状态，再把大事拆成今天做得动的一小步。」</div>
+  </section>
+
+  <div class="foot">
+    来源（点击可核验）：<a href="https://focusfeel.com/" target="_blank" rel="noopener">FocusFeel 官网</a> ·
+    <a href="http://plancoach.freemindworkshop.com/" target="_blank" rel="noopener">PlanCoach 官网</a> /
+    <a href="https://apps.apple.com/cn/app/id6748287561" target="_blank" rel="noopener">App Store</a> ·
+    <a href="https://play.google.com/store/apps/details?id=super.planner.todolist.task.reminder" target="_blank" rel="noopener">Super Planner: ADHD Routine AI（Google Play）</a> ·
+    差评 / 网易科技 / 中国报（2025-11 报道）· 一手产品体验（PlanCoach，单用户样本）
+    <div class="honest">本摘要为全文版的导读层，所有结论、依据强度标注与局限性说明以《StepForward 竞品分析与差异化定位报告》全文为准 · 温玥美 · 2026-09</div>
+  </div>
+
+</div>
+</body>
+</html>

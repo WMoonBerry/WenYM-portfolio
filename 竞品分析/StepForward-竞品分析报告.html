@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StepForward 竞品分析与差异化定位报告（投递终版）</title>
+<style>
+  :root {
+    --bg: #faf8f6; --bg2: #fff; --ink: #2d2a26; --muted: #8a8580; --rule: #e8e4df;
+    --accent: #c98b6b; --accent2: #8B6F8E; --accent-soft: rgba(201, 139, 107, 0.08);
+    --success: #6ab08a; --warning: #d4a86a; --danger: #d46a6a; --info: #6a9bd4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--ink); line-height: 1.8; font-size: 15px; -webkit-font-smoothing: antialiased; }
+  .layout { max-width: 1400px; margin: 0 auto; }
+  .content { max-width: 880px; margin: 0 auto; padding: 2rem 2rem 4rem; }
+  .toc-toggle { position: fixed; top: 1.4rem; right: 1.4rem; z-index: 61; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; background: var(--bg2); color: var(--ink); border: 1px solid var(--rule); border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(45, 42, 38, 0.08); transition: border-color .2s ease, color .2s ease; }
+  .toc-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .toc-toggle .toc-toggle-ico { font-size: 0.95rem; line-height: 1; }
+  .sidebar { position: fixed; top: 4.4rem; right: 1.4rem; width: 270px; z-index: 60; height: auto; max-height: calc(100vh - 6rem); overflow-y: auto; background: var(--bg2); border: 1px solid var(--rule); border-radius: 12px; padding: 1.2rem 1.1rem; box-shadow: 0 6px 24px rgba(45, 42, 38, 0.10); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity .22s ease, transform .22s ease, visibility .22s; }
+  .sidebar.open { opacity: 1; visibility: visible; transform: translateY(0); }
+  .toc-title { display: flex; align-items: center; justify-content: space-between; }
+  .toc-close { margin-left: auto; background: none; border: none; cursor: pointer; color: var(--muted); font-size: 1.1rem; line-height: 1; padding: 2px 4px; border-radius: 6px; transition: color .2s ease, background .2s ease; }
+  .toc-close:hover { color: var(--danger); background: rgba(212, 106, 106, 0.1); }
+  .to-top { position: fixed; right: 1.6rem; bottom: 1.4rem; z-index: 60; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.5rem 1.05rem; background: var(--accent); color: #fff; border-radius: 20px; font-size: 0.82rem; font-weight: 600; text-decoration: none; box-shadow: 0 4px 14px rgba(201, 139, 107, 0.35); }
+  .to-top:hover { opacity: 0.9; }
+  .report-header { text-align: center; padding: 2.5rem 0 3rem; border-bottom: 1px solid var(--rule); margin-bottom: 3rem; }
+  .report-header .tag { display: inline-block; padding: 4px 14px; background: var(--accent-soft); color: var(--accent); border-radius: 20px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 1rem; }
+  .report-header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.3; }
+  .report-header .subtitle { color: var(--muted); font-size: 0.95rem; }
+  .report-header .meta { margin-top: 1.5rem; display: flex; justify-content: center; gap: 2rem; font-size: 0.85rem; color: var(--muted); flex-wrap: wrap; }
+  .report-header .meta span strong { color: var(--ink); font-weight: 600; }
+  .toc { margin: 0; }
+  .toc-title { font-size: 0.78rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule); }
+  .toc ol { list-style: none; }
+  .toc ol li { padding: 0.4rem 0; border-bottom: 1px dashed var(--rule); display: flex; align-items: baseline; gap: 0.55rem; }
+  .toc-num { color: var(--accent); font-weight: 600; font-size: 0.78rem; min-width: 1.4em; flex-shrink: 0; }
+  .toc a { color: var(--ink); text-decoration: none; font-size: 0.8rem; display: block; line-height: 1.4; }
+  .toc a:hover { color: var(--accent); }
+  .toc a.active { color: var(--accent); font-weight: 600; }
+  .part-divider { margin: 3rem 0 2rem; text-align: center; }
+  .part-divider .part-tag { display: inline-block; background: var(--accent); color: #fff; padding: 0.4rem 1.4rem; border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; }
+  section { margin-bottom: 3rem; scroll-margin-top: 2rem; }
+  h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 1.4rem; padding-bottom: 0.7rem; border-bottom: 2px solid var(--accent); display: flex; align-items: center; gap: 0.75rem; }
+  h2 .num { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: var(--accent); color: white; border-radius: 8px; font-size: 0.9rem; font-weight: 700; }
+  h3 { font-size: 1.12rem; font-weight: 600; margin: 1.8rem 0 0.9rem; }
+  h4 { font-size: 0.98rem; font-weight: 600; margin: 1.4rem 0 0.7rem; }
+  p { margin-bottom: 1rem; }
+  strong { color: var(--ink); font-weight: 600; }
+  .callout { background: var(--accent-soft); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; font-size: 0.9rem; }
+  .callout.info { background: rgba(106, 155, 212, 0.08); border-left-color: var(--info); }
+  .callout.success { background: rgba(106, 176, 138, 0.08); border-left-color: var(--success); }
+  .callout.warning { background: rgba(212, 168, 106, 0.08); border-left-color: var(--warning); }
+  .callout-title { font-weight: 600; margin-bottom: 0.4rem; font-size: 0.9rem; }
+  .table-wrap { overflow-x: auto; margin: 1.5rem 0; border-radius: 8px; border: 1px solid var(--rule); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.84rem; background: var(--bg2); }
+  th { background: #f2ede6; text-align: left; padding: 0.7rem 0.9rem; font-weight: 600; border-bottom: 2px solid var(--rule); }
+  td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+  li { margin-bottom: 0.4rem; }
+  li::marker { color: var(--accent); }
+  .badge { font-size: 0.74rem; padding: 3px 10px; border-radius: 12px; font-weight: 600; white-space: nowrap; display: inline-block; }
+  .badge-strong { background: rgba(106, 176, 138, 0.14); color: #3f7d5c; }
+  .badge-mid { background: rgba(212, 168, 106, 0.14); color: #96690f; }
+  .badge-weak { background: rgba(212, 106, 106, 0.12); color: var(--danger); }
+  .badge-unknown { background: rgba(138, 133, 128, 0.14); color: var(--muted); }
+  .self-note { font-size: 0.72rem; color: var(--accent2); font-weight: 600; }
+  .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+  .card { background: var(--bg2); border: 1px solid var(--rule); border-radius: 10px; padding: 1.25rem; }
+  .card h4 { margin-top: 0; margin-bottom: 0.5rem; }
+  .card p { font-size: 0.85rem; color: var(--muted); margin-bottom: 0; line-height: 1.6; }
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+  .swot-box { padding: 1.25rem; border-radius: 10px; font-size: 0.88rem; }
+  .swot-s { background: rgba(106, 176, 138, 0.06); border: 1px solid rgba(106, 176, 138, 0.25); }
+  .swot-w { background: rgba(212, 106, 106, 0.06); border: 1px solid rgba(212, 106, 106, 0.25); }
+  .swot-o { background: rgba(106, 155, 212, 0.06); border: 1px solid rgba(106, 155, 212, 0.25); }
+  .swot-t { background: rgba(212, 168, 106, 0.06); border: 1px solid rgba(212, 168, 106, 0.25); }
+  .swot-box h4 { margin-top: 0; margin-bottom: 0.75rem; font-size: 0.95rem; }
+  .swot-s h4 { color: var(--success); } .swot-w h4 { color: var(--danger); }
+  .swot-o h4 { color: var(--info); } .swot-t h4 { color: var(--warning); }
+  .swot-box ul { padding-left: 1.25rem; margin-bottom: 0; }
+  .swot-box li { font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.6; }
+  .quote { border-left: 3px solid var(--accent2); background: rgba(139, 111, 142, 0.06); padding: 0.75rem 1.1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; font-size: 0.9rem; }
+  .quote .who { display: block; margin-top: 0.35rem; font-size: 0.78rem; color: var(--muted); }
+  .src { color: var(--muted); font-size: 0.8rem; font-weight: 400; }
+  .comp-meta { display: grid; grid-template-columns: 120px 1fr; gap: 0.5rem 1rem; font-size: 0.88rem; margin: 1rem 0; }
+  .comp-meta .k { color: var(--muted); font-weight: 500; }
+  footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--rule); text-align: center; font-size: 0.8rem; color: var(--muted); }
+  @media (max-width: 960px) {
+    .toc-toggle { right: 1rem; top: 1rem; }
+    .sidebar { right: 1rem; top: 4.1rem; width: calc(100vw - 2rem); max-height: calc(100vh - 5.4rem); }
+    .content { padding: 1.5rem 1rem 3rem; }
+    .to-top { right: 1rem; bottom: 1rem; }
+    .report-header h1 { font-size: 1.4rem; }
+    .card-grid, .swot-grid { grid-template-columns: 1fr; }
+    table { min-width: 640px; }
+  }
+</style>
+</head>
+<body>
+<span id="top"></span>
+<div class="layout">
+  <button class="toc-toggle" id="tocToggle" aria-expanded="false" aria-controls="sidebar"><span class="toc-toggle-ico">☰</span>目录</button>
+  <aside class="sidebar" id="sidebar">
+    <nav class="toc">
+      <div class="toc-title">目录 <button class="toc-close" id="tocClose" aria-label="隐藏目录">×</button></div>
+      <ol>
+        <li><span class="toc-num">1</span><a href="#s1">研究背景、范围与方法</a></li>
+        <li><span class="toc-num">2</span><a href="#s2">核心分析框架：两类「动不起来」的用户</a></li>
+        <li><span class="toc-num">3</span><a href="#s3">StepForward 的能力基线与当初的需求判断</a></li>
+        <li><span class="toc-num">4</span><a href="#s4">三款竞品核心发现速览</a></li>
+        <li><span class="toc-num">5</span><a href="#s5">PlanCoach：极致拆解 + 督促型教练</a></li>
+        <li><span class="toc-num">6</span><a href="#s6">FocusFeel：情绪导向的任务陪伴</a></li>
+        <li><span class="toc-num">7</span><a href="#s7">SuperPlanner：轻量 ADHD 日常 AI</a></li>
+        <li><span class="toc-num">8</span><a href="#s8">能力对比矩阵</a></li>
+        <li><span class="toc-num">9</span><a href="#s9">定位地图与空位判断</a></li>
+        <li><span class="toc-num">10</span><a href="#s10">关键洞察</a></li>
+        <li><span class="toc-num">11</span><a href="#s11">关键研究假设（待验证）</a></li>
+        <li><span class="toc-num">12</span><a href="#s12">核心结论</a></li>
+        <li><span class="toc-num">13</span><a href="#s13">SWOT 概览与定位主张</a></li>
+        <li><span class="toc-num">14</span><a href="#s14">从竞品格局到迭代清单</a></li>
+        <li><span class="toc-num">15</span><a href="#s15">后续工作建议</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main class="content">
+
+  <header class="report-header">
+    <span class="tag">竞品分析报告</span>
+    <h1>StepForward 竞品分析与差异化定位报告</h1>
+    <p class="subtitle">FocusFeel · PlanCoach · SuperPlanner —— 三款「帮人行动」产品的对标研究</p>
+    <div class="meta">
+      <span>分析对象：<strong>StepForward v2.2.8</strong></span>
+      <span>报告日期：<strong>2026 年 9 月</strong></span>
+      <span>方法：<strong>公开资料调研 + 一手产品体验 + 结构化对比</strong></span>
+    </div>
+  </header>
+
+  <div class="callout info">
+    <div class="callout-title">阅读说明：本报告的口径约定</div>
+    <p style="margin-bottom:0">全文区分三类内容：<strong>事实</strong>（均有公开来源可查，标注检索时点）、<strong>分析</strong>（基于事实的推演，标注依据强度）、<strong>建议</strong>（基于分析的行动方向）。竞品一手体验目前仅有 PlanCoach 一款、单一用户样本，相关观察一律标注「基于单用户一手体验的推断」，不作已验证结论使用；公开渠道查不到的信息标注「未见披露」，不与「确认缺失」混用。矩阵中 StepForward 列为<strong>自评</strong>（依据产品自身文档），与竞品列的公开信源口径不同，仅供参照。文中的研究假设在验证完成前，不作为对外叙事依据。三款竞品均为真实在营产品，官方入口见文末来源栏（竞品信息核验时点 2026-09）。</p>
+  </div>
+
+  <div class="part-divider"><span class="part-tag">壹 · 分析框架</span></div>
+
+  <section id="s1">
+    <h2><span class="num">1</span>研究背景、范围与方法</h2>
+    <p>StepForward 是一款面向「能量不足、易自我否定」人群的 Web 应用，以情绪支持与行动规划为核心能力，当前版本（v2.2.8）已形成「拆解—排期—执行—情绪—记录」的闭环。这份报告回答一个问题：<strong>在「帮用户动起来」这条赛道上，各产品分别服务谁、如何服务，StepForward 的差异化空间在哪里。</strong></p>
+    <h3>1.1 对标对象的选择</h3>
+    <p>前期调研的竞品池覆盖了 Actlite、Antigravity、Dopamind、Woebot、Wysa、Motion 等产品，本报告从中选出「AI 任务拆解 × 情绪支持」交叉赛道上距离最近的三款做深度对比：</p>
+    <ul>
+      <li><strong>FocusFeel</strong>：公开定位与 StepForward 最接近（情绪 + 任务管理），是直接对标；</li>
+      <li><strong>PlanCoach</strong>：同为「极致任务拆解」理念，声量最大，且有一手试用经验，是检验人群假设的关键对照；</li>
+      <li><strong>SuperPlanner</strong>：同一交叉赛道，走「轻量情绪 + 低门槛」路线，作为价值深度与能力面的对照。</li>
+    </ul>
+    <p>需要说明两点边界。其一，差异化结论仅针对已调研样本成立；赛道整体尚无头部产品，处于窗口期，但同类产品迭代很快，结论会随样本扩充持续修正，Goblin Tools、滚雪球等同类产品的一手调研已在计划中。其二，App Store 上另有同名「SuperPlanner: Daily Planner」为另一位开发者的时间块日历应用，与本报告分析的 Google Play「Super Planner: ADHD Routine AI」无关。</p>
+    <h3>1.2 信息来源与可靠度</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:26%">来源类型</th>
+            <th style="width:38%">覆盖范围</th>
+            <th>可靠度说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>公开渠道核查</strong><br>产品官网、App Store / Google Play 商店页、行业媒体报道</td>
+            <td>三款竞品的平台形态、核心功能、评分、定价与商业模式</td>
+            <td>竞品事实层的主要依据，检索截至 2026 年 9 月；SuperPlanner 仅核验商店页，置信度中等</td>
+          </tr>
+          <tr>
+            <td><strong>一手体验</strong>（单用户样本）</td>
+            <td>PlanCoach 的使用感受与情绪影响</td>
+            <td>样本量为 1，属定性证据，仅用于生成假设，不作为统计结论</td>
+          </tr>
+          <tr>
+            <td><strong>产品自身文档</strong></td>
+            <td>StepForward 当前能力清单与迭代记录</td>
+            <td>产品自述，未经用户或第三方验证，一律标注「自评」</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">不确定性声明</div>
+      <p style="margin-bottom:0">FocusFeel 与 SuperPlanner 未经一手体验，两款产品的实际交互语气、对情绪敏感人群的承接深度仍是推断盲区。竞品的真实用户规模、留存与收入数据不可得，声量仅以公开信号（评分量、点赞量）推断。竞品功能迭代快——PlanCoach 买断价半年内从 48 元调至 98 元，SuperPlanner 约十天一个版本——任何一项竞品策略发生显著变化，本报告结论需重新评估。</p>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">2</span>核心分析框架：两类「动不起来」的用户</h2>
+    <p>「拖延」是个掩盖了差异的统称。对 PlanCoach 的一手体验观察与公开评论区反馈相互印证，指向一个分野：<strong>「启动不了」在一部分用户身上是策略问题，在另一部分用户身上是能量问题。</strong>表面症状相同（任务拖延、无法启动），需要的产品机制却不同。</p>
+    <div class="card-grid">
+      <div class="card" style="background:rgba(106, 155, 212, 0.06); border-color:rgba(106, 155, 212, 0.25);">
+        <h4 style="color:var(--info)">类型 A · 策略缺失型</h4>
+        <p style="color:var(--ink)">能量足以支撑行动，面对模糊庞大的任务不知从何开始。痛点是任务太模糊、启动门槛太高、缺少执行反馈。<strong>督促对他们有效甚至受欢迎——「推我一把」正是所需。</strong>PlanCoach 的主要目标人群，SuperPlanner 覆盖部分此类用户。</p>
+      </div>
+      <div class="card" style="background:rgba(212, 106, 106, 0.06); border-color:rgba(212, 106, 106, 0.25);">
+        <h4 style="color:var(--danger)">类型 B · 能量耗竭型</h4>
+        <p style="color:var(--ink)">能量不足以支撑「动起来」本身，常见于情绪耗竭、长期自我否定状态。启动失败会即刻触发「我又不行了」，形成进一步耗竭的循环。<strong>需要先承接情绪、不评判、把「最小一步」的成本压到极低、允许今天不动。</strong>严厉催促类话术可能构成二次压力（推断，待用户访谈验证）。</p>
+      </div>
+    </div>
+    <h3>2.1 框架的证据基础，以及反面证据</h3>
+    <p>这个分野目前是高置信度假设，不是已验证结论。支持它的证据有两类。一是两条公开评论：</p>
+    <div class="quote">
+      「姐妹们，我这种真正的拖延症，我会连这个 APP 都不会点开。」
+      <span class="who">—— PlanCoach 相关报道转引的小红书用户评论（中国报，2025-11-04）</span>
+    </div>
+    <div class="quote">
+      「然后第一步也不想干了。」
+      <span class="who">—— 同上报道评论区</span>
+    </div>
+    <p>二是单用户一手体验：监督式元素（计时、声望、成长记录）对试用者个人构成额外心理负担，出现「更觉得自己糟糕」的负向体验，最终弃用。两条公开评论与一手感受方向一致——在 PlanCoach 自己的目标人群内部，也存在被督促机制劝退的用户。</p>
+    <p>但反面证据同样要记录：PlanCoach 在 App Store 有 814 个评分、4.8 分，媒体称好评率超九成，大量 ADHD 用户认可其拆解方式。更准确的表述因此是——<strong>同一套任务推进式设计，对不同能量状态、不同自我评价基线的人群，效果可能相反。</strong>媒体报道普遍将 PlanCoach 归为「对 ADHD 用户友好」，而 ADHD 人群内部本就同时存在「执行功能紊乱但能量尚可」与「能量耗竭」两种状态，后者规模多大、是否会被督促框架劝退，需要用户访谈来回答。</p>
+    <p>框架的心理学基础也交代一句：类型 B 的机制可参考「自我损耗」等概念作解释，但自我损耗理论在学术界存在可重复性争议，本框架只把它当工作假设用，不当代心理学定论。框架的用途有二：检验竞品机制背后的默认人群假设，以及解释 StepForward 的设计选择为什么长成现在的样子。</p>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">3</span>StepForward 的能力基线与当初的需求判断</h2>
+    <p>竞品分析如果只看别人不看自己，判断就没有锚点。这一节先把 StepForward 已实现的能力与其背后的需求判断放在一起——这些功能不是照着竞品抄的，是产品迭代过程中独立做出的判断，竞品格局恰好构成了对其中一部分判断的外部验证。</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:28%">当初的需求判断</th>
+            <th style="width:42%">已落地能力（v2.2.8，自评）</th>
+            <th>竞品格局给出的验证或参照</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>不同程度的情绪需要不同的陪伴方式</strong>，一个模板回应对所有人都不对</td>
+            <td>情绪分级（1–4 级差异化回应策略）+ 8 种循证干预方法 + 危机安全边界（前端关键词预筛 100% 触发硬编码回应 + AI 识别隐晦表述 + 24 小时援助热线）</td>
+            <td>三款竞品均未见同级设计（公开渠道未披露）；情绪分级回应「方法降级、倾听优先」的原则，来自对「给一堆方法反而添堵」的担心</td>
+          </tr>
+          <tr>
+            <td><strong>启动困难既是能量问题也是结构问题</strong>，两者要分开处理</td>
+            <td>任务拆解 + 跨日排期 + 冲突确定性顺延 + 用餐时间避让 + 番茄钟式休息插入</td>
+            <td>PlanCoach 验证了「拆细能帮人动起来」；但排期、冲突、节奏管理在三条竞品线上都偏弱，是结构性空白</td>
+          </tr>
+          <tr>
+            <td><strong>「今天不动也没关系」必须是产品行为</strong>，不能只是文案</td>
+            <td>过期任务处理提供「先不动 / 删除 / 已完成」三选项，不默认催促；无连续打卡、无声望惩罚</td>
+            <td>PlanCoach 因步骤过载负反馈被迫上线专注模式，从另一面验证了推进式默认值的风险</td>
+          </tr>
+          <tr>
+            <td><strong>产品应该越用越懂用户</strong>，个性化是长期壁垒</td>
+            <td>用户行为画像（完成率、拖延时长、情绪触发）注入 AI 回应，带冷启动保护；成长日记 AI 回应 + 睡前安心仪式</td>
+            <td>FocusFeel 的 Emotional Memory 走同一方向，验证了需求；也暴露了我们的差距（见第 10 节洞察二）</td>
+          </tr>
+          <tr>
+            <td><strong>AI 能力依赖第三方供应商，稳定性要自己兜底</strong></td>
+            <td>6 家模型服务商兼容 + API Key 服务端代理保护 + 演示模式免配置；模型名回退机制</td>
+          <td>曾发生过 DeepSeek 模型名变更导致静默故障的事件——这是做 AI 产品绕不开的 maintenance 成本，已被实践验证</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>有两个判断后来被自己推翻或修正，比做对的功能更能说明迭代方式。一个是过期任务的「后推」功能：上线后越做越复杂、bug 频发，复盘发现任务拆解、冲突处理、过期重排这些调度决策本质上应该由一个统一的 AGENT 编排层完成，散落在 prompt 和硬代码里做不对——于是把后推功能整体下架，把调度 AGENT 列为编排层建设的第一个能力。另一个是用户画像：注入 system prompt 之后发现两个问题，画像每次变化会拖低 prompt 缓存命中率，而且用户对「被记住」的感知很弱——个性化做了成本、没做出价值，「越用越懂你」因此列为待优化的规划项而非既成成绩。</p>
+  </section>
+
+  <div class="part-divider"><span class="part-tag">贰 · 主要发现</span></div>
+
+  <section id="s4">
+    <h2><span class="num">4</span>三款竞品核心发现速览</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:13%">产品</th>
+            <th style="width:36%">公开信息中的定位</th>
+            <th style="width:37%">对 StepForward 的关键启示</th>
+            <th>对「能量不足人群」的覆盖度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>PlanCoach</strong></td>
+            <td>「用极致的具体杀死拖延症」——AI 教练把模糊任务拆成极简步骤，多教练人设，游戏化激励。开发者理念：拖延大部分不是因为懒，而是「启动困难」</td>
+            <td>人群假设与 StepForward 不同：面向「有能量、缺启动技巧」的人群做极致拆解与激励推动，情绪支持以每步鼓励语为主。可借鉴：拆解颗粒度、「被看见感」的动效、社区冷启动打法</td>
+            <td><span class="badge badge-mid">中</span> · 待多用户验证</td>
+          </tr>
+          <tr>
+            <td><strong>FocusFeel</strong></td>
+            <td>Emotional Copilot：先设定任务并拆解，执行中遇到阻力时识别情绪阻塞，给引导技巧，完成后复盘沉淀「情绪记忆」</td>
+            <td>与 StepForward「执行中承接情绪」的路径高度相似，差异化空间不在路线之争，而在功能厚度与个性化积累速度。可借鉴：干预效果回环、Freemium 结构</td>
+            <td><span class="badge badge-mid">中</span> · 推断</td>
+          </tr>
+          <tr>
+            <td><strong>SuperPlanner</strong></td>
+            <td>Android 任务管理应用：AI 语音输入、智能拆解、心情签到 + 每日幸运饼干、三档 AI 语气可选；基础功能免费，高级功能订阅</td>
+            <td>情绪功能以签到 + 趋势追踪为主。可借鉴：语音快速捕捉（恰是 StepForward 的能力空白）、语气可选验证了「温柔是一种产品选择」</td>
+            <td><span class="badge badge-mid">中</span> · 推断</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s5">
+    <h2><span class="num">5</span>PlanCoach：极致拆解 + 督促型教练</h2>
+    <p class="src">来源：差评 / PConline、网易科技、中国报（2025-11）；App Store 产品页（2026-09 检索）；单用户一手试用</p>
+    <h3>5.1 基本事实</h3>
+    <ul>
+      <li>前网易技术专家独立开发，获 <strong>2025 小红书 × Google Cloud 黑客松效率赛道一等奖</strong>，演示内容社区点赞 30 万+，上线半月获 2 万+ 用户；官网称用户量超六位数</li>
+      <li><strong>iOS 原生应用（无安卓版）</strong>；App Store 814 个评分、4.8 分（2026-09 检索）</li>
+      <li>定价：免费 6 次试用；Pro 买断制阶梯涨价——2025 年 11 月报道 48 元，2026 年 1 月评测 98 元，官方明示目标价 268 元，另有 12 元/月选项</li>
+      <li>核心机制：输入任务 → AI 连续拆分至「掀开被子 → 坐起来 → 脚放到地上」级别的无需思考颗粒度；每步附鼓励语；执行时提供语音播报与逐步互动</li>
+      <li>游戏化：完成即震动 + 特效 + 经验值/声望；多教练人设 + 自定义教练；语音免手操作 + Apple Watch</li>
+      <li>公开路线图含「强制执行模式」（半强制推进，尚未上线）</li>
+    </ul>
+    <h3>5.2 人群假设：与 StepForward 的关键分歧</h3>
+    <p>PlanCoach 的机制建立在「用户有行动能量，缺的只是启动技巧和外部推动」这个假设上——极致拆解降低认知门槛，多感官反馈提供即时激励，教练话语激发斗志，构成一条完整的「推一把就能动」的干预链。对它的目标人群这套逻辑成立且有效，4.8 分和病毒式传播是直接证据。</p>
+    <p>单用户一手体验提示了另一面（样本量为 1，仅作假设来源）：监督式元素对低能量、易自我否定的使用者可能加剧自我否定与回避。公开渠道也有方向相近的反馈——部分用户反映「一下子看到这么多步骤反而更拖延」，开发者为此上线了专注模式（渐进式披露）。一手感受与公开负反馈是同一机制还是两个机制，目前无法判断。</p>
+    <div class="callout warning">
+      <div class="callout-title">待验证假设（非结论）</div>
+      <p style="margin-bottom:0">「有能量缺自律」与「缺能量」可能是两种不同成因的人群，同一套推进式干预对前者是助力、对后者可能反噬。反面证据照录：PlanCoach 好评率超九成，其多教练体系在理论上也容纳得了温和人设。该假设的验证方法已列入第 11 节，验证完成前不作为对外叙事依据。</p>
+    </div>
+    <h3>5.3 对 StepForward 的含义</h3>
+    <p>短期压力来自声量错位：用户搜「拖延症 App」会先遇到 PlanCoach。但两家的人群假设不同，竞争未必正面。值得吸收的有三样：拆解颗粒度作为「第一步成本趋近于零」的质量标准、执行期陪伴（语音播报 + 逐步互动——StepForward 目前的反馈集中在完成后，执行中是弱项）、以及「黑客松获奖 → 短视频内容营销 → 阶梯涨价」这条独立开发者冷启动路径。需要保持距离的是声望、排行榜这类强刺激游戏化——对低能量人群是潜在压力源，也是对手的主场。</p>
+  </section>
+
+  <section id="s6">
+    <h2><span class="num">6</span>FocusFeel：情绪导向的任务陪伴</h2>
+    <p class="src">来源：focusfeel.com 官网（2026-09 检索）· 未一手体验</p>
+    <h3>6.1 基本事实</h3>
+    <ul>
+      <li>定位 <strong>Emotional Copilot</strong>，官方主张「To-Do 清单只帮你整理，FocusFeel 帮你克服——深入到阻碍你的情绪」</li>
+      <li>官方工作流四步：<strong>设定任务时 AI 即行拆解 → 遇到阻力时识别情绪阻塞（恐惧/羞耻/不堪重负）→ 提供定制支持（重构、接地、自我关怀）→ 完成后反思成长</strong></li>
+      <li><strong>Emotional Memory</strong>：记录「什么方法对这位用户有效」，下次遇到阻塞时提供个性化支持</li>
+      <li>定价：Free（每天 2 个新任务 + 轻量 Copilot）/ Pro $14/月；有账号体系，数据经云端存储</li>
+      <li>官网用户证言反复出现同一主题：「用了多年效率工具，反而因为没完成任务而感觉更糟」</li>
+      <li>未见中文版本；危机干预机制、数据隐私细节：官网未见披露</li>
+    </ul>
+    <h3>6.2 与 StepForward 的重叠度</h3>
+    <p>FocusFeel 是三款中理念最同频的：同样承认「动不起来」背后是情绪问题，同样以引导而非催促为基调，同样在任务完成后做情绪层面的沉淀。对应关系大致是：情绪命名 ≈ 情绪分级，引导式步骤 ≈ 循证干预，反思成长 ≈ 成长日记。差异有三处：它的情绪处理嵌在任务流程里（遇阻那一刻介入），StepForward 的情绪系统目前主要在独立对话入口；它的拆解与排期能力较弱（推断，未实测），StepForward 的跨日排期与冲突联动更强；它有账号体系与订阅制，StepForward 免费且本地存储。</p>
+    <div class="callout info">
+      <div class="callout-title">两个值得研究的机制</div>
+      <p style="margin-bottom:0">① <strong>干预效果回环</strong>——不只记录情绪，还记录「哪种干预方法对这位用户有效」，让情绪支持个体化。这正是 StepForward 用户画像下一个该补的维度。② <strong>任务流程中的介入时机</strong>——「卡住的那一刻」最需要支持。可考虑在任务长时间未动时提供温和、可永久关闭的情绪检查入口，定位是「检查」不是「催促」。</p>
+    </div>
+    <h3>6.3 竞争态势</h3>
+    <p>它的目标人群与 StepForward 高度重叠——官网证言里「因没完成任务而感觉更糟」的用户就是能量耗竭画像——而且商业化已经跑通，是三款中最值得持续跟踪的对手。竞争的胜负手在两点：StepForward 的执行闭环（排期、提醒、仪式化回顾）能否转化为留存优势；以及双方「记住什么对用户有效」的个性化积累谁做得更深，它决定迁移成本。其未进入中文市场，为 StepForward 留有窗口期，窗口宽度取决于它的迭代节奏，需动态评估。</p>
+  </section>
+
+  <section id="s7">
+    <h2><span class="num">7</span>SuperPlanner：轻量 ADHD 日常 AI</h2>
+    <p class="src">来源：Google Play 产品页、第三方应用市场页（2026-09 检索）· 未一手体验</p>
+    <h3>7.1 基本事实</h3>
+    <ul>
+      <li>Google Play 名称「Super Planner: ADHD Routine AI」，<strong>Android 原生应用</strong>，5 万+ 安装，多国效率类榜单 Top 80–200（2026 年中检索）</li>
+      <li>核心功能：语音「清空大脑」式任务捕捉（AI 识别任务/日期/地点）、AI 任务拆解、自定义时间线与提醒、习惯/例程</li>
+      <li>情绪设计：<strong>心情一键签到 + 每日「幸运饼干」盲盒</strong>；情绪趋势追踪与习惯关联</li>
+      <li><strong>AI 语气三档可选</strong>：幽默毒舌 / 元气鼓励 / 温柔默认（商店页与应用介绍页一致）</li>
+      <li>账号云同步与备份、日历集成；免费 + 订阅制；迭代节奏约十天一个版本</li>
+    </ul>
+    <h3>7.2 值得注意的两点</h3>
+    <p>一是口径矛盾：应用介绍页写「数据不上传第三方」，商店页同时提供云端账号同步备份，两种表述并存，实际数据流向以其最新隐私政策为准。这个案例顺便提醒了一件事：竞品档案是会过时的，早期「轻量纯前端」类定性随产品迭代很快失效，档案需要动态维护。</p>
+    <p>二是它验证了两个市场信号。<strong>语气选择是真实需求</strong>——「温柔默认」作为可选项存在，说明市场已经开始接受「温柔是一种产品选择」；同时「幽默毒舌」档有明确受众，说明推进型语气并非错误，只是不该是强制默认。<strong>语音输入显著降低启动门槛</strong>——对「连打字都觉得累」的低能量用户，「说出来」比打字容易，这个能力与 StepForward 的人群定位高度自洽，而目前恰是能力空白：现有语音输入依赖浏览器 SpeechRecognition API，iOS Safari 不支持，要补齐需改用 AI 语音识别接口。</p>
+    <p>威胁度评估为中等：人群有重叠、增长快，但情绪处理停留在签到级，未见任务与情绪的联动机制。</p>
+  </section>
+
+  <section id="s8">
+    <h2><span class="num">8</span>能力对比矩阵</h2>
+    <p class="src">说明：竞品列依据公开信源与商店页（2026 年 9 月检索）；StepForward 列为产品自评，非第三方测评。「未见披露」表示公开渠道无法确认，不等于确认缺失。</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:17%">维度</th>
+            <th>StepForward v2.2.8 <span class="self-note">（自评）</span></th>
+            <th>PlanCoach</th>
+            <th>FocusFeel</th>
+            <th>SuperPlanner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>人群假设（推断）</strong></td>
+            <td><span class="badge badge-strong">能量耗竭 / 启动困难</span></td>
+            <td><span class="badge badge-mid">有能量、缺启动技巧</span></td>
+            <td><span class="badge badge-mid">被情绪卡住（恐惧/羞耻/过载）</span></td>
+            <td><span class="badge badge-mid">泛拖延 / ADHD 日常</span></td>
+          </tr>
+          <tr>
+            <td><strong>AI 任务拆解</strong></td>
+            <td><span class="badge badge-strong">强（含日期识别与防冲突）</span></td>
+            <td><span class="badge badge-strong">极强（招牌能力，多来源证实）</span></td>
+            <td><span class="badge badge-mid">有 · 深度未实测</span></td>
+            <td><span class="badge badge-strong">强 · 官方主打</span></td>
+          </tr>
+          <tr>
+            <td><strong>智能排期 / 冲突处理</strong></td>
+            <td><span class="badge badge-strong">强（跨日 + 联动 + 确定性顺延）</span></td>
+            <td><span class="badge badge-weak">弱（无日历/排期，公开反馈）</span></td>
+            <td><span class="badge badge-unknown">未披露</span></td>
+            <td><span class="badge badge-mid">中（时间线 + 提醒）</span></td>
+          </tr>
+          <tr>
+            <td><strong>情绪干预深度</strong></td>
+            <td><span class="badge badge-strong">强（4 级分级 + 8 种循证方法）</span></td>
+            <td><span class="badge badge-mid">每步鼓励语为主 · 推断</span></td>
+            <td><span class="badge badge-strong">强（阻塞识别 + 定制策略）</span></td>
+            <td><span class="badge badge-weak">签到级 · 深度待验证</span></td>
+          </tr>
+          <tr>
+            <td><strong>情绪-任务联动</strong></td>
+            <td><span class="badge badge-mid">中（画像注入，对话入口独立）</span></td>
+            <td><span class="badge badge-unknown">未见</span></td>
+            <td><span class="badge badge-strong">强（任务中情绪介入）</span></td>
+            <td><span class="badge badge-weak">签到与任务并行、不联动</span></td>
+          </tr>
+          <tr>
+            <td><strong>执行期陪伴</strong></td>
+            <td><span class="badge badge-weak">弱（完成后反馈为主）</span></td>
+            <td><span class="badge badge-strong">强（语音播报 + 逐步互动）</span></td>
+            <td><span class="badge badge-mid">中</span></td>
+            <td><span class="badge badge-mid">中</span></td>
+          </tr>
+          <tr>
+            <td><strong>记录-回顾闭环</strong></td>
+            <td><span class="badge badge-strong">强（成长日记 + 睡前仪式）</span></td>
+            <td><span class="badge badge-mid">游戏化成长系统 · 推断</span></td>
+            <td><span class="badge badge-mid">中（反思日志）</span></td>
+            <td><span class="badge badge-mid">中（心情趋势）</span></td>
+          </tr>
+          <tr>
+            <td><strong>个性化积累</strong></td>
+            <td><span class="badge badge-mid">行为画像注入 · 自评</span></td>
+            <td><span class="badge badge-mid">个人画像喂给教练</span></td>
+            <td><span class="badge badge-strong">Emotional Memory</span></td>
+            <td><span class="badge badge-unknown">未披露</span></td>
+          </tr>
+          <tr>
+            <td><strong>危机安全边界</strong></td>
+            <td><span class="badge badge-strong">强（双层检测 + 热线指引）</span></td>
+            <td><span class="badge badge-unknown">未披露</span></td>
+            <td><span class="badge badge-unknown">未披露</span></td>
+            <td><span class="badge badge-unknown">未披露</span></td>
+          </tr>
+          <tr>
+            <td><strong>语音能力</strong></td>
+            <td><span class="badge badge-weak">弱（浏览器 API，iOS 不可用）</span></td>
+            <td><span class="badge badge-mid">语音免手操作 + Watch</span></td>
+            <td><span class="badge badge-unknown">未披露</span></td>
+            <td><span class="badge badge-strong">强（语音创建日程）</span></td>
+          </tr>
+          <tr>
+            <td><strong>隐私与数据</strong></td>
+            <td><span class="badge badge-strong">纯前端本地存储（导出/备份待补）</span></td>
+            <td><span class="badge badge-mid">有隐私政策、宣称可导出、iCloud 同步</span></td>
+            <td><span class="badge badge-mid">账号体系 + 云端存储 · 细节未披露</span></td>
+            <td><span class="badge badge-mid">宣称不上传第三方，有云备份，口径不一</span></td>
+          </tr>
+          <tr>
+            <td><strong>使用门槛</strong></td>
+            <td><span class="badge badge-strong">低（演示模式免配置）</span></td>
+            <td><span class="badge badge-strong">低（下载即用）</span></td>
+            <td><span class="badge badge-strong">低（内置 AI）</span></td>
+            <td><span class="badge badge-strong">低（免注册）</span></td>
+          </tr>
+          <tr>
+            <td><strong>商业模式</strong></td>
+            <td><span class="badge badge-strong">免费</span></td>
+            <td><span class="badge badge-mid">免费试用 + 买断 98 元（目标 268）</span></td>
+            <td><span class="badge badge-mid">Free / Pro $14 月</span></td>
+            <td><span class="badge badge-mid">免费 + 订阅</span></td>
+          </tr>
+          <tr>
+            <td><strong>体量与声量</strong></td>
+            <td><span class="badge badge-mid">早期阶段，尚未推广</span></td>
+            <td><span class="badge badge-weak">六位数用户，814 评分 4.8</span></td>
+            <td><span class="badge badge-mid">商业化运行中</span></td>
+            <td><span class="badge badge-mid">5 万+ 安装，多国上榜</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s9">
+    <h2><span class="num">9</span>定位地图与空位判断</h2>
+    <p>把四款产品放到两个维度上：横轴为<strong>对用户行为的牵引强度</strong>（督促催促 ↔ 跟随用户节奏），纵轴为<strong>对能量状态的承接深度</strong>（签到级娱乐 ↔ 分级干预 + 安全边界）。各产品坐标为基于公开信息的推断，StepForward 位置为自评，此图用于讨论框架而非精确结论。</p>
+    <svg viewBox="0 0 680 420" style="width:100%;max-width:680px;display:block;margin:1.5rem auto;background:#fff;border:1px solid #e8e4df;border-radius:12px" xmlns="http://www.w3.org/2000/svg">
+      <line x1="60" y1="360" x2="620" y2="360" stroke="#c9c4be" stroke-width="2"/>
+      <line x1="340" y1="40" x2="340" y2="380" stroke="#c9c4be" stroke-width="2" stroke-dasharray="4 4"/>
+      <polygon points="620,360 610,354 610,366" fill="#c9c4be"/>
+      <polygon points="60,360 70,354 70,366" fill="#c9c4be"/>
+      <polygon points="340,40 334,50 346,50" fill="#c9c4be"/>
+      <text x="340" y="26" text-anchor="middle" font-size="13" fill="#2d2a26" font-weight="600">能量承接深度 ↑（分级干预 · 安全边界）</text>
+      <text x="600" y="382" text-anchor="end" font-size="12" fill="#8a8580">牵引强度低（跟随 · 不评判）</text>
+      <text x="80" y="382" text-anchor="start" font-size="12" fill="#8a8580">牵引强度高（督促 · 催促）</text>
+      <circle cx="130" cy="300" r="10" fill="#d46a6a"/>
+      <text x="130" y="280" text-anchor="middle" font-size="13" fill="#d46a6a" font-weight="700">PlanCoach</text>
+      <text x="130" y="326" text-anchor="middle" font-size="10.5" fill="#8a8580">极致拆解 + 督促 + 游戏化</text>
+      <circle cx="255" cy="330" r="9" fill="#d4a86a"/>
+      <text x="255" y="311" text-anchor="middle" font-size="13" fill="#d4a86a" font-weight="700">SuperPlanner</text>
+      <text x="255" y="355" text-anchor="middle" font-size="10.5" fill="#8a8580">轻量陪伴 · 语气可选</text>
+      <circle cx="470" cy="120" r="10" fill="#6a9bd4"/>
+      <text x="470" y="100" text-anchor="middle" font-size="13" fill="#6a9bd4" font-weight="700">FocusFeel</text>
+      <text x="470" y="146" text-anchor="middle" font-size="10.5" fill="#8a8580">情绪介入 · 引导式</text>
+      <circle cx="545" cy="75" r="13" fill="#c98b6b"/>
+      <circle cx="545" cy="75" r="19" fill="none" stroke="#c98b6b" stroke-width="2" stroke-dasharray="3 3" opacity="0.5"/>
+      <text x="545" y="48" text-anchor="middle" font-size="13.5" fill="#c98b6b" font-weight="700">StepForward</text>
+      <text x="545" y="112" text-anchor="middle" font-size="10.5" fill="#8a8580">分级干预 · 危机安全 · 成长闭环</text>
+      <text x="480" y="215" text-anchor="middle" font-size="11" fill="#6ab08a" font-style="italic">右上区域 = 耗竭友好带</text>
+    </svg>
+    <div class="callout success">
+      <div class="callout-title">读图结论</div>
+      <p style="margin-bottom:0"><strong>在本次调研覆盖的三款竞品范围内，「低牵引 × 深承接」的右上区域目前没有产品占据。</strong>FocusFeel 离它最近，但未见中文版本、危机机制未见披露、排期能力较弱。StepForward 处于该区域边缘（默认温柔、干预方法专业），但有一点要坦白：这里的「不催促」目前是隐性默认值，不是成文的全链路规范——提醒、排期超时等场景仍可能无意中产生催促感。这是本报告最优先的产品改进依据（见第 14 节）。</p>
+    </div>
+  </section>
+
+  <section id="s10">
+    <h2><span class="num">10</span>关键洞察</h2>
+    <p><strong>洞察一：差异化是人群假设之争，不是语气好坏之争。</strong>三款竞品都没有对「缺自律」和「缺能量」做显性区分，机制设计默认用户具备基本行动能量。StepForward 与最接近的 PlanCoach 的差别，说到底是各自服务的人群不同——一个把任务拆到极致用激励推，一个先承接情绪再给最小步骤。两条路线各有其有效人群，关键不在谁的语气更好，在各自把对应人群服务好。这决定了对外叙事的写法：只描述自己为谁设计、为什么这样设计，不与具体竞品做贬损性对比。</p>
+    <p><strong>洞察二：与 FocusFeel 的竞争已进入同一竞争域，胜负手是「记住什么对用户有效」。</strong>功能层面的互相补齐在技术上都没有障碍，真正拉开迁移成本的是个性化积累的速度与深度——谁的干预效果记录做得更深，用户走的时候要留下的东西就越多。StepForward 目前的用户画像记录行为模式，FocusFeel 的 Emotional Memory 记录干预效果，后者离「懂你」更近一步。这也带出一个 AI 产品做个性化的真实教训：画像注入 system prompt 后，缓存命中率下降、用户感知却很弱——个性化的成本必须配得上可感知的价值，否则只是技术自嗨。</p>
+    <p><strong>洞察三：数据资产比功能更难复制，数据导出因此有双重意义。</strong>竞品普遍已有云同步，StepForward 的日记、画像数据还锁在设备本地。数据导出/备份缺失是当前最明显的功能差距，但换个角度看，「数据不出设备」本身就是情绪敏感数据场景下的信任基础——补导出能力，既是兜住数据丢失的风险，也是把数据资产的所有权明确交还用户。</p>
+    <p><strong>洞察四：语音输入是与人群定位自洽的能力空白。</strong>对低能量用户，开口比打字容易。SuperPlanner 已验证语音入口的获客价值，PlanCoach 的语音免手操作也指向同一方向。StepForward 现有语音依赖浏览器 API（iOS 完全不可用），要补齐需要换到 AI 语音识别接口，属于知道怎么做、只差排期的事。</p>
+    <p><strong>洞察五：AI 产品的稳定性是供应链问题。</strong>这次调研还确认了一个功能对比表装不下的认知：AI 能力构建在第三方 API 上，服务商一改模型名，产品就静默故障——这在 StepForward 身上真实发生过（DeepSeek 模型名变更事件）。三家竞品都内置模型、不向用户暴露这个问题，但故障并不因此消失，只是被产品方吸收了。多服务商兼容与故障自愈不是锦上添花，是 AI 应用的 maintenance 底线，评估竞品能力时也应该把这一层算进去。</p>
+  </section>
+
+  <section id="s11">
+    <h2><span class="num">11</span>关键研究假设（待验证）</h2>
+    <p>以下两项假设构成差异化建议的前提，均未经系统性用户研究，应先验证再投入：</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:24%">假设</th><th style="width:42%">内容</th><th>验证方式</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>H1 · 督促反噬假设</strong></td>
+            <td>催促、施压类话术与监督式机制对能量耗竭型用户构成二次压力，导致弃用。目前的依据是单用户一手体验加两条公开评论佐证。</td>
+            <td>对 5–8 名自述「能量不足/行动力瘫痪」的用户进行访谈，验证其对督促型话术的敏感度与弃用行为。</td>
+          </tr>
+          <tr>
+            <td><strong>H2 · 用户外溢假设</strong></td>
+            <td>督促型产品的公开评论区已出现劝退型反馈（两条可查证评论），提示可能存在向「承接型」产品迁移的用户群，可作精准获客方向。</td>
+            <td>监测相关评论区的讨论走向；在获客内容中做小规模 A/B 验证。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">使用约束</div>
+      <p style="margin-bottom:0">H1/H2 验证之前，不把「竞品让用户受伤」这类叙事用于任何对外内容。对外表达走「讲自己的设计选择」路线——我们为谁设计、为什么默认温柔、为什么允许今天不动——同时遵循内容平台的社区规范。</p>
+    </div>
+  </section>
+
+  <div class="part-divider"><span class="part-tag">叁 · 结论与建议</span></div>
+
+  <section id="s12">
+    <h2><span class="num">12</span>核心结论</h2>
+    <div class="callout success">
+      <div class="callout-title">一句话结论</div>
+      <p style="margin-bottom:0">三款竞品代表三种「帮人行动」的路径——FocusFeel 在任务流程中介入情绪，PlanCoach 极致拆解并督促执行，SuperPlanner 轻量陪伴加趣味激励。它们的共同默认假设是「用户想做，只是缺帮手」；而「能量耗竭、先接住状态再谈行动」的人群需求，<strong>在本次调研覆盖范围内未见产品针对性满足</strong>。StepForward 的差异化基础是人群假设之争——服务「动不起来也不想被催」的人——且已有对应产品能力（情绪分级、循证干预、危机安全边界）作为支撑。该结论以已调研样本为边界，随竞品动态持续修正。</p>
+    </div>
+    <h3>经核查成立的事实基础</h3>
+    <ul>
+      <li>三款竞品均真实存在且活跃运营；PlanCoach 的社区热度、评分、定价机制、黑客松获奖均有公开依据；</li>
+      <li>PlanCoach 的拆解粒度与社区驱动迭代是被多来源证实的核心优势；FocusFeel 的 Freemium 结构完整，可作商业化设计参照；SuperPlanner 的语音入口 + 免注册 + 免费核心层组合验证了低门槛获客路径；</li>
+      <li>「推进式设计对低能量人群可能反噬」有单一一手案例与部分公开负反馈支持，作为待验证假设值得优先验证；</li>
+      <li>StepForward 的能力基线（第 3 节）中的需求判断，部分已被竞品格局独立验证——这说明当初的判断方向大体站得住，但「是否被验证」与「是否做得足够好」是两回事，后者要靠用户数据回答。</li>
+    </ul>
+  </section>
+
+  <section id="s13">
+    <h2><span class="num">13</span>SWOT 概览与定位主张</h2>
+    <div class="swot-grid">
+      <div class="swot-box swot-s">
+        <h4>优势（相对三竞品）</h4>
+        <ul>
+          <li>唯一具备情绪分级 + 循证干预 + 危机安全边界的组合（自评）</li>
+          <li>唯一的「记录-回顾-成长」闭环：成长日记 + 睡前仪式</li>
+          <li>跨日排期与冲突确定性顺延为三竞品未见</li>
+          <li>免费 + 本地存储 + 演示模式，使用门槛低</li>
+          <li>6 家模型服务商兼容，抗供应商变更风险</li>
+        </ul>
+      </div>
+      <div class="swot-box swot-w">
+        <h4>劣势（相对三竞品）</h4>
+        <ul>
+          <li>体量与声量差距明显（PlanCoach 六位数用户）</li>
+          <li>执行期陪伴弱于 PlanCoach，任务中情绪介入弱于 FocusFeel</li>
+          <li>数据导出/备份缺失，竞品普遍已有云同步</li>
+          <li>「不催促」优势是隐性默认值，未产品化、未传播</li>
+          <li>个性化积累深度落后于 FocusFeel 的 Emotional Memory</li>
+        </ul>
+      </div>
+      <div class="swot-box swot-o">
+        <h4>机会</h4>
+        <ul>
+          <li>「低牵引 × 深承接」定位带（第 9 节）暂无占位者</li>
+          <li>督促型产品评论区的潜在迁移用户（H2，待验证）</li>
+          <li>语气可选类功能已开始教育市场「温柔是一种产品选择」</li>
+          <li>FocusFeel 未见中文版本，存在时间窗口</li>
+        </ul>
+      </div>
+      <div class="swot-box swot-t">
+        <h4>威胁</h4>
+        <ul>
+          <li>PlanCoach 若推出温和人设或「强制执行模式」落地，将改变竞争格局</li>
+          <li>FocusFeel 若补齐排期能力或推出中文版本，正面竞争</li>
+          <li>SuperPlanner 的迭代速度（十天一版）与多国分发能力</li>
+          <li>竞品商业化跑通后的营销资源优势</li>
+        </ul>
+      </div>
+    </div>
+    <div class="quote" style="border-left-color:var(--accent)">
+      <strong>竞品回答的是「怎么让你动起来」；StepForward 回答的是「动不起来的时候，怎么让你不被自己击垮——并在你想动的那一刻，把门槛降到最低。」</strong>
+      <span class="who">可对外传播的定位表达（供打磨）：「不催你的行动伙伴——先接住你的状态，再把大事拆成今天做得动的一小步。」</span>
+    </div>
+  </section>
+
+  <section id="s14">
+    <h2><span class="num">14</span>从竞品格局到迭代清单</h2>
+    <p>竞品分析的价值最终要落到产品决策上。下表把本次调研识别的机会点，与 StepForward 迭代路线中的待办项逐条对应——已经排进规划的说明其依据，尚未排进的给出优先级建议。</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:20%">竞品格局中的机会点</th>
+            <th style="width:38%">对应动作</th>
+            <th>与现有迭代规划的关系</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>「不催促」空位是隐性优势</strong>（第 9 节读图结论）</td>
+            <td>确立成文的「语气安全规范」：全链路（拆解话术、提醒、完成反馈、睡前仪式、日记回应）禁止催促、施压、评判、比较句式；排期超时提示语专项重审</td>
+            <td>与规划中的<strong>提醒强度差异化</strong>（轻柔/适中/积极三档）合并推进——三档差异化的价值不在「提醒多勤」，在让用户自己选被对待的方式，这是把「低牵引」从默认值变成产品承诺</td>
+          </tr>
+          <tr>
+            <td><strong>FocusFeel 的干预效果回环</strong>（第 6 节）</td>
+            <td>用户画像增加「哪种干预方法在哪种情绪等级下对该用户有效」，注入 AI 上下文</td>
+            <td>ROADMAP 中「越用越懂你」优化的核心内容；配套的<strong>陪伴偏好选项化</strong>方案已设计、暂缓实施——先等用户量起来，避免为想象中的需求加设置项</td>
+          </tr>
+          <tr>
+            <td><strong>语音入口被双竞品验证</strong>（第 7 节）</td>
+            <td>语音输入从浏览器 SpeechRecognition 迁移到 AI 语音识别接口，补齐 iOS 空白</td>
+            <td>已在 Phase 2 规划中，建议结合本次调研结论上调优先级——这是与人群定位最自洽的能力补齐</td>
+          </tr>
+          <tr>
+            <td><strong>数据资产与信任</strong>（洞察三）</td>
+            <td>数据导出与备份（先本地导出，云端同步需后端升级）</td>
+            <td>Phase 3 规划项，标注「需后端架构升级」。技术边界决定了节奏：纯前端架构短期做不了云同步，但本地导出可以先做，日记数据积累越多越紧迫</td>
+          </tr>
+          <tr>
+            <td><strong>PlanCoach 的拆解颗粒度标杆</strong>（第 5 节）</td>
+            <td>把「第一步」成本压到接近零，且允许用户「今天只做第一步」</td>
+            <td>方向已被验证可行：过期任务「先不动」选项、任务 30 秒缓冲机制已在现网。剩余工作是拆解话术的颗粒度对齐，用温和语气包裹</td>
+          </tr>
+          <tr>
+            <td><strong>调度决策的架构债</strong>（第 3 节自证）</td>
+            <td>AGENT 编排层：先串联现有模块，再做定时总结与长期规划，调度 AGENT 为第一个核心能力，含故障自愈</td>
+            <td>远期规划，已有完整 case 记录支撑（过期任务「后推」功能下架的复盘）。核心原则：AGENT 能力增长要让用户感知「更懂我」而非「更多功能」</td>
+          </tr>
+          <tr>
+            <td><strong>设计红线（由人群定位推导，非来自竞品）</strong></td>
+            <td>不引入排行榜、连续打卡、声望扣分等负向反馈；文案避开「拖延症」「杀死拖延」「懒」等污名化表述；不跟进强刺激游戏化路线</td>
+            <td>偏离人群定位进入对手主场的事，做了反而稀释差异化。「偶然发现式成就」（思路储备中）若落地，也须守住这条线</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s15">
+    <h2><span class="num">15</span>后续工作建议</h2>
+    <ol>
+      <li><strong>用户访谈验证核心假设</strong>：招募 5–8 名自述「能量不足/行动力瘫痪」的目标用户，验证 H1（督促敏感度）与「语气安全规范」「提醒强度差异化」两项高优先级需求的强度。</li>
+      <li><strong>补齐一手体验</strong>：完成 FocusFeel 与 SuperPlanner 的实际产品体验（当前仅 PlanCoach 有一手观察），重点记录新手引导、任务创建流程、情绪功能的深度与触发时机、产品语气，回填矩阵中的推断项。</li>
+      <li><strong>竞品档案季度更新</strong>：SuperPlanner 的口径矛盾已证明档案会过时，按季度复核矩阵数据与定价。</li>
+      <li><strong>跟踪重点信号</strong>：PlanCoach 的「强制执行模式」落地情况与教练体系是否出现温和系人设；FocusFeel 的中文市场动向与排期能力补齐进度；SuperPlanner 的情绪模块是否加深。任何一项显著变化，本报告结论需重新评估。</li>
+      <li><strong>样本扩充</strong>：补齐 Goblin Tools、滚雪球等同类产品的一手快评，扩大差异化结论的证据基础。</li>
+    </ol>
+    <div class="callout info">
+      <div class="callout-title">局限性说明</div>
+      <p style="margin-bottom:0">本报告的洞察框架基于单用户一手体验与公开评论佐证，属高置信度假设而非已验证结论；对竞品「局限」的判断以公开资料为限，存在观察者偏差的可能；矩阵中 StepForward 列为自评，能力描述未经第三方验证；「市场空白」的判断限于已调研样本。上述边界已在正文相应位置标注。</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>StepForward 竞品分析与差异化定位报告 · 2026 年 9 月</p>
+    <p style="margin-top:0.5rem">主要信息来源（点击可核验）：<a href="https://focusfeel.com/" target="_blank" rel="noopener">FocusFeel 官网（focusfeel.com）</a> · <a href="https://play.google.com/store/apps/details?id=super.planner.todolist.task.reminder" target="_blank" rel="noopener">Google Play：Super Planner: ADHD Routine AI</a> · <a href="http://plancoach.freemindworkshop.com/" target="_blank" rel="noopener">PlanCoach 官网</a> / <a href="https://apps.apple.com/cn/app/id6748287561" target="_blank" rel="noopener">App Store 商店页</a> · 差评 / 网易科技 / 中国报（2025-11 报道）· 一手产品体验（PlanCoach，单用户样本）· StepForward 产品迭代记录（v1.0–v2.2.8）<br><span style="font-size:0.85em; color:inherit; opacity:0.75">竞品链接核验时点 2026-09；App Store 上另有同名「SuperPlanner: Daily Planner」为另一位开发者的时间块日历应用，与本报告分析对象无关。</span></p>
+  </footer>
+
+  </main>
+  <a href="#top" class="to-top">回到顶部 ↑</a>
+</div>
+
+<script>
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href')));
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector('.toc a[href="#' + e.target.id + '"]');
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px', threshold: 0 });
+  sections.forEach(s => s && obs.observe(s));
+
+  const sidebar = document.getElementById('sidebar');
+  const toggle = document.getElementById('tocToggle');
+  const closeBtn = document.getElementById('tocClose');
+  const openToc = () => { sidebar.classList.add('open'); toggle.setAttribute('aria-expanded', 'true'); };
+  const closeToc = () => { sidebar.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); };
+  toggle.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.contains('open') ? closeToc() : openToc(); });
+  closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeToc(); });
+  tocLinks.forEach(a => a.addEventListener('click', closeToc));
+  document.addEventListener('click', (e) => {
+    if (!sidebar.classList.contains('open')) return;
+    if (sidebar.contains(e.target) || toggle.contains(e.target)) return;
+    closeToc();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeToc(); });
+</script>
+</body>
+</html>
