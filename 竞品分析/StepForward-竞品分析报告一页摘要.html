@@ -39,6 +39,14 @@
   .card li { padding-left: 14px; position: relative; margin-bottom: 4px; }
   .card li::before { content: "·"; position: absolute; left: 2px; font-weight: 900; color: var(--accent); }
 
+  .full-chain {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 14px;
+    padding: 10px 20px; background: var(--accent); color: #fff;
+    border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 13.5px;
+    box-shadow: 0 2px 8px rgba(15,107,95,.25); transition: all .2s ease;
+  }
+  .full-chain:hover { background: #0a5449; transform: translateY(-1px); }
+  .full-chain .arr { font-size: 15px; }
   .persona { border-top: 3px solid var(--accent); }
   .persona .tag { display: inline-block; font-size: 11px; border: 1px solid var(--accent); color: var(--accent); border-radius: 999px; padding: 0 10px; margin-bottom: 6px; }
   .persona.alt { border-top-color: var(--warn); }
@@ -87,6 +95,9 @@
       <span class="chip">检索截至 2026-09</span>
       <span class="chip">方法：公开资料 + 一手体验（PlanCoach，单用户样本）+ 结构化对比</span>
     </div>
+    <a class="full-chain" href="StepForward-竞品分析报告.html" target="_blank">
+      <span class="arr">&#8594;</span> 查看《StepForward-竞品分析报告》全文
+    </a>
   </header>
 
   <section class="conclusion">

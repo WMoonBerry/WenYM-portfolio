@@ -1,0 +1,46 @@
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>多服务商 API Maintenance · 温玥美</title>
+<style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 11pt; line-height: 1.9; color: #2b2b2b; margin: 0; background: #F0F2F5; }
+.sheet { max-width: 760px; margin: 0 auto; background: #FAFBFC; padding: 56px 52px 48px; box-shadow: 0 2px 16px rgba(26,58,92,.06); border-radius: 0 0 8px 8px; }
+.cover-tag { display: inline-block; font-size: .72rem; letter-spacing: .12em; color: #1a3a5c; background: rgba(26,58,92,.08); padding: 4px 12px; border-radius: 999px; font-weight: 600; margin-bottom: 14px; }
+h1 { font-size: 20pt; color: #1a3a5c; border-bottom: 2px solid #5B9BD5; padding-bottom: 10px; margin: 0 0 16px; line-height: 1.35; }
+.cover-sub { color: #4a6a8a; font-size: 10pt; margin: 0 0 20px; }
+.cover-meta { color: #8090a0; font-size: 9pt; margin: 0 0 28px; line-height: 1.6; }
+.lead { background: rgba(91,155,213,.08); border-left: 4px solid #5B9BD5; padding: 12px 16px; font-size: 10pt; color: #33556e; border-radius: 0 6px 6px 0; margin-bottom: 24px; }
+p { margin: 12px 0; }
+strong { color: #1a3a5c; }
+code { font-family: Consolas, monospace; background: rgba(26,58,92,.06); padding: 1px 5px; border-radius: 3px; font-size: 10pt; color: #1a3a5c; }
+a { color: #5B9BD5; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.back-link { display: inline-block; margin-top: 36px; padding: 8px 18px; background: rgba(26,58,92,.06); border: 1px solid rgba(26,58,92,.15); border-radius: 999px; font-size: .85rem; color: #1a3a5c; text-decoration: none; transition: background .2s; }
+.back-link:hover { background: rgba(91,155,213,.1); border-color: #5B9BD5; color: #5B9BD5; }
+@media (max-width: 640px) { .sheet { padding: 32px 24px; } }
+@media print { body { background: #fff; } .sheet { box-shadow: none; } }
+</style></head><body>
+<div class="sheet">
+  <span class="cover-tag">篇 07 · 架构</span>
+  <h1>多服务商 API 的 Maintenance Case<br>——你什么都没做，但东西坏了</h1>
+  <p class="cover-sub">温玥美 ｜ StepForward 产品迭代 · 思考与 Case 作品集</p>
+  <p class="cover-meta">产品 Demo：https://stepforwardletsgo.netlify.app/ ｜ GitHub：https://github.com/WMoonBerry/Stepforward</p>
+
+  <div class="lead">这篇回答了什么产品问题：多服务商 API 的稳定性问题如何产品化处理？——从运维琐事中沉淀出的 Case 分类法。</div>
+
+  <p>那天产品好好的，我一行代码没改，用户反馈 AI 调不了了。查了半天，是 DeepSeek 更新了模型，代码里写死的旧模型名直接 404。不知道坏了多久，可能已经三天了，直到用户反馈才发现。</p>
+
+  <p>我给它归了类：bug 是代码写错，bad case 是功能能用但结果蠢，maintenance case 是外部依赖变了、你没跟上，所以坏了。最难受的是第三种——<strong>什么都没做错，东西却坏了，而且静默。</strong></p>
+
+  <p>StepForward 接了 6 家服务商：DeepSeek、Minimax、OpenAI、智谱、通义千问、Anthropic，配置全硬编码在 <code>api.js</code> 里，每家要维护 API 地址、模型 ID 列表、请求体构建、响应解析等五六项。<code>resolveModel()</code> 做模型名回退，但只能防"用户缓存了旧模型名"，防不了"代码里写死的名字过期"。6 家就是 6 个要盯的变化源，不可能每天看 6 家 changelog。</p>
+
+  <p>调研了成熟产品：LangChain 的适配器、Dify 的插件工厂、LiteLLM 的统一代理、OpenRouter 的聚合，核心都是把差异收敛到一处。但没急着改代码——纯前端阶段，很多方案依赖后端。现在是人工巡检 6 家 changelog 加 <code>resolveModel()</code> 回退；后端升级后走集中配置、前端健康检查、统一代理。</p>
+
+  <p>回头想为什么做成"每家手写一份"：接第一家写一份，第二家复制粘贴改一改，增量成本看着很低——直到服务商更新，你发现 6 份代码都要改，还不知道哪份会出问题。好的架构不是"写的时候爽"，是"改的时候不痛苦"。这道理软件工程讲了几十年，但只有亲自经历过一次，才理解那些"多余"的架构设计是干什么的。</p>
+
+  <p>排查让我定了三条标准。外部依赖越多，维护成本越被低估——接多少家不只是功能决策，也是维护能力决策。可靠性是最基础的产品力——产品再温暖，经常"用不了"用户就会离开，而且静默，用户只会默默不用。Agent 编排层应该包含自动恢复——一家失败就自动降级切下一家，用户不需要知道 API 更新过，只需要知道产品一直能用。</p>
+
+  <p><strong>demo 只需要能用，产品需要一直能用。维护不是运维的事，是产品的事。</strong></p>
+
+  <a href="AI产品思考沉淀.html" class="back-link">← 返回思考文章合集</a>
+</div>
+</body></html>

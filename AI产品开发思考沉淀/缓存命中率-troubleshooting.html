@@ -1,0 +1,46 @@
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>缓存命中率 Troubleshooting · 温玥美</title>
+<style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 11pt; line-height: 1.9; color: #2b2b2b; margin: 0; background: #F0F2F5; }
+.sheet { max-width: 760px; margin: 0 auto; background: #FAFBFC; padding: 56px 52px 48px; box-shadow: 0 2px 16px rgba(26,58,92,.06); border-radius: 0 0 8px 8px; }
+.cover-tag { display: inline-block; font-size: .72rem; letter-spacing: .12em; color: #1a3a5c; background: rgba(26,58,92,.08); padding: 4px 12px; border-radius: 999px; font-weight: 600; margin-bottom: 14px; }
+h1 { font-size: 20pt; color: #1a3a5c; border-bottom: 2px solid #5B9BD5; padding-bottom: 10px; margin: 0 0 16px; line-height: 1.35; }
+.cover-sub { color: #4a6a8a; font-size: 10pt; margin: 0 0 20px; }
+.cover-meta { color: #8090a0; font-size: 9pt; margin: 0 0 28px; line-height: 1.6; }
+.lead { background: rgba(91,155,213,.08); border-left: 4px solid #5B9BD5; padding: 12px 16px; font-size: 10pt; color: #33556e; border-radius: 0 6px 6px 0; margin-bottom: 24px; }
+p { margin: 12px 0; }
+strong { color: #1a3a5c; }
+code { font-family: Consolas, monospace; background: rgba(26,58,92,.06); padding: 1px 5px; border-radius: 3px; font-size: 10pt; color: #1a3a5c; }
+a { color: #5B9BD5; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.back-link { display: inline-block; margin-top: 36px; padding: 8px 18px; background: rgba(26,58,92,.06); border: 1px solid rgba(26,58,92,.15); border-radius: 999px; font-size: .85rem; color: #1a3a5c; text-decoration: none; transition: background .2s; }
+.back-link:hover { background: rgba(91,155,213,.1); border-color: #5B9BD5; color: #5B9BD5; }
+@media (max-width: 640px) { .sheet { padding: 32px 24px; } }
+@media print { body { background: #fff; } .sheet { box-shadow: none; } }
+</style></head><body>
+<div class="sheet">
+  <span class="cover-tag">篇 08 · 案例</span>
+  <h1>缓存命中率下降排查<br>——一次隐性成本的 troubleshooting</h1>
+  <p class="cover-sub">温玥美 ｜ StepForward 产品迭代 · 思考与 Case 作品集</p>
+  <p class="cover-meta">产品 Demo：https://stepforwardletsgo.netlify.app/ ｜ GitHub：https://github.com/WMoonBerry/Stepforward</p>
+
+  <div class="lead">这篇回答了什么产品问题：缓存命中率问题如何排查？——AI 产品里成本与体验的平衡意识。</div>
+
+  <p>做 StepForward 时我一直盯着 token 消耗——靠大模型驱动的产品，每次调用都在浪费的话，用户量一上来成本会很难看。</p>
+
+  <p>有天我对比了 v2.0.0 和 v2.2.3 的缓存命中率。新版本功能多，调用量涨正常，但命中率不该掉这么多——DeepSeek 的 prompt cache 按前缀匹配，system prompt 不变就该稳住。数据说不是。</p>
+
+  <p>把两个版本的代码拉出来对着看。v2.0.0 简单：3 个角色，system prompt 基本固定，命中自然好。v2.2.3 复杂得多，9 个 API 调用点。顺着 <code>buildSystemPrompt</code> 读下去，问题出现了——system prompt 末尾动态注入用户画像，画像来自埋点，每完成一个任务、每表达一次情绪都会更新。system prompt 在持续变化，<strong>前缀哪怕变一个字，算好的 KV cache 也会全部作废。</strong></p>
+
+  <p>继续挖掘，还有别的缓存杀手：拆解 prompt 开头写着"当前时间：9 月 1 日 14:30"，每天变，缓存每天重建；角色从 3 个涨到 5 个，前缀不同，各占一个缓存位；<code>max_tokens</code> 从 1024 涨到 4096，字段不进 prompt，但参与缓存 key 计算。</p>
+
+  <p>从根源上看，代码本身没有坏，产品跑得好好的，用户感知不到异常——它是功能叠加时只看功能生效、不看底层代价的典型陷阱。画像功能本身成立，问题只在注入位置：同样的信息放 system prompt 还是 user message 末尾，体验几乎没差，<strong>成本差一个量级</strong>。</p>
+
+  <p>整理出 6 个优化方向，按收益排序。收益最大的两个：画像移出 system prompt、日期时间移出 prompt 前缀；其次统一各角色 system 前缀、情绪分类改用关键词匹配——分类这种任务用正则就够，何必烧 token。也想过上 RAG 做画像检索，很快否了：RAG 本身就是动态注入，先引入一个让缓存更差的东西再指望它省钱，逻辑是反的。</p>
+
+  <p>这些方案目前停在"已设计、暂不实施"——现阶段用户量小，体验优先。但排查让我确定了两个标准：成本意识是产品 sense 的一部分，<strong>命中率 80% 和 20%，规模化后就是 4 倍成本差；AI 品位体现在用户看不见的地方。</strong></p>
+
+  <a href="AI产品思考沉淀.html" class="back-link">← 返回思考文章合集</a>
+</div>
+</body></html>

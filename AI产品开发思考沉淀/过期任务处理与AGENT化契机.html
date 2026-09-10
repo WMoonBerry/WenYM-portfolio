@@ -1,0 +1,44 @@
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>过期任务处理与 AGENT 化契机 · 温玥美</title>
+<style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 11pt; line-height: 1.9; color: #2b2b2b; margin: 0; background: #F0F2F5; }
+.sheet { max-width: 760px; margin: 0 auto; background: #FAFBFC; padding: 56px 52px 48px; box-shadow: 0 2px 16px rgba(26,58,92,.06); border-radius: 0 0 8px 8px; }
+.cover-tag { display: inline-block; font-size: .72rem; letter-spacing: .12em; color: #1a3a5c; background: rgba(26,58,92,.08); padding: 4px 12px; border-radius: 999px; font-weight: 600; margin-bottom: 14px; }
+h1 { font-size: 20pt; color: #1a3a5c; border-bottom: 2px solid #5B9BD5; padding-bottom: 10px; margin: 0 0 16px; line-height: 1.35; }
+.cover-sub { color: #4a6a8a; font-size: 10pt; margin: 0 0 20px; }
+.cover-meta { color: #8090a0; font-size: 9pt; margin: 0 0 28px; line-height: 1.6; }
+.lead { background: rgba(91,155,213,.08); border-left: 4px solid #5B9BD5; padding: 12px 16px; font-size: 10pt; color: #33556e; border-radius: 0 6px 6px 0; margin-bottom: 24px; }
+p { margin: 12px 0; }
+strong { color: #1a3a5c; }
+code { font-family: Consolas, monospace; background: rgba(26,58,92,.06); padding: 1px 5px; border-radius: 3px; font-size: 10pt; color: #1a3a5c; }
+a { color: #5B9BD5; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.back-link { display: inline-block; margin-top: 36px; padding: 8px 18px; background: rgba(26,58,92,.06); border: 1px solid rgba(26,58,92,.15); border-radius: 999px; font-size: .85rem; color: #1a3a5c; text-decoration: none; transition: background .2s; }
+.back-link:hover { background: rgba(91,155,213,.1); border-color: #5B9BD5; color: #5B9BD5; }
+@media (max-width: 640px) { .sheet { padding: 32px 24px; } }
+@media print { body { background: #fff; } .sheet { box-shadow: none; } }
+</style></head><body>
+<div class="sheet">
+  <span class="cover-tag">篇 06 · 思考</span>
+  <h1>过期任务处理：一个功能做到一半，我却决定停掉</h1>
+  <p class="cover-sub">温玥美 ｜ StepForward 产品迭代 · 思考与 Case 作品集</p>
+  <p class="cover-meta">产品 Demo：https://stepforwardletsgo.netlify.app/ ｜ GitHub：https://github.com/WMoonBerry/Stepforward</p>
+
+  <div class="lead">这篇回答了什么产品问题：过期任务功能为什么主动下架重做？——关于技术债务与架构演进时机的判断。</div>
+
+  <p>用户几天没打开 StepForward，过期的任务怎么办？这是 v2.2.5 遇到的问题。第一轮先修用户反馈的"后推"bug——过期任务全堆到当前时间 +30 分钟，改成"顺延到明天"：按原时间 +24 小时。第二轮加冲突检测：可能撞上已有安排，撞了就弹窗三选一。</p>
+
+  <p>做到这里，顺延按钮点了没反应。debug 时脑子里冒出一个更大的问题：这事是不是从根上就不该用硬代码做？</p>
+
+  <p>越想越不对。顺延一天太粗糙——明天那个时间真有事呢？连三天没打开，任务一路顺延到下周，还有意义吗？冲突检测也粗糙，只能判断时间重叠，可用户明明可以直接问 AI"这些过期的怎么安排"。更要命的是，每多一个边缘情况就多一段代码：过期处理、冲突检测、跨事件偏移、用餐规避……prompt 管 80% 的正常情况，硬代码补 20% 的边缘，补丁自己还会出 bug——按钮没反应就是一个。</p>
+
+  <p>数了数代码里和调度相关的逻辑：拆解 prompt、<code>findTimeConflicts</code> 冲突检测、冲突弹窗、<code>shiftAllSubsequentTasks</code> 整体偏移、过期批量处理、关键词兜底，散在至少 5 个函数里。每一处都在做调度决策的一部分，却没有统一的决策者。突然反应过来：拆解、排期、冲突、重排，本质都是调度——<strong>这是 AI 擅长的事，我却在用硬代码拼。</strong></p>
+
+  <p>我把"顺延到明天"下架了，只保留删除、先不动、已完成三个动作。理由很实际：纯前端加 localStorage，没有编排层的基础设施，硬做只会把简单的事搞复杂；用户的核心痛点也不是"过期任务能不能智能重排"，是"敢不敢开始第一步"。等 Phase 2 后端升级、AGENT 编排层建起来，调度决策收归 AGENT——到那天不是"再加一个功能"，是调度能力自动具备。</p>
+
+  <p>这个 case 和时间安排 bad case、多服务商 API 兼容性指向同一个方向：prompt 加兜底总有覆盖不到的场景；服务商挂了用户不该感知；重排靠硬代码越做越复杂。答案都是 AGENT 编排层。现在的硬代码兜底，都是"没有 AGENT 的时代做 AI 产品"的权宜之计。<strong>分清什么是当下不得不做的妥协、什么是未来的正确方向</strong>——这是这次"做着做着停下来"里最值钱的判断。</p>
+
+  <a href="AI产品思考沉淀.html" class="back-link">← 返回思考文章合集</a>
+</div>
+</body></html>

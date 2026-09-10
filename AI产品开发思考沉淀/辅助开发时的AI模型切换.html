@@ -1,0 +1,48 @@
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>辅助开发时的 AI 模型切换 · 温玥美</title>
+<style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 11pt; line-height: 1.9; color: #2b2b2b; margin: 0; background: #F0F2F5; }
+.sheet { max-width: 760px; margin: 0 auto; background: #FAFBFC; padding: 56px 52px 48px; box-shadow: 0 2px 16px rgba(26,58,92,.06); border-radius: 0 0 8px 8px; }
+.cover-tag { display: inline-block; font-size: .72rem; letter-spacing: .12em; color: #1a3a5c; background: rgba(26,58,92,.08); padding: 4px 12px; border-radius: 999px; font-weight: 600; margin-bottom: 14px; }
+h1 { font-size: 20pt; color: #1a3a5c; border-bottom: 2px solid #5B9BD5; padding-bottom: 10px; margin: 0 0 16px; line-height: 1.35; }
+.cover-sub { color: #4a6a8a; font-size: 10pt; margin: 0 0 20px; }
+.cover-meta { color: #8090a0; font-size: 9pt; margin: 0 0 28px; line-height: 1.6; }
+.lead { background: rgba(91,155,213,.08); border-left: 4px solid #5B9BD5; padding: 12px 16px; font-size: 10pt; color: #33556e; border-radius: 0 6px 6px 0; margin-bottom: 24px; }
+p { margin: 12px 0; }
+strong { color: #1a3a5c; }
+code { font-family: Consolas, monospace; background: rgba(26,58,92,.06); padding: 1px 5px; border-radius: 3px; font-size: 10pt; color: #1a3a5c; }
+a { color: #5B9BD5; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.back-link { display: inline-block; margin-top: 36px; padding: 8px 18px; background: rgba(26,58,92,.06); border: 1px solid rgba(26,58,92,.15); border-radius: 999px; font-size: .85rem; color: #1a3a5c; text-decoration: none; transition: background .2s; }
+.back-link:hover { background: rgba(91,155,213,.1); border-color: #5B9BD5; color: #5B9BD5; }
+@media (max-width: 640px) { .sheet { padding: 32px 24px; } }
+@media print { body { background: #fff; } .sheet { box-shadow: none; } }
+</style></head><body>
+<div class="sheet">
+  <span class="cover-tag">篇 09 · 思考</span>
+  <h1>我的 AI 模型切换场景笔记</h1>
+  <p class="cover-sub">温玥美 ｜ StepForward 产品迭代 · 思考与 Case 作品集</p>
+  <p class="cover-meta">产品 Demo：https://stepforwardletsgo.netlify.app/ ｜ GitHub：https://github.com/WMoonBerry/Stepforward</p>
+
+  <div class="lead">这篇回答了什么产品问题：vibe coding 中何时该切换 AI 模型？——AI 协作开发工作方式的方法论沉淀。</div>
+
+  <p>开发 StepForward 期间攒的一些模型选择直觉——不是系统评测，是用出来的体感。</p>
+
+  <p>规则很简单：<strong>小改动求快，大改动求稳。</strong>改按钮文案、调 prompt 措辞，用 Flash；重构整个模块、排查安卓卡死、气泡定位这类复杂 bug，上 Pro——要读大量代码、分析根因，Flash 容易漏。新功能第一版用 Pro 搭骨架，小修小改换回 Flash。</p>
+
+  <p>翻过一次车：改跨日排期时图快用 Flash，漏改了三个函数，调了半天才发现。打那以后，多文件联动的改动我直接上 Pro。</p>
+
+  <p>什么时候换模型？说白了就是 DeepSeek 搞不定的时候。同一个 bug 排查两轮没结果，换——同一个模型容易陷在同一个思路里。prompt 试了好几版都不行，也换——换模型有时比改 prompt 见效快。方案拿不准就两个模型各问一遍，都说行就稳很多。各家风格确实不同：DeepSeek 偏工程化适合写代码，GLM 更细致，Kimi 长上下文稳。</p>
+
+  <p>任务拆解场景 Flash 够用：简单任务两者差不多，Flash 还快；复杂任务 Pro 拆得细一点，但用户在确认循环里自己调整就好。所以演示模式固定用 DeepSeek Flash：拆解本质是结构化输出，不需要深度推理；速度快、成本低，HR 打开 demo 放开用。</p>
+
+  <p>情绪陪伴是另一回事：写代码看逻辑，陪伴看语气暖不暖、会不会说空话、能不能接住情绪而不是急着给方法。Flash 偏理性，回应"正确"但温度稍弱。我的处理不是依赖模型的输出倾向，而是用 System Prompt 立规矩——反空话套话，7 条禁止加 5 条必须，把回应框在温暖、不评判、不说教里。<strong>模型是基础，prompt 设计直接决定体验质量。</strong></p>
+
+  <p>被模型生态打过几次脸。模型名说下线就下线，旧端点一关产品直接报错；DeepSeek 升级 API，流式输出格式变了一点，前端解析出错，表现是"AI 回复一半就停了"，查了三轮才发现根因不在前端；模型升级后同一个 prompt 效果也可能变——代码没改，体验变了。所以核心 prompt 要有效果基线，升级模型后要重新验证。</p>
+
+  <p>对 AI 产品来说，<strong>"前沿敏感"不是知道多少模型名字，是知道哪个模型适合干什么、知道它会变会坏</strong>——选对场景，也为选错留好后路。</p>
+
+  <a href="AI产品思考沉淀.html" class="back-link">← 返回思考文章合集</a>
+</div>
+</body></html>

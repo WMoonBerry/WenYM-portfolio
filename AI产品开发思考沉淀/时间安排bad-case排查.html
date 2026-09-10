@@ -1,0 +1,50 @@
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>时间安排 Bad Case 排查 · 温玥美</title>
+<style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 11pt; line-height: 1.9; color: #2b2b2b; margin: 0; background: #F0F2F5; }
+.sheet { max-width: 760px; margin: 0 auto; background: #FAFBFC; padding: 56px 52px 48px; box-shadow: 0 2px 16px rgba(26,58,92,.06); border-radius: 0 0 8px 8px; }
+.cover-tag { display: inline-block; font-size: .72rem; letter-spacing: .12em; color: #1a3a5c; background: rgba(26,58,92,.08); padding: 4px 12px; border-radius: 999px; font-weight: 600; margin-bottom: 14px; }
+h1 { font-size: 20pt; color: #1a3a5c; border-bottom: 2px solid #5B9BD5; padding-bottom: 10px; margin: 0 0 16px; line-height: 1.35; }
+.cover-sub { color: #4a6a8a; font-size: 10pt; margin: 0 0 20px; }
+.cover-meta { color: #8090a0; font-size: 9pt; margin: 0 0 28px; line-height: 1.6; }
+.lead { background: rgba(91,155,213,.08); border-left: 4px solid #5B9BD5; padding: 12px 16px; font-size: 10pt; color: #33556e; border-radius: 0 6px 6px 0; margin-bottom: 24px; }
+p { margin: 12px 0; }
+strong { color: #1a3a5c; }
+code { font-family: Consolas, monospace; background: rgba(26,58,92,.06); padding: 1px 5px; border-radius: 3px; font-size: 10pt; color: #1a3a5c; }
+a { color: #5B9BD5; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.back-link { display: inline-block; margin-top: 36px; padding: 8px 18px; background: rgba(26,58,92,.06); border: 1px solid rgba(26,58,92,.15); border-radius: 999px; font-size: .85rem; color: #1a3a5c; text-decoration: none; transition: background .2s; }
+.back-link:hover { background: rgba(91,155,213,.1); border-color: #5B9BD5; color: #5B9BD5; }
+@media (max-width: 640px) { .sheet { padding: 32px 24px; } }
+@media print { body { background: #fff; } .sheet { box-shadow: none; } }
+</style></head><body>
+<div class="sheet">
+  <span class="cover-tag">篇 05 · 案例</span>
+  <h1>时间安排 Bad Case 排查<br>——当规则被严格遵守，结果却违反常识</h1>
+  <p class="cover-sub">温玥美 ｜ StepForward 产品迭代 · 思考与 Case 作品集</p>
+  <p class="cover-meta">产品 Demo：https://stepforwardletsgo.netlify.app/ ｜ GitHub：https://github.com/WMoonBerry/Stepforward</p>
+
+  <div class="lead">这篇回答了什么产品问题：一个时间安排 bad case 如何引发对架构的反思？——从修 bug 到追问系统性根因的完整排查过程。</div>
+
+  <p>测试产品时，我随手输入"中午吃午饭"，AI 把"吃午饭"排到了 11:00。产品明明有午餐时间设置（12:00-13:30），它为了避开，把午饭挪到了 11 点。</p>
+
+  <p>又试了"现在写报告 2 小时"，当时 23:00，AI 把它排到第二天 9:00——我明确说了"现在"，但 23:00 不在工作时间内，规则把它推到了明天。</p>
+
+  <p>功能没坏，规则被严格遵守了，结果违反常识。这就是 bad case——<strong>bug 用户会报错，bad case 是结果很蠢，用户只会默默离开。</strong></p>
+
+  <p>定位到 <code>buildTaskPlannerPrompt</code>，两条硬约束："严格在工作时段内安排""不要排在用餐时段内"。根因是我把设置当成了枷锁：用户设"9:00-18:00"本是"我通常在这段时间做事"，写进 prompt 却变成"只能在这段时间安排"。这偏差 v2.0.4 上线时暴露不出来——测试用例都是"写周报"这类标准场景，直到用户输入生活化的东西。</p>
+
+  <p>方案探索走过弯路。我担心 AI 判断模糊时间不可靠，想过前端预过滤弹窗，推演后否了："晚上做 PPT"的"晚上"是几点，本质是 NLP 问题，前端硬代码做等于重新实现一个 mini AI；而且目标用户被事情压着，让他在输入框里纠结"几点几分"是反人性的。</p>
+
+  <p>最终 v2.2.3 落地的是 prompt 改造加前端兜底：用户意图优先提到最高级，工作/用餐时间降级为默认偏好，吃饭类任务主动放进用餐时段；返回结果用关键词白名单二次校验，说"现在"而偏差超 2 小时的修正回来。</p>
+
+  <p>有个我很看重的判断：区分有害的 bad case 和无害的不一致。吃午饭排到 11 点、说了"现在"被推到明天，是信任破坏，必须修；"下午"理解成 14:00 还是 15:00，差一小时感知不到。<strong>只修质变，不修量变。</strong></p>
+
+  <p>方案没彻底解决问题——ROADMAP 里挂着一条已知未解决场景：用餐时段内输入"写作业"，AI 没避开。长期跟踪中。</p>
+
+  <p>排查还让我看到下一步：现在的 AI 只是执行引擎，画像、情绪记录、日记数据都在，但没串起来。编排层若能注入"用户最近三天午餐在 12:00-12:30"，AI 就不用靠规则猜"中午"是几点。<strong>调度决策收归 AGENT 编排层，记进了规划。</strong></p>
+
+  <a href="AI产品思考沉淀.html" class="back-link">← 返回思考文章合集</a>
+</div>
+</body></html>
