@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>布局预览 · 方案 A — 深度案例 + 轻量网格</title>
+<style>
+  :root {
+    --bg: #faf6ef;
+    --bg-soft: #f4ecdf;
+    --bg-card: #fffdf8;
+    --fg: #3d322b;
+    --fg-soft: #5a4f46;
+    --muted: #8a7e74;
+    --muted-light: #a89d92;
+    --accent: #d67a50;
+    --accent-light: #e39a73;
+    --accent-dark: #b05e38;
+    --accent-bg: #fbeade;
+    --alt: #9a7ab8;
+    --alt-light: #b39acd;
+    --alt-dark: #7953a0;
+    --alt-bg: #f0eaf8;
+    --green: #6fa890;
+    --green-bg: #e5f2ec;
+    --border: #e7ddd0;
+    --border-soft: #efe8dc;
+    --shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    background: var(--bg); color: var(--fg); line-height: 1.6; font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif { font-family: Georgia, "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", STSong, serif; }
+
+  /* ===== 预览工具条（落地时会去掉） ===== */
+  .preview-bar {
+    max-width: 1120px; margin: 20px auto 0;
+    background: var(--fg); color: #fff;
+    border-radius: 12px; padding: 12px 20px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .preview-tag { background: var(--accent); color: #fff; border-radius: 999px; padding: 2px 12px; font-weight: 600; }
+  .preview-bar nav { margin-left: auto; display: flex; gap: 8px; }
+  .preview-bar nav a {
+    color: rgba(255,255,255,0.75); text-decoration: none; padding: 3px 12px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.25); transition: all .2s;
+  }
+  .preview-bar nav a.on { background: #fff; color: var(--fg); border-color: #fff; font-weight: 600; }
+  .preview-bar nav a:hover { color: #fff; border-color: #fff; }
+  .preview-bar nav a.on:hover { color: var(--fg); }
+
+  .page-wrapper {
+    max-width: 1120px; margin: 20px auto 40px;
+    background: var(--bg-card); border-radius: 20px;
+    box-shadow: var(--shadow-lg); border: 1px solid var(--border);
+    padding: 40px 44px 48px;
+  }
+  .section-title { font-size: 20px; font-weight: 700; color: var(--fg); margin-bottom: 16px; letter-spacing: -0.02em; }
+  .section-title-sm { font-size: 15px; font-weight: 600; color: var(--fg-soft); margin-bottom: 12px; letter-spacing: -0.01em; }
+  .section-divider { height: 1px; background: var(--border-soft); margin: 32px 0; }
+
+  /* ===== 深度案例卡 ===== */
+  .project-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 16px; transition: box-shadow 0.2s, transform 0.2s; }
+  .project-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; flex-wrap: wrap; gap: 8px; }
+  .project-title { font-size: 18px; font-weight: 700; color: var(--fg); letter-spacing: -0.01em; }
+  .project-date { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .project-subtitle { font-size: 14px; color: var(--accent-dark); font-weight: 500; margin-bottom: 14px; }
+  .project-content { font-size: 14px; color: var(--fg-soft); line-height: 1.8; }
+  .project-content p { margin-bottom: 8px; }
+  .project-content strong { color: var(--fg); font-weight: 600; }
+  .project-content ul { list-style: none; padding: 0; margin: 6px 0; }
+  .project-content li { padding: 3px 0; padding-left: 4px; }
+  .project-links { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-soft); display: flex; gap: 20px; flex-wrap: wrap; }
+  .project-links a { font-size: 13px; color: var(--accent-dark); text-decoration: none; font-weight: 500; }
+  .project-links a:hover { text-decoration: underline; }
+
+  /* ===== ListentoMe 视频式使用演示（自动轮播） ===== */
+  .ltm-demo { margin-top: 16px; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 14px; padding: 18px; }
+  .ltm-demo-title { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--fg-soft); margin-bottom: 12px; }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 1.6s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  .ltm-stage { position: relative; aspect-ratio: 735/468; background: #fffdf8; border: 1px solid var(--border-soft); border-radius: 12px; overflow: hidden; }
+  .ltm-frame { position: absolute; inset: 0; opacity: 0; transition: opacity .5s ease; }
+  .ltm-frame.on { opacity: 1; }
+  .ltm-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+  .ltm-steps { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .ltm-step {
+    flex: 1; min-width: 120px; text-align: center; cursor: pointer;
+    background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 10px;
+    padding: 8px 10px; font-size: 12px; color: var(--muted); transition: all .25s;
+  }
+  .ltm-step b { display: block; font-size: 12px; color: var(--fg-soft); margin-bottom: 2px; }
+  .ltm-step.on { background: var(--accent-bg); border-color: var(--accent-light); color: var(--accent-dark); }
+  .ltm-step.on b { color: var(--accent-dark); }
+  .ltm-dots { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
+  .ltm-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); border: none; cursor: pointer; padding: 0; transition: all .25s; }
+  .ltm-dot.on { background: var(--accent); width: 18px; border-radius: 4px; }
+
+  /* ===== 轻量网格卡 ===== */
+  .mini-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .mini-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: box-shadow .2s, transform .2s; display: flex; flex-direction: column; }
+  .mini-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .mini-cover { aspect-ratio: 16/10; background: var(--bg-soft); overflow: hidden; }
+  .mini-cover img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+  .mini-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .mini-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .mini-title { font-size: 16px; font-weight: 700; }
+  .mini-date { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .mini-sub { font-size: 13px; color: var(--accent-dark); font-weight: 500; }
+  .mini-desc { font-size: 13px; color: var(--fg-soft); line-height: 1.7; flex: 1; }
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: 11px; padding: 2px 10px; border-radius: 20px; background: var(--accent-bg); color: var(--fg-soft); }
+  .tag:nth-child(even) { background: var(--alt-bg); }
+  .mini-link { font-size: 13px; color: var(--accent-dark); text-decoration: none; font-weight: 500; margin-top: 2px; }
+  .mini-link:hover { text-decoration: underline; }
+
+  /* ===== 使用流程截图（StepForward 深度区） ===== */
+  .flow-section { margin-top: 20px; }
+  .flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 14px; }
+  .flow-item { text-align: center; }
+  .flow-img {
+    background: #fffdf8; border: 1px solid var(--border); border-radius: 16px; padding: 10px;
+    box-shadow: var(--shadow); margin-bottom: 8px;
+  }
+  .flow-img img { width: 100%; border-radius: 10px; display: block; }
+  .flow-cap { font-size: 13px; color: var(--fg-soft); }
+  .flow-sub { font-size: 11px; color: var(--muted); }
+
+  @media (max-width: 760px) {
+    .page-wrapper { padding: 24px 18px; }
+    .mini-grid { grid-template-columns: 1fr; }
+    .flow-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-bar">
+  <span class="preview-tag">布局预览 · 方案 A</span>
+  <span>深度案例（可讲透）+ 轻量网格（一起亮相）</span>
+  <nav>
+    <a href="方案A-深度案例.html" class="on">方案 A</a>
+    <a href="方案B-时间线.html">方案 B</a>
+    <a href="方案C-橱窗大图.html">方案 C</a>
+  </nav>
+</div>
+
+<div class="page-wrapper">
+  <div class="section-title serif">产品作品</div>
+  <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">我独立负责的产品与项目。从 0 到 1，从定义到迭代。</p>
+
+  <!-- ===== 深度案例 1：StepForward ===== -->
+  <div class="project-card">
+    <div class="project-header">
+      <div class="project-title serif">StepForward（步步向前）</div>
+      <div class="project-date">2026.07 – 至今</div>
+    </div>
+    <div class="project-subtitle">AI 任务拆解 × 情绪陪伴 · 独立产品负责人</div>
+    <div class="project-content">
+      <p><strong>一句话定位：</strong> 当你动不起来的时候，先接住你的情绪，再陪你慢慢启动。</p>
+      <p><strong>核心亮点：</strong></p>
+      <ul>
+        <li>🎯 从 0 到 1 主导产品全流程：v1.0 → v2.2.8 持续迭代上线，20+ 版本</li>
+        <li>🧠 AI 架构决策：多 Provider 接入（OpenAI 兼容 + Anthropic 双协议、6+ 模型），分场景匹配模型、自动降级；关闭思考模式，以 20 条测试 prompt 测算单次拆解 token 平均约降 40-60%</li>
+        <li>🎭 多 AI 角色设计：幕僚（拆解）/ 会夸你的好朋友（完成）/ 知心陪伴者（情绪）/ 笔友（日记）/ 知心陪伴者（晚安）</li>
+        <li>🛡️ 安全边界设计：前端 24 关键词硬编码 + AI 辅助识别双机制，接入 3 条 24h 援助热线</li>
+        <li>📝 迭代方法论：白屏危机后建立「稳定基线 + 单条增量 + 发布前验证」流程</li>
+      </ul>
+      <p><strong>开发模式：</strong> AI 协作开发（vibe coding），产品定义、交互设计、验收标准与迭代决策由本人主导。</p>
+    </div>
+    <div class="project-links">
+      <a href="https://stepforwardletsgo.netlify.app/" target="_blank">在线体验 →</a>
+      <a href="https://WMoonBerry.github.io/stepforward-intro/" target="_blank">产品介绍页 →</a>
+    </div>
+
+    <div class="flow-section">
+      <div class="section-title-sm serif">产品使用流程</div>
+      <div class="flow-grid">
+        <div class="flow-item">
+          <div class="flow-img"><img src="assets/sf_task.jpg" alt="任务拆解"></div>
+          <div class="flow-cap">拆解 · 幕僚</div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-img"><img src="assets/sf_encourage.jpg" alt="完成鼓励"></div>
+          <div class="flow-cap">完成 · 好朋友</div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-img"><img src="assets/sf_emotion.jpg" alt="情绪陪伴"></div>
+          <div class="flow-cap">情绪 · 知心陪伴者</div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-img"><img src="assets/sf_diary.jpg" alt="成长日记"></div>
+          <div class="flow-cap">日记 · 笔友</div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-img"><img src="assets/sf_night.jpg" alt="晚安仪式"></div>
+          <div class="flow-cap">晚安 · 知心陪伴者</div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-img" style="display:flex; align-items:center; justify-content:center; min-height:180px; background:var(--alt-bg); flex-direction:column; gap:8px; padding:20px;">
+            <div style="font-size:32px;">🌱</div>
+            <div class="flow-cap" style="font-weight:700;">同一个 AI，五种人格</div>
+            <div class="flow-sub">在每一个需要的时刻，用对的方式陪你</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 深度案例 2：ListentoMe ===== -->
+  <div class="project-card">
+    <div class="project-header">
+      <div class="project-title serif">ListentoMe · 精听练习</div>
+      <div class="project-date">2026.10 – 至今</div>
+    </div>
+    <div class="project-subtitle">把「听不懂」练成「听得懂」的精听工具 · 独立产品人</div>
+    <div class="project-content">
+      <p><strong>一句话定位：</strong> 导入任何英文材料，自动切成语块，一句一句地听、跟读、标记，直到真的听懂。</p>
+      <p><strong>核心亮点：</strong></p>
+      <ul>
+        <li>🔁 精听闭环：导入（文本 / PDF）→ 自动切分语块（可手动微调）→ 逐句精听 → 跟读录音 → 标记复习，跨会话自动续听</li>
+        <li>🔒 本地优先：材料与进度全部存在本地，PDF 本地解析不上传；PWA 离线可用、可安装为独立应用</li>
+        <li>🗣️ 跟读评分：Web Speech API 优选神经语音朗读，跟读自动评分反馈</li>
+        <li>🧱 零构建工程：纯 ES Modules + localStorage 分版本 schema，MVP 冻结后按账本小步迭代</li>
+      </ul>
+    </div>
+
+    <!-- 视频式使用演示 -->
+    <div class="ltm-demo" id="ltmDemo">
+      <div class="ltm-demo-title"><span class="live-dot"></span>使用过程演示 · 自动播放（共 4 步）</div>
+      <div class="ltm-stage">
+        <div class="ltm-frame on"><img src="assets/ltm_import_filled.png" alt="① 导入材料"></div>
+        <div class="ltm-frame"><img src="assets/ltm_split_top.png" alt="② 切分语块"></div>
+        <div class="ltm-frame"><img src="assets/ltm_practice_playing.png" alt="③ 逐句精听"></div>
+        <div class="ltm-frame"><img src="assets/ltm_review.png" alt="④ 标记复习"></div>
+      </div>
+      <div class="ltm-steps">
+        <div class="ltm-step on" data-i="0"><b>① 导入材料</b>粘贴文本或选本地 PDF</div>
+        <div class="ltm-step" data-i="1"><b>② 切分语块</b>自动切分，可手动微调</div>
+        <div class="ltm-step" data-i="2"><b>③ 逐句精听</b>播放 · 跟读 · 录音评分</div>
+        <div class="ltm-step" data-i="3"><b>④ 标记复习</b>难句进复习队列，续听不断</div>
+      </div>
+      <div class="ltm-dots">
+        <button class="ltm-dot on" data-i="0" aria-label="第 1 步"></button>
+        <button class="ltm-dot" data-i="1" aria-label="第 2 步"></button>
+        <button class="ltm-dot" data-i="2" aria-label="第 3 步"></button>
+        <button class="ltm-dot" data-i="3" aria-label="第 4 步"></button>
+      </div>
+    </div>
+
+    <div class="project-links" style="margin-top:16px;">
+      <a href="https://comeandlisten.netlify.app/" target="_blank">在线体验 →</a>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== 轻量网格 ===== -->
+  <div class="section-title-sm serif">更多作品</div>
+  <div class="mini-grid">
+    <div class="mini-card">
+      <div class="mini-cover"><img src="assets/chongming_home_hero.png" alt="蟲鸣岛首页"></div>
+      <div class="mini-body">
+        <div class="mini-top">
+          <div class="mini-title serif">蟲鸣岛</div>
+          <div class="mini-date">2026.10</div>
+        </div>
+        <div class="mini-sub">中英双语 · 生态生活杂志站</div>
+        <div class="mini-desc">故事地图 × 商品 × 活动日历 × 订阅。Supabase 后台（管理员白名单 + RLS），三级数据降级（缓存 → 数据库 → 本地 JSON），断网也有兜底。</div>
+        <div class="tag-row"><span class="tag">双语内容站</span><span class="tag">Supabase + RLS</span><span class="tag">数据降级</span></div>
+        <a class="mini-link" href="https://chongmingisland.netlify.app/" target="_blank">在线体验 →</a>
+      </div>
+    </div>
+    <div class="mini-card">
+      <div class="mini-cover"><img src="assets/xiaoqi_main.png" alt="小栖主界面"></div>
+      <div class="mini-body">
+        <div class="mini-top">
+          <div class="mini-title serif">小栖 · AI 陪伴机制演示</div>
+          <div class="mini-date">2026.09</div>
+        </div>
+        <div class="mini-sub">把「AI 陪伴怎么做才安全」做成可玩的机制</div>
+        <div class="mini-desc">人设锚 + 事件化记忆（删除有反向链路）、L1-L4 响应路由（L4 危机干预自动触发）、击穿拦截、成本估算，3 款换肤；Netlify Function 代理藏 Key。</div>
+        <div class="tag-row"><span class="tag">机制设计</span><span class="tag">安全边界</span><span class="tag">成本估算</span></div>
+        <a class="mini-link" href="https://demoofxiaoqi.netlify.app/" target="_blank">在线体验 →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 产品思考引导 -->
+  <div class="project-card">
+    <div class="project-header">
+      <div class="project-title serif">产品思考文章</div>
+      <div class="project-date">2026.08 – 至今</div>
+    </div>
+    <div class="project-subtitle">做产品过程中的复盘与反思</div>
+    <div class="project-content">
+      <p>做 StepForward 的过程中写了一些文章，记录踩过的坑和思考。完整内容见「产品思考」页签。</p>
+    </div>
+    <div class="project-links">
+      <a href="#">阅读更多 →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ListentoMe 视频式演示轮播
+  (function () {
+    var root = document.getElementById('ltmDemo');
+    var frames = root.querySelectorAll('.ltm-frame');
+    var steps = root.querySelectorAll('.ltm-step');
+    var dots = root.querySelectorAll('.ltm-dot');
+    var cur = 0, timer = null, N = frames.length;
+
+    function go(i) {
+      cur = (i + N) % N;
+      frames.forEach(function (f, k) { f.classList.toggle('on', k === cur); });
+      steps.forEach(function (s, k) { s.classList.toggle('on', k === cur); });
+      dots.forEach(function (d, k) { d.classList.toggle('on', k === cur); });
+    }
+    function play() { stop(); timer = setInterval(function () { go(cur + 1); }, 2800); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+    steps.forEach(function (s) { s.addEventListener('click', function () { go(+s.dataset.i); play(); }); });
+    dots.forEach(function (d) { d.addEventListener('click', function () { go(+d.dataset.i); play(); }); });
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', play);
+    play();
+  })();
+</script>
+</body>
+</html>

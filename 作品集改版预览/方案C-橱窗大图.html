@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>布局预览 · 方案 C — 展示橱窗大图</title>
+<style>
+  :root {
+    --bg: #faf6ef;
+    --bg-soft: #f4ecdf;
+    --bg-card: #fffdf8;
+    --fg: #3d322b;
+    --fg-soft: #5a4f46;
+    --muted: #8a7e74;
+    --muted-light: #a89d92;
+    --accent: #d67a50;
+    --accent-light: #e39a73;
+    --accent-dark: #b05e38;
+    --accent-bg: #fbeade;
+    --alt: #9a7ab8;
+    --alt-light: #b39acd;
+    --alt-dark: #7953a0;
+    --alt-bg: #f0eaf8;
+    --green: #6fa890;
+    --green-bg: #e5f2ec;
+    --border: #e7ddd0;
+    --border-soft: #efe8dc;
+    --shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    background: var(--bg); color: var(--fg); line-height: 1.6; font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif { font-family: Georgia, "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", STSong, serif; }
+
+  /* ===== 预览工具条（落地时会去掉） ===== */
+  .preview-bar {
+    max-width: 1120px; margin: 20px auto 0;
+    background: var(--fg); color: #fff;
+    border-radius: 12px; padding: 12px 20px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .preview-tag { background: var(--accent); color: #fff; border-radius: 999px; padding: 2px 12px; font-weight: 600; }
+  .preview-bar nav { margin-left: auto; display: flex; gap: 8px; }
+  .preview-bar nav a {
+    color: rgba(255,255,255,0.75); text-decoration: none; padding: 3px 12px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.25); transition: all .2s;
+  }
+  .preview-bar nav a.on { background: #fff; color: var(--fg); border-color: #fff; font-weight: 600; }
+  .preview-bar nav a:hover { color: #fff; border-color: #fff; }
+  .preview-bar nav a.on:hover { color: var(--fg); }
+
+  .page-wrapper {
+    max-width: 1120px; margin: 20px auto 40px;
+    background: var(--bg-card); border-radius: 20px;
+    box-shadow: var(--shadow-lg); border: 1px solid var(--border);
+    padding: 40px 44px 48px;
+  }
+  .section-title { font-size: 20px; font-weight: 700; color: var(--fg); margin-bottom: 16px; letter-spacing: -0.02em; }
+
+  /* ===== 橱窗区块 ===== */
+  .window { display: flex; gap: 32px; align-items: center; margin-bottom: 56px; }
+  .window:last-child { margin-bottom: 0; }
+  .window.flip { flex-direction: row-reverse; }
+  .w-visual { flex: 1.35; min-width: 0; }
+  .w-text { flex: 1; min-width: 0; }
+
+  .w-num {
+    font-size: 13px; font-weight: 700; letter-spacing: 0.14em;
+    color: var(--accent-light); margin-bottom: 6px;
+  }
+  .window.flip .w-num { color: var(--alt-light); }
+  .w-title { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .w-sub { font-size: 14px; color: var(--accent-dark); font-weight: 500; margin-bottom: 12px; }
+  .window.flip .w-sub { color: var(--alt-dark); }
+  .w-desc { font-size: 14px; color: var(--fg-soft); line-height: 1.8; margin-bottom: 14px; }
+  .w-points { list-style: none; margin-bottom: 16px; }
+  .w-points li { font-size: 13px; color: var(--fg-soft); padding: 4px 0 4px 18px; position: relative; }
+  .w-points li::before { content: "·"; position: absolute; left: 4px; color: var(--accent); font-weight: 700; }
+  .window.flip .w-points li::before { color: var(--alt); }
+  .w-meta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .w-link { font-size: 13px; color: var(--accent-dark); text-decoration: none; font-weight: 600; border-bottom: 1px solid var(--accent-light); padding-bottom: 1px; }
+  .w-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .window.flip .w-link { color: var(--alt-dark); border-bottom-color: var(--alt-light); }
+  .w-date { font-size: 12px; color: var(--muted); }
+
+  /* 视觉框 */
+  .w-frame { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 18px; padding: 12px; box-shadow: var(--shadow-md); transition: transform .25s, box-shadow .25s; }
+  .window:hover .w-frame { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .w-frame img { width: 100%; border-radius: 12px; display: block; object-fit: cover; object-position: top center; }
+  .w-frame.landscape img { aspect-ratio: 16/9.5; }
+  .w-frame.pair { display: flex; gap: 10px; }
+  .w-frame.pair img { width: calc(50% - 5px); aspect-ratio: 9/14; object-fit: cover; }
+
+  /* ListentoMe 视频式演示 */
+  .ltm-stage { position: relative; aspect-ratio: 735/468; background: #fffdf8; border-radius: 12px; overflow: hidden; }
+  .ltm-frame { position: absolute; inset: 0; opacity: 0; transition: opacity .5s ease; }
+  .ltm-frame.on { opacity: 1; }
+  .ltm-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+  .ltm-steps { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .ltm-step {
+    flex: 1; min-width: 110px; text-align: center; cursor: pointer;
+    background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 10px;
+    padding: 8px 8px; font-size: 12px; color: var(--muted); transition: all .25s;
+  }
+  .ltm-step b { display: block; font-size: 12px; color: var(--fg-soft); margin-bottom: 2px; }
+  .ltm-step.on { background: var(--accent-bg); border-color: var(--accent-light); color: var(--accent-dark); }
+  .ltm-step.on b { color: var(--accent-dark); }
+
+  /* 分隔装饰 */
+  .w-divider { height: 1px; background: var(--border-soft); margin: 0 0 56px; position: relative; }
+  .w-divider::after { content: "✳"; position: absolute; left: 50%; top: -10px; transform: translateX(-50%); background: var(--bg-card); padding: 0 14px; color: var(--accent-light); font-size: 14px; }
+
+  @media (max-width: 800px) {
+    .page-wrapper { padding: 24px 18px; }
+    .window, .window.flip { flex-direction: column; align-items: stretch; gap: 18px; margin-bottom: 40px; }
+    .w-divider { margin-bottom: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-bar">
+  <span class="preview-tag">布局预览 · 方案 C</span>
+  <span>展示橱窗 · 大图先行，编辑感排版</span>
+  <nav>
+    <a href="方案A-深度案例.html">方案 A</a>
+    <a href="方案B-时间线.html">方案 B</a>
+    <a href="方案C-橱窗大图.html" class="on">方案 C</a>
+  </nav>
+</div>
+
+<div class="page-wrapper">
+  <div class="section-title serif">产品作品</div>
+  <p style="color:var(--muted); font-size:14px; margin-bottom:32px;">四个作品，四种陪伴与连接的方式。</p>
+
+  <!-- 01 StepForward -->
+  <div class="window">
+    <div class="w-visual">
+      <div class="w-frame pair">
+        <img src="assets/sf_task.jpg" alt="任务拆解">
+        <img src="assets/sf_emotion.jpg" alt="情绪陪伴">
+      </div>
+    </div>
+    <div class="w-text">
+      <div class="w-num">01</div>
+      <div class="w-title serif">StepForward（步步向前）</div>
+      <div class="w-sub">AI 任务拆解 × 情绪陪伴 · 独立产品负责人 · 2026.07 – 至今</div>
+      <div class="w-desc">当你动不起来的时候，先接住你的情绪，再陪你慢慢启动。从 0 到 1 主导全流程，v1.0 → v2.2.8 持续迭代 20+ 版本。</div>
+      <ul class="w-points">
+        <li>多 Provider AI 架构，分场景匹配模型，单次拆解 token 实测降 40-60%</li>
+        <li>同一个 AI，五种人格：幕僚 / 好朋友 / 陪伴者 / 笔友 / 晚安疗愈师</li>
+        <li>安全边界：关键词硬编码 + AI 辅助识别，接入 3 条 24h 援助热线</li>
+      </ul>
+      <div class="w-meta">
+        <a class="w-link" href="https://stepforwardletsgo.netlify.app/" target="_blank">在线体验 →</a>
+        <a class="w-link" style="font-weight:400;" href="https://WMoonBerry.github.io/stepforward-intro/" target="_blank">产品介绍页 →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-divider"></div>
+
+  <!-- 02 ListentoMe -->
+  <div class="window flip">
+    <div class="w-visual">
+      <div class="w-frame" style="padding:14px;">
+        <div class="ltm-stage" id="ltmStage">
+          <div class="ltm-frame on"><img src="assets/ltm_import_filled.png" alt="① 导入材料"></div>
+          <div class="ltm-frame"><img src="assets/ltm_split_top.png" alt="② 切分语块"></div>
+          <div class="ltm-frame"><img src="assets/ltm_practice_playing.png" alt="③ 逐句精听"></div>
+          <div class="ltm-frame"><img src="assets/ltm_review.png" alt="④ 标记复习"></div>
+        </div>
+        <div class="ltm-steps">
+          <div class="ltm-step on" data-i="0"><b>① 导入</b>文本 / PDF</div>
+          <div class="ltm-step" data-i="1"><b>② 切分</b>语块可微调</div>
+          <div class="ltm-step" data-i="2"><b>③ 精听</b>跟读评分</div>
+          <div class="ltm-step" data-i="3"><b>④ 复习</b>续听不断</div>
+        </div>
+      </div>
+    </div>
+    <div class="w-text">
+      <div class="w-num">02</div>
+      <div class="w-title serif">ListentoMe · 精听练习</div>
+      <div class="w-sub">把「听不懂」练成「听得懂」 · 独立产品人 · 2026.10 – 至今</div>
+      <div class="w-desc">导入任何英文材料，自动切成语块，一句一句地听、跟读、标记，直到真的听懂。左边是使用过程的完整演示。</div>
+      <ul class="w-points">
+        <li>精听闭环：导入 → 切分 → 精听 → 跟读评分 → 复习，跨会话自动续听</li>
+        <li>本地优先 + PWA 离线可用，PDF 本地解析不上传</li>
+        <li>零构建纯前端，localStorage 分版本 schema，MVP 冻结后按账本小步迭代</li>
+      </ul>
+      <div class="w-meta">
+        <a class="w-link" href="https://comeandlisten.netlify.app/" target="_blank">在线体验 →</a>
+        <span class="w-date">v0.4 · 持续迭代中</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-divider"></div>
+
+  <!-- 03 蟲鸣岛 -->
+  <div class="window">
+    <div class="w-visual">
+      <div class="w-frame landscape"><img src="assets/chongming_home_hero.png" alt="蟲鸣岛首页"></div>
+    </div>
+    <div class="w-text">
+      <div class="w-num">03</div>
+      <div class="w-title serif">蟲鸣岛</div>
+      <div class="w-sub">中英双语 · 生态生活杂志站 · 2026.10</div>
+      <div class="w-desc">故事地图 × 商品 × 活动日历 × 订阅。「Behind every food is a place worth knowing.」</div>
+      <ul class="w-points">
+        <li>Supabase 后台：管理员白名单 + RLS 行级权限</li>
+        <li>三级数据降级：缓存 → 数据库 → 本地 JSON，断网也有兜底</li>
+        <li>双语内容体系与纸感视觉设计（深绿 × 陶土）</li>
+      </ul>
+      <div class="w-meta">
+        <a class="w-link" href="https://chongmingisland.netlify.app/" target="_blank">在线体验 →</a>
+        <span class="w-date">中 / EN 双语</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-divider"></div>
+
+  <!-- 04 小栖 -->
+  <div class="window flip">
+    <div class="w-visual">
+      <div class="w-frame landscape"><img src="assets/xiaoqi_main.png" alt="小栖主界面"></div>
+    </div>
+    <div class="w-text">
+      <div class="w-num">04</div>
+      <div class="w-title serif">小栖 · AI 陪伴机制演示</div>
+      <div class="w-sub">AI 陪伴机制的可玩演示 · 2026.09</div>
+      <div class="w-desc">把「AI 陪伴怎么做才安全」从论文式思考做成可以亲手玩的东西。</div>
+      <ul class="w-points">
+        <li>L1-L4 响应路由：倾听 / 安抚 / 建议用户主权切换，L4 危机干预自动触发</li>
+        <li>事件化记忆：可删除、有反向链路；「结束对话 · 记忆轮」沉淀长期记忆</li>
+        <li>击穿拦截 + 成本估算 + 3 款换肤，Netlify Function 代理藏 Key</li>
+      </ul>
+      <div class="w-meta">
+        <a class="w-link" href="https://demoofxiaoqi.netlify.app/" target="_blank">在线体验 →</a>
+        <span class="w-date">已接入真实大模型</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ListentoMe 视频式演示轮播
+  (function () {
+    var stage = document.getElementById('ltmStage');
+    if (!stage) return;
+    var frames = stage.querySelectorAll('.ltm-frame');
+    var steps = document.querySelectorAll('.ltm-step');
+    var cur = 0, timer = null, N = frames.length;
+
+    function go(i) {
+      cur = (i + N) % N;
+      frames.forEach(function (f, k) { f.classList.toggle('on', k === cur); });
+      steps.forEach(function (s, k) { s.classList.toggle('on', k === cur); });
+    }
+    function play() { stop(); timer = setInterval(function () { go(cur + 1); }, 2800); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+    steps.forEach(function (s) { s.addEventListener('click', function () { go(+s.dataset.i); play(); }); });
+    stage.addEventListener('mouseenter', stop);
+    stage.addEventListener('mouseleave', play);
+    play();
+  })();
+</script>
+</body>
+</html>
