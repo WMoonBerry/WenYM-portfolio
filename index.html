@@ -234,6 +234,53 @@
   .flow-cap { font-size: 13px; font-weight: 600; color: var(--fg); }
   .flow-sub { font-size: 12px; color: var(--muted); }
 
+  /* Portfolio showcase windows (layout C) */
+  .window { display: flex; gap: 32px; align-items: center; margin-bottom: 56px; }
+  .window:last-child { margin-bottom: 0; }
+  .window.flip { flex-direction: row-reverse; }
+  .w-visual { flex: 1.35; min-width: 0; }
+  .w-text { flex: 1; min-width: 0; }
+  .w-num { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; color: var(--accent-light); margin-bottom: 6px; }
+  .window.flip .w-num { color: var(--alt-light); }
+  .w-title { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .w-sub { font-size: 14px; color: var(--accent-dark); font-weight: 500; margin-bottom: 12px; }
+  .window.flip .w-sub { color: var(--alt-dark); }
+  .w-desc { font-size: 14px; color: var(--fg-soft); line-height: 1.8; margin-bottom: 14px; }
+  .w-points { list-style: none; margin-bottom: 16px; }
+  .w-points li { font-size: 13px; color: var(--fg-soft); padding: 4px 0 4px 18px; position: relative; }
+  .w-points li::before { content: "·"; position: absolute; left: 4px; color: var(--accent); font-weight: 700; }
+  .window.flip .w-points li::before { color: var(--alt); }
+  .w-meta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .w-link { font-size: 13px; color: var(--accent-dark); text-decoration: none; font-weight: 600; border-bottom: 1px solid var(--accent-light); padding-bottom: 1px; }
+  .w-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .window.flip .w-link { color: var(--alt-dark); border-bottom-color: var(--alt-light); }
+  .w-date { font-size: 12px; color: var(--muted); }
+  .w-frame { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 18px; padding: 12px; box-shadow: var(--shadow-md); transition: transform .25s, box-shadow .25s; }
+  .window:hover .w-frame { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .w-frame img { width: 100%; border-radius: 12px; display: block; object-fit: cover; object-position: top center; }
+  .w-frame.landscape img { aspect-ratio: 16/9.5; }
+  .w-frame.pair { display: flex; gap: 10px; }
+  .w-frame.pair img { width: calc(50% - 5px); aspect-ratio: 9/14; object-fit: cover; }
+  .w-divider { height: 1px; background: var(--border-soft); margin: 0 0 56px; position: relative; }
+  .w-divider::after { content: "✳"; position: absolute; left: 50%; top: -10px; transform: translateX(-50%); background: var(--bg-card); padding: 0 14px; color: var(--accent-light); font-size: 14px; }
+  .ltm-stage { position: relative; aspect-ratio: 735/468; background: #fffdf8; border-radius: 12px; overflow: hidden; }
+  .ltm-frame { position: absolute; inset: 0; opacity: 0; transition: opacity .5s ease; }
+  .ltm-frame.on { opacity: 1; }
+  .ltm-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+  .ltm-steps { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .ltm-step {
+    flex: 1; min-width: 110px; text-align: center; cursor: pointer;
+    background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 10px;
+    padding: 8px; font-size: 12px; color: var(--muted); transition: all .25s;
+  }
+  .ltm-step b { display: block; font-size: 12px; color: var(--fg-soft); margin-bottom: 2px; }
+  .ltm-step.on { background: var(--accent-bg); border-color: var(--accent-light); color: var(--accent-dark); }
+  .ltm-step.on b { color: var(--accent-dark); }
+  @media (max-width: 800px) {
+    .window, .window.flip { flex-direction: column; align-items: stretch; gap: 18px; margin-bottom: 40px; }
+    .w-divider { margin-bottom: 40px; }
+  }
+
   /* Post list */
   .post-item { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border-soft); align-items: flex-start; transition: background 0.15s; cursor: pointer; border-radius: 8px; padding-left: 8px; }
   .post-item:hover { background: var(--bg-soft); }
@@ -383,7 +430,6 @@
             </div>
             <div class="feature-card-links" data-page-node-id="zHf1HOnmddlSsWk2T98X4a">
               <a href="https://stepforwardletsgo.netlify.app/" target="_blank" data-page-node-id="1Woi5wANv2AxYwFJaRbsl3">在线体验 →</a>
-              <a href="https://github.com/WMoonBerry/Stepforward" target="_blank" data-page-node-id="FFmRj0ApcwEso44vE1Thfj">GitHub →</a>
               <a data-page-node-id="Ks785TjHG31DGfc06VAxhM">产品说明（见作品集）</a>
             </div>
           </div>
@@ -482,77 +528,114 @@
         <!-- ===== 产品作品 ===== -->
         <div class="page-section" id="page-projects" data-page-node-id="7LRBf4O1jLUqAE4mP22Mav">
           <div class="section-title serif" data-page-node-id="eyWzowiLqbWroVoRoBEsp7">产品作品</div>
-          <p style="color:var(--muted); font-size:14px; margin-bottom:24px;" data-page-node-id="sOoIElL2VFcoHm6fqDordT">我独立负责的产品与项目。从 0 到 1，从定义到迭代。</p>
+          <p style="color:var(--muted); font-size:14px; margin-bottom:32px;">四个作品，四种陪伴与连接的方式。</p>
 
-          <div class="project-card" data-page-node-id="GxPtnuSv1UW6eg7R6sHyJC">
-            <div class="project-header" data-page-node-id="cmXKXGXoLF31tWgPX3YNcp">
-              <div class="project-title serif" data-page-node-id="EI223GUuhpEDldQY1Gq2lZ">StepForward（步步向前）</div>
-              <div class="project-date" data-page-node-id="Sv181ABM3FEMasSrnyLNUz">2026.07 – 至今</div>
+          <!-- 01 StepForward -->
+          <div class="window">
+            <div class="w-visual">
+              <div class="w-frame pair">
+                <img src="Stepforward_产品截图/手机截图-任务拆解-行动鼓励-情绪陪伴/A-任务拆解模式-01-这里就是小步的主界面啦！在输入框输入你需要完成的事情，交给小步来帮你拆成一个个小步骤，不怕完不成！.jpg" alt="任务拆解">
+                <img src="Stepforward_产品截图/手机截图-任务拆解-行动鼓励-情绪陪伴/C-情绪陪伴模式-01-如果暂时不想开始也没关系，点击[等一下]进入情绪陪伴支持模块，小步会化身超级懂你的心理疗愈师，一直守护你的！不论你说什么，我都会接住你的情绪。.jpg" alt="情绪陪伴">
+              </div>
             </div>
-            <div class="project-subtitle" data-page-node-id="1iNUofDvnv9wc8Splrum0K">AI 任务拆解 × 情绪陪伴 · 独立产品负责人</div>
-            <div class="project-content" data-page-node-id="LnCAE6KSocA4mJaNzTlIGp">
-              <p data-page-node-id="p2tKIHiV27kOEn05mGE7Wa"><strong data-page-node-id="Hi6ZrL80BZTcmDzGXLeeaE">一句话定位：</strong> 当你动不起来的时候，先接住你的情绪，再陪你慢慢启动。</p>
-              <p data-page-node-id="hVU83gWnvuiulGqAJJO0GT"><strong data-page-node-id="q9FtmnFDyUY3Eosr9YijFo">核心亮点：</strong></p>
-              <ul data-page-node-id="2a4gdAVAqdqjhOMQZBygve">
-                <li data-page-node-id="mW4AMndHjEzQUtolciaKNq">🎯 从 0 到 1 主导产品全流程：v1.0 → v2.2.8 持续迭代上线，20+ 版本</li>
-                <li data-page-node-id="Eiltx035lsAdA7ptRYJejP">🧠 AI 架构决策：多 Provider 接入（OpenAI 兼容 + Anthropic 双协议、6+ 模型），分场景匹配模型、自动降级；关闭思考模式，以 20 条测试 prompt 测算单次拆解 token 平均约降 40-60%</li>
-                <li data-page-node-id="EuXX3pw1jm30qpLGyEcEuj">🎭 多 AI 角色设计：幕僚（拆解）/ 会夸你的好朋友（完成）/ 知心陪伴者（情绪）/ 笔友（日记）/ 知心陪伴者（晚安）</li>
-                <li data-page-node-id="6xov8J40NHZUPVrUqDfkcT">🛡️ 安全边界设计：前端 24 关键词硬编码 + AI 辅助识别双机制，接入 3 条 24h 援助热线</li>
-                <li data-page-node-id="vz79pN8323UxDTmirefYw8">📝 迭代方法论：白屏危机后建立「稳定基线 + 单条增量 + 发布前验证」流程</li>
+            <div class="w-text">
+              <div class="w-num">01</div>
+              <div class="w-title serif">StepForward（步步向前）</div>
+              <div class="w-sub">AI 任务拆解 × 情绪陪伴 · 独立产品负责人 · 2026.07 – 至今</div>
+              <div class="w-desc">当你动不起来的时候，先接住你的情绪，再陪你慢慢启动。从 0 到 1 主导全流程，v1.0 → v2.2.8 持续迭代 20+ 版本。</div>
+              <ul class="w-points">
+                <li>多 Provider AI 架构，分场景匹配模型，单次拆解 token 实测降 40-60%</li>
+                <li>同一个 AI，五种人格：幕僚 / 好朋友 / 陪伴者 / 笔友 / 晚安疗愈师</li>
+                <li>安全边界：关键词硬编码 + AI 辅助识别，接入 3 条 24h 援助热线</li>
               </ul>
-              <p data-page-node-id="3YBeDajQrhaLvVkkrvU37N"><strong data-page-node-id="16RrABEugahJsHewUgCeIX">开发模式：</strong> AI 协作开发（vibe coding），产品定义、交互设计、验收标准与迭代决策由本人主导。</p>
-            </div>
-            <div class="project-links" data-page-node-id="0usYh3UtCL014Q2BBD4LRc">
-              <a href="https://stepforwardletsgo.netlify.app/" target="_blank" data-page-node-id="EbVUz9xxUfguS7N0ZBuA8y">在线体验 →</a>
-              <a href="https://github.com/WMoonBerry/Stepforward" target="_blank" data-page-node-id="uglIfERIGiljbtBVtXuAuE">GitHub →</a>
-              <a href="https://WMoonBerry.github.io/stepforward-intro/" data-page-node-id="1JrG08hLU2f11ySWT2APHN">产品介绍页 →</a>
+              <div class="w-meta">
+                <a class="w-link" href="https://stepforwardletsgo.netlify.app/" target="_blank">在线体验 →</a>
+                <a class="w-link" style="font-weight:400;" href="https://WMoonBerry.github.io/stepforward-intro/" target="_blank">产品介绍页 →</a>
+              </div>
             </div>
           </div>
 
-          <div class="project-card" data-page-node-id="4XmFDsxjxoen0EJhBOkAOw">
-            <div class="project-header" data-page-node-id="kJRPhq79gzdHAzy4mpXB6Q">
-              <div class="project-title serif" data-page-node-id="DIwYvXEjhqu5MeajdFUjQ4">产品思考文章</div>
-              <div class="project-date" data-page-node-id="FhPgF6YPvEDT1VePIP84o2">2026.08 – 至今</div>
-            </div>
-            <div class="project-subtitle" data-page-node-id="kkHTgQ5HJWzQvdNgQqWkGf">做产品过程中的复盘与反思</div>
-            <div class="project-content" data-page-node-id="1TG12BFCkl14kGVimtE2h6">
-              <p data-page-node-id="sC79U2gaCXXPLSJlHC5Nl5">做 StepForward 的过程中写了一些文章，记录踩过的坑和思考。完整内容见「产品思考」页签。</p>
-            </div>
-            <div class="project-links" data-page-node-id="A9qV9TQPDpiqbOy2e4e7Hj">
-              <a href="#" data-jump="posts" data-page-node-id="ilXvRd7URQZbqfuwwPVFN1">阅读更多 →</a>
-            </div>
-          </div>
+          <div class="w-divider"></div>
 
-          <!-- 产品核心流程截图 -->
-          <div class="flow-section" data-page-node-id="OFZjuF1KsSA3qXF9n1AdGj">
-            <div class="section-title-sm serif" data-page-node-id="Qlos5DTi734UDvrmpcqEBp">产品使用流程</div>
-            <div class="flow-grid" data-page-node-id="fL3t3rYe20CGgVwRkFI3jT">
-              <div class="flow-item" data-page-node-id="2RrwT63Et7sDkN3BK82Aux">
-                <div class="flow-img" data-page-node-id="QysDEu6slLRjgBhDFQ7mu7"><img src="Stepforward_产品截图/手机截图-任务拆解-行动鼓励-情绪陪伴/A-任务拆解模式-02-小步变身首席幕僚,一定帮你安排妥当！.jpg" alt="任务拆解" data-page-node-id="1WFGxSN1xiKoDJm34louiA"></div>
-                <div class="flow-cap" data-page-node-id="a9K88nEk2F52olvWlJbAzu">拆解 · 幕僚</div>
-              </div>
-              <div class="flow-item" data-page-node-id="QIZ9AAuUSrtomfQTKCuE1f">
-                <div class="flow-img" data-page-node-id="gWsPlFbh9IZKgSGtUTCUm7"><img src="Stepforward_产品截图/手机截图-任务拆解-行动鼓励-情绪陪伴/B-鼓励支持模式-01-每当你勾选“开始做了”，我会马上看见你的行动力，为你奉上数不完的鼓励和支持，因为你值得~.jpg" alt="完成鼓励" data-page-node-id="O5QjDJqXMlcw5BmRhAxqtZ"></div>
-                <div class="flow-cap" data-page-node-id="ZWF827F7sEWgiy0JtYoB5H">完成 · 好朋友</div>
-              </div>
-              <div class="flow-item" data-page-node-id="LaFc9n7RsTi7qB5uVZjbO4">
-                <div class="flow-img" data-page-node-id="Q8raUhwh0vKnRNWT2YOXjK"><img src="Stepforward_产品截图/手机截图-任务拆解-行动鼓励-情绪陪伴/C-情绪陪伴模式-01-如果暂时不想开始也没关系，点击[等一下]进入情绪陪伴支持模块，小步会化身超级懂你的心理疗愈师，一直守护你的！不论你说什么，我都会接住你的情绪。.jpg" alt="情绪陪伴" data-page-node-id="lyZO0MSy2bGIDl1IpIqu0K"></div>
-                <div class="flow-cap" data-page-node-id="C4ueigPdpQbc4aQtkDE7FH">情绪 · 知心陪伴者</div>
-              </div>
-              <div class="flow-item" data-page-node-id="6j99txGwIoV1m9bOqClwgu">
-                <div class="flow-img" data-page-node-id="qm1tAgnipI4kNFB5ya2E9A"><img src="Stepforward_产品截图/手机截图-成长日记模块/成长日记模块-02-不论你想记录什么，小步都会马上回应你，因为小步会一直在你身边守候.jpg" alt="成长日记" data-page-node-id="b6HN2TDb5BLrYOM2lyq8Xw"></div>
-                <div class="flow-cap" data-page-node-id="uLpuX04V9v0qmx5Vtsgwag">日记 · 笔友</div>
-              </div>
-              <div class="flow-item" data-page-node-id="NoOMP0m3JlB41KXdv4AxK6">
-                <div class="flow-img" data-page-node-id="eCOKYlFGPzWWLEXBh6cJf8"><img src="Stepforward_产品截图/手机截图-睡前安心仪式模块/睡前安心仪式模块-07-最后，疗愈师小步会根据今日的小确幸和小牵挂，为你奉上一封独一无二的睡前晚安信~请相信小步会一直陪着你，安心地入睡吧~.jpg" alt="晚安仪式" data-page-node-id="YvJblp2slOjjVJIBs4QBVW"></div>
-                <div class="flow-cap" data-page-node-id="57u6BJkvGoADUf5BRwD5tw">晚安 · 知心陪伴者</div>
-              </div>
-              <div class="flow-item" data-page-node-id="rajvcKZXtGnQkUHFvwEaIR">
-                <div class="flow-img" style="display:flex; align-items:center; justify-content:center; min-height:180px; background:var(--alt-bg); flex-direction:column; gap:8px; padding:20px;" data-page-node-id="VHXaM6E2uYlHJpkaqKxIZ1">
-                  <div style="font-size:32px;" data-page-node-id="4QBXPRGaW8rmYTzJ2xqYcY">🌱</div>
-                  <div class="flow-cap" style="font-weight:700;" data-page-node-id="pKAO0007IlqFBqdpbxZxgV">同一个 AI，五种人格</div>
-                  <div class="flow-sub" data-page-node-id="rN4Kym60K5w04iCD68KmSj">在每一个需要的时刻，用对的方式陪你</div>
+          <!-- 02 ListentoMe -->
+          <div class="window flip">
+            <div class="w-visual">
+              <div class="w-frame" style="padding:14px;">
+                <div class="ltm-stage" id="ltmStage">
+                  <div class="ltm-frame on"><img src="assets/ltm_import_filled.png" alt="① 导入材料"></div>
+                  <div class="ltm-frame"><img src="assets/ltm_split_top.png" alt="② 切分语块"></div>
+                  <div class="ltm-frame"><img src="assets/ltm_practice_playing.png" alt="③ 逐句精听"></div>
+                  <div class="ltm-frame"><img src="assets/ltm_review.png" alt="④ 标记复习"></div>
                 </div>
+                <div class="ltm-steps">
+                  <div class="ltm-step on" data-i="0"><b>① 导入</b>文本 / PDF</div>
+                  <div class="ltm-step" data-i="1"><b>② 切分</b>语块可微调</div>
+                  <div class="ltm-step" data-i="2"><b>③ 精听</b>跟读评分</div>
+                  <div class="ltm-step" data-i="3"><b>④ 复习</b>续听不断</div>
+                </div>
+              </div>
+            </div>
+            <div class="w-text">
+              <div class="w-num">02</div>
+              <div class="w-title serif">ListentoMe · 精听练习</div>
+              <div class="w-sub">把「听不懂」练成「听得懂」 · 独立产品人 · 2026.10 – 至今</div>
+              <div class="w-desc">导入任何英文材料，自动切成语块，一句一句地听、跟读、标记，直到真的听懂。左边是使用过程的完整演示。</div>
+              <ul class="w-points">
+                <li>精听闭环：导入 → 切分 → 精听 → 跟读评分 → 复习，跨会话自动续听</li>
+                <li>本地优先 + PWA 离线可用，PDF 本地解析不上传</li>
+                <li>零构建纯前端，localStorage 分版本 schema，MVP 冻结后按账本小步迭代</li>
+              </ul>
+              <div class="w-meta">
+                <a class="w-link" href="https://comeandlisten.netlify.app/" target="_blank">在线体验 →</a>
+                <span class="w-date">v0.4 · 持续迭代中</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-divider"></div>
+
+          <!-- 03 蟲鸣岛 -->
+          <div class="window">
+            <div class="w-visual">
+              <div class="w-frame landscape"><img src="assets/chongming_home_hero.png" alt="蟲鸣岛首页"></div>
+            </div>
+            <div class="w-text">
+              <div class="w-num">03</div>
+              <div class="w-title serif">蟲鸣岛</div>
+              <div class="w-sub">中英双语 · 生态生活杂志站 · 2026.10</div>
+              <div class="w-desc">故事地图 × 商品 × 活动日历 × 订阅。「Behind every food is a place worth knowing.」</div>
+              <ul class="w-points">
+                <li>Supabase 后台：管理员白名单 + RLS 行级权限</li>
+                <li>三级数据降级：缓存 → 数据库 → 本地 JSON，断网也有兜底</li>
+                <li>双语内容体系与纸感视觉设计（深绿 × 陶土）</li>
+              </ul>
+              <div class="w-meta">
+                <a class="w-link" href="https://chongmingisland.netlify.app/" target="_blank">在线体验 →</a>
+                <span class="w-date">中 / EN 双语</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-divider"></div>
+
+          <!-- 04 小栖 -->
+          <div class="window flip">
+            <div class="w-visual">
+              <div class="w-frame landscape"><img src="assets/xiaoqi_main.png" alt="小栖主界面"></div>
+            </div>
+            <div class="w-text">
+              <div class="w-num">04</div>
+              <div class="w-title serif">小栖 · AI 陪伴机制演示</div>
+              <div class="w-sub">AI 陪伴机制的可玩演示 · 2026.09</div>
+              <div class="w-desc">把「AI 陪伴怎么做才安全」从论文式思考做成可以亲手玩的东西。</div>
+              <ul class="w-points">
+                <li>L1-L4 响应路由：倾听 / 安抚 / 建议用户主权切换，L4 危机干预自动触发</li>
+                <li>事件化记忆：可删除、有反向链路；「结束对话 · 记忆轮」沉淀长期记忆</li>
+                <li>击穿拦截 + 成本估算 + 3 款换肤，Netlify Function 代理藏 Key</li>
+              </ul>
+              <div class="w-meta">
+                <a class="w-link" href="https://demoofxiaoqi.netlify.app/" target="_blank">在线体验 →</a>
+                <span class="w-date">已接入真实大模型</span>
               </div>
             </div>
           </div>
@@ -843,6 +926,28 @@
     }
     likeBtn.querySelector('.like-count').textContent = count;
   });
+
+  // ListentoMe showcase carousel
+  (function () {
+    var stage = document.getElementById('ltmStage');
+    if (!stage) return;
+    var frames = stage.querySelectorAll('.ltm-frame');
+    var steps = document.querySelectorAll('.ltm-step');
+    var cur = 0, timer = null, N = frames.length;
+
+    function go(i) {
+      cur = (i + N) % N;
+      frames.forEach(function (f, k) { f.classList.toggle('on', k === cur); });
+      steps.forEach(function (s, k) { s.classList.toggle('on', k === cur); });
+    }
+    function play() { stop(); timer = setInterval(function () { go(cur + 1); }, 2800); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+    steps.forEach(function (s) { s.addEventListener('click', function () { go(+s.dataset.i); play(); }); });
+    stage.addEventListener('mouseenter', stop);
+    stage.addEventListener('mouseleave', play);
+    play();
+  })();
 </script>
 
 </body>
