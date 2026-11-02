@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>关于我 · 方案A 轻量同步</title>
+<style>
+:root{--bg:#faf6ef;--bg-soft:#f4ecdf;--bg-card:#fffdf8;--fg:#3d322b;--fg-soft:#5a4f46;--muted:#8a7e74;--muted-light:#a89d92;--accent:#d67a50;--accent-light:#e39a73;--accent-dark:#b05e38;--accent-bg:#fbeade;--alt:#9a7ab8;--alt-light:#b39acd;--alt-dark:#7953a0;--alt-bg:#f0eaf8;--green:#6fa890;--green-bg:#e5f2ec;--border:#e7ddd0;--border-soft:#efe8dc;--shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);--shadow-md:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);--shadow-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased}
+.serif{font-family:Georgia,"Source Han Serif SC","Noto Serif CJK SC","Songti SC",STSong,serif}
+.page-wrapper{max-width:880px;margin:32px auto;background:var(--bg-card);border-radius:20px;box-shadow:var(--shadow-lg);border:1px solid var(--border);padding:40px 44px 48px}
+.top-strip{height:5px;border-radius:20px 20px 0 0;background:linear-gradient(90deg,var(--accent) 0%,var(--accent-light) 45%,var(--alt-light) 100%);max-width:880px;margin:32px auto 0}
+.section-title{font-size:20px;font-weight:700;color:var(--fg);margin-bottom:16px;letter-spacing:-.02em}
+.section-divider{height:1px;background:var(--border-soft);margin:32px 0}
+.view-all{float:right;font-weight:400;font-size:12px;color:var(--muted)}
+.bio-text{color:var(--fg-soft);font-size:15px;line-height:1.9}
+.bio-text p{margin-bottom:14px}
+.bio-text strong{color:var(--fg);font-weight:600}
+.bio-text a{color:var(--accent-dark);text-decoration:none;border-bottom:1px solid var(--accent-light)}
+.feature-card{background:var(--bg-soft);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:12px}
+.feature-card-title{font-size:16px;font-weight:600;color:var(--fg);margin-bottom:8px}
+.feature-card-text{font-size:14px;color:var(--fg-soft);line-height:1.7}
+.feature-card-links{margin-top:14px;display:flex;gap:18px;flex-wrap:wrap}
+.feature-card-links a{font-size:13px;color:var(--accent-dark);text-decoration:none;font-weight:500}
+.metric-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+.metric{background:var(--alt-bg);border-radius:12px;padding:16px 12px;text-align:center}
+.metric-num{font-size:26px;font-weight:700;color:var(--alt-dark);line-height:1.1}
+.metric-num .unit{font-size:13px;color:var(--muted);font-weight:400}
+.metric-label{font-size:11px;color:var(--muted);margin-top:4px}
+.pub-item{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:10px}
+.pub-venue{font-size:13px;color:var(--accent-dark);font-weight:500;margin-bottom:2px}
+.pub-authors{font-size:13px;color:var(--muted)}
+.news-item{display:flex;gap:14px;padding:8px 0;border-bottom:1px solid var(--border-soft);font-size:14px}
+.news-item:last-child{border-bottom:none}
+.news-date{color:var(--accent-dark);font-weight:500;white-space:nowrap;font-size:13px;min-width:60px}
+.news-content{color:var(--fg-soft)}
+.news-item.fresh .news-date{color:var(--alt-dark)}
+.news-item.fresh .news-content::after{content:"NEW";font-size:10px;color:var(--alt-dark);background:var(--alt-bg);border-radius:8px;padding:1px 7px;margin-left:8px;vertical-align:2px;letter-spacing:.05em}
+@media(max-width:640px){.page-wrapper{margin:0;padding:24px 20px;border-radius:0}.metric-row{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="top-strip"></div>
+<div class="page-wrapper">
+
+  <div class="section-title serif">关于我</div>
+  <div class="bio-text">
+    <p>我是一名 <strong>独立 AI 产品实践者</strong>，相信 AI 时代，做产品的核心能力不是写代码，而是定义问题、判断模型能力、对结果负责。</p>
+    <p>我目前的核心作品是 <a href="#">StepForward（步步向前）</a> —— 一款 AI 陪伴式行动支持工具，为「行动力持续不足」人群设计：<strong>先接住情绪，再跟进行动</strong>。我从 0 到 1 负责产品定义、交互设计、AI 接入方案与迭代决策，v1.0→v2.2.8 持续迭代并上线；统一接入 6 家 LLM（多 Provider 降级），单次拆解 token 成本平均下降约 40-60%；建立双重危机安全边界，接入 3 条援助热线。</p>
+    <p>此后接连上线了 <a href="#">ListentoMe</a>（英语精听练习）、<a href="#">蟲鸣岛</a>（中英双语生态生活杂志）与 <a href="#">小栖</a>（AI 陪伴对话机制演示）—— 从行动支持、语言学习、内容社区到 AI 陪伴机制，探索不同形态的<strong>陪伴与连接</strong>。</p>
+    <p>做产品的过程中我写了一些 <a href="#">产品思考文章</a>，记录踩过的坑、做出的判断，和对 AI 产品的思考。</p>
+    <p>科研训练给了我严谨的方法论：四段课题负责人经历，两篇 SCI 一区论文（<em>Cell Death &amp; Disease</em> 二作、<em>Cell Reports</em> 四作）。现在，我将科研中的「假设 → 实验 → 度量 → 迭代」迁移到产品工作中，我做的还是「理解问题、设计验证、沉淀方法」这件事，只是场景从实验室换成了 AI 产品。</p>
+    <p>我相信 AI 产品最有价值的部分是「对人的理解」。模型会过期，技术会迭代，但对真实需求的洞察不会过时。</p>
+    <p>欢迎通过 <a href="mailto:3414945315@qq.com">email</a> 联系我，或到<a href="#">「作品集」页签</a>在线体验各作品。</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="section-title serif">我在做什么 <span class="view-all"><a href="#" style="color:var(--accent-dark);text-decoration:none;">查看全部 →</a></span></div>
+  <div class="feature-card">
+    <div class="feature-card-title">StepForward（步步向前）— AI 陪伴式行动支持工具</div>
+    <div class="feature-card-text">为「行动力持续不足」人群设计：先接住情绪，再跟进行动。从 0 到 1 主导产品定义、交互设计、AI 接入方案与迭代决策，v1.0 → v2.2.8 持续迭代并上线。核心理念 —— AI 的价值不在「替你做」，而在「陪你做」。</div>
+    <div class="feature-card-links"><a href="#">在线体验 →</a><a>产品说明（见作品集）</a></div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="section-title serif">产品思考 <span class="view-all"><a href="#" style="color:var(--accent-dark);text-decoration:none;">查看全部作品 →</a></span></div>
+  <p style="color:var(--muted);font-size:14px;margin-bottom:16px;">把做产品的判断沉淀成文章。完整作品见「作品集」页签 →</p>
+  <div class="feature-card">
+    <div class="feature-card-title">从女性向陪伴类游戏体验到依恋机制模式沉淀</div>
+    <div class="feature-card-text">基于恋与深空 / 光与夜之恋 / 恋与制作人的一手体验，拆解「可及性 → 回应性 → 心动」三层情感联结结构，提出「模型层制造回应性、系统层制造独占性」的 AI 陪伴设计框架。</div>
+  </div>
+  <div class="feature-card" style="margin-top:12px;">
+    <div class="feature-card-title">AI 陪伴者与用户的关系</div>
+    <div class="feature-card-text">从自身「行动力瘫痪」的真实经历出发，借依恋理论、共同调节、行为激活三个心理学框架，提出 AI 陪伴者的定位——「过渡性安全连接」。核心主张：不是替代，是过渡；不是依赖，是支撑。</div>
+  </div>
+  <div class="feature-card" style="margin-top:12px;">
+    <div class="feature-card-title">AI 人格设计与 Agent 适用边界</div>
+    <div class="feature-card-text">沉淀人格设计四机制：反空话套话、共享底线、长在用户身上、安全边界紧急熔断；并给出 Agent 化的判断标准——关键不在「AI 能不能做」，而在「用户会不会因此更舒服」。</div>
+  </div>
+  <div style="margin-top:14px;"><a href="#" style="font-size:13px;color:var(--accent-dark);text-decoration:none;font-weight:500;">查看更多文章作品 →</a></div>
+
+  <div class="section-divider"></div>
+
+  <div class="section-title serif">第一轮内测 <span class="view-all">小样本，真问题</span></div>
+  <div class="metric-row">
+    <div class="metric"><div class="metric-num">5<span class="unit"> 位</span></div><div class="metric-label">问卷用户<br>3 目标 + 2 非典型</div></div>
+    <div class="metric"><div class="metric-num">8.8<span class="unit">/10</span></div><div class="metric-label">推荐意愿均分<br>10/10/8/7/9，方向性参考</div></div>
+    <div class="metric"><div class="metric-num">9<span class="unit"> 项</span></div><div class="metric-label">问题识别<br>6 P1 + 3 P2，5 项已落地</div></div>
+    <div class="metric"><div class="metric-num">4/5</div><div class="metric-label">「被接住」获确认<br>1 位明确反例</div></div>
+  </div>
+  <div class="feature-card" style="background:var(--green-bg);border-color:#d8e8df;">
+    <div class="feature-card-title" style="font-size:14px;">如实说明局限</div>
+    <div class="feature-card-text" style="font-size:13px;">样本量小，仅作方向性参考；所有问题均在可容忍区间。北极星指标 + 4 条漏斗 + 20+ 埋点事件的度量体系已完成设计，待后端上线后用真实行为数据验证留存假设。<a href="#" style="color:var(--accent-dark);font-weight:500;">查看完整报告 →</a></div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="section-title serif">精选论文 <span class="view-all">学历背景</span></div>
+  <div class="pub-item"><div class="pub-venue">Cell Death &amp; Disease · SCI 一区 · IF≈12 · 第二作者</div><div class="pub-authors">Yuemei Wen, et al. ｜ 2026 · Accepted</div></div>
+  <div class="pub-item"><div class="pub-venue">Cell Reports · SCI 一区 · IF≈7 · 第四作者</div><div class="pub-authors">Yuemei Wen, et al. ｜ 2026 · Published</div></div>
+
+  <div class="section-divider"></div>
+
+  <div class="section-title serif">动态</div>
+  <div class="news-item fresh"><span class="news-date">2026.10</span><span class="news-content">ListentoMe v0.3.0 上线：英语精听练习工具，导入 → 切分 → 逐句精听 → 跟读 → 标记复习</span></div>
+  <div class="news-item fresh"><span class="news-date">2026.10</span><span class="news-content">蟲鸣岛上线：中英双语生态生活杂志站，故事地图 + 生态好物 + 活动日历</span></div>
+  <div class="news-item fresh"><span class="news-date">2026.10</span><span class="news-content">小栖上线：AI 陪伴对话机制演示，事件化记忆与分层响应路由</span></div>
+  <div class="news-item"><span class="news-date">2026.09</span><span class="news-content">完成第一轮内测（N=5），「被接住」情绪陪伴价值获全样本确认，5 项问题根因定位并修复</span></div>
+  <div class="news-item"><span class="news-date">2026.08</span><span class="news-content">StepForward 持续迭代至 v2.2.8：新手引导、成长日记、睡前安心仪式，完成多模型接入与成本治理</span></div>
+  <div class="news-item"><span class="news-date">2026.07</span><span class="news-content">StepForward v1.0 MVP 上线 Netlify，开始持续迭代</span></div>
+  <div class="news-item"><span class="news-date">2026.06</span><span class="news-content">硕士毕业；SCI 一区论文（Cell Death &amp; Disease，二作）被接收</span></div>
+
+</div>
+</body>
+</html>
