@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>关于我 · D3 纯净时间线 + 作品画廊带</title>
+<style>
+:root{--bg:#faf6ef;--bg-soft:#f4ecdf;--bg-card:#fffdf8;--fg:#3d322b;--fg-soft:#5a4f46;--muted:#8a7e74;--muted-light:#a89d92;--accent:#d67a50;--accent-light:#e39a73;--accent-dark:#b05e38;--accent-bg:#fbeade;--alt:#9a7ab8;--alt-light:#b39acd;--alt-dark:#7953a0;--alt-bg:#f0eaf8;--green:#6fa890;--green-bg:#e5f2ec;--border:#e7ddd0;--border-soft:#efe8dc;--shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);--shadow-md:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);--shadow-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased}
+.serif{font-family:Georgia,"Source Han Serif SC","Noto Serif CJK SC","Songti SC",STSong,serif}
+.top-strip{height:5px;border-radius:20px 20px 0 0;background:linear-gradient(90deg,var(--accent) 0%,var(--accent-light) 45%,var(--alt-light) 100%);max-width:880px;margin:32px auto 0}
+.page-wrapper{max-width:880px;margin:0 auto 32px;background:var(--bg-card);border-radius:0 0 20px 20px;box-shadow:var(--shadow-lg);border:1px solid var(--border);border-top:none;padding:40px 44px 48px}
+.section-title{font-size:20px;font-weight:700;color:var(--fg);margin-bottom:16px;letter-spacing:-.02em}
+.section-divider{height:1px;background:var(--border-soft);margin:32px 0}
+.view-all{float:right;font-weight:400;font-size:12px;color:var(--muted)}
+.bio-text{color:var(--fg-soft);font-size:15px;line-height:1.9}
+.bio-text p{margin-bottom:14px}
+.bio-text strong{color:var(--fg);font-weight:600}
+.bio-text a{color:var(--accent-dark);text-decoration:none;border-bottom:1px solid var(--accent-light)}
+.feature-card{background:var(--bg-soft);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:12px}
+.feature-card-title{font-size:16px;font-weight:600;color:var(--fg);margin-bottom:8px}
+.feature-card-text{font-size:14px;color:var(--fg-soft);line-height:1.7}
+.metric-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 4px}
+.metric{background:var(--alt-bg);border-radius:12px;padding:14px 10px;text-align:center}
+.metric-num{font-size:24px;font-weight:700;color:var(--alt-dark);line-height:1.1}
+.metric-num .unit{font-size:12px;color:var(--muted);font-weight:400}
+.metric-label{font-size:10.5px;color:var(--muted);margin-top:4px}
+.pub-item{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:10px}
+.pub-venue{font-size:13px;color:var(--accent-dark);font-weight:500;margin-bottom:2px}
+.pub-authors{font-size:13px;color:var(--muted)}
+.tl{position:relative;margin:8px 0 4px;padding-left:26px}
+.tl::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--border)}
+.tl-item{position:relative;padding:0 0 24px 14px}
+.tl-item:last-child{padding-bottom:2px}
+.tl-dot{position:absolute;left:-26px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--bg-card);border:3px solid var(--accent)}
+.tl-dot.alt{border-color:var(--alt)}
+.tl-dot.hollow{border-color:var(--border);background:var(--bg-soft)}
+.tl-date{font-size:12px;font-weight:600;color:var(--accent-dark);letter-spacing:.04em;margin-bottom:2px}
+.tl-date .wnum{color:var(--muted-light);font-weight:400;margin-left:6px}
+.tl-body{font-size:14px;color:var(--fg-soft);line-height:1.7}
+.tl-body strong{color:var(--fg)}
+.tl-body a{color:var(--accent-dark);text-decoration:none}
+/* D3: 作品画廊带 */
+.gallery-wrap{margin:6px 0 0;padding:18px 0 4px;border-top:1px dashed var(--border)}
+.gallery-label{font-size:12px;font-weight:600;color:var(--muted-light);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.gallery-strip{display:flex;gap:14px;overflow-x:auto;padding:2px 2px 12px;scroll-snap-type:x mandatory}
+.g-card{flex:0 0 156px;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--bg-card);box-shadow:var(--shadow);scroll-snap-align:start;transition:transform .2s,box-shadow .2s;text-decoration:none;color:inherit}
+.g-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.g-card img{width:100%;height:190px;object-fit:cover;object-position:top;display:block}
+.g-cap{padding:9px 12px 11px}
+.g-num{font-family:Georgia,serif;font-size:11px;color:var(--muted-light)}
+.g-name{font-size:13px;font-weight:700;color:var(--fg);margin-top:1px}
+.g-pos{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.45}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.sec-head .section-title{margin-bottom:6px}
+.sec-link{font-size:13px;color:var(--accent-dark);text-decoration:none;font-weight:500;white-space:nowrap}
+.sec-desc{color:var(--muted);font-size:14px;margin-bottom:16px}
+.sec-desc a{color:var(--accent-dark);text-decoration:none;border-bottom:1px solid var(--accent-light)}
+.contact-strip{background:linear-gradient(120deg,var(--accent-bg),var(--alt-bg));border:1px solid var(--border);border-radius:14px;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.contact-strip .cs-text{font-size:14px;color:var(--fg-soft)}
+.contact-strip .cs-text strong{color:var(--fg);font-size:15px}
+.contact-strip a.cs-btn{font-size:13px;font-weight:600;color:#fff;background:var(--accent);border-radius:20px;padding:8px 20px;text-decoration:none}
+@media(max-width:640px){.page-wrapper{padding:24px 20px;border-radius:0}.metric-row{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="top-strip"></div>
+<div class="page-wrapper">
+
+  <div class="section-title serif">关于我</div>
+  <div class="bio-text">
+    <p>我是一名 <strong>独立 AI 产品实践者</strong>。2026 年，我从科研转向 AI 产品，一年内独立完成并上线了 4 个作品：行动支持、语言学习、内容社区、AI 陪伴机制——四种不同形态的<strong>陪伴与连接</strong>。</p>
+    <p>我相信 AI 时代做产品的核心能力不是写代码，而是定义问题、判断模型能力、对结果负责；AI 产品最有价值的部分是「对人的理解」。欢迎通过 <a href="mailto:3414945315@qq.com">email</a> 联系我。</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="section-title serif">我的 2026 · 从实验室到 AI 产品</div>
+  <div class="tl">
+    <div class="tl-item">
+      <div class="tl-dot hollow"></div>
+      <div class="tl-date">2026.06</div>
+      <div class="tl-body"><strong>科研收束，转向产品。</strong>硕士毕业；两篇 SCI 一区论文落定（Cell Death &amp; Disease 二作 · Cell Reports 四作）。把「假设 → 实验 → 度量 → 迭代」从实验室带进 AI 产品。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2026.07<span class="wnum">作品 01</span></div>
+      <div class="tl-body"><strong><a href="#">StepForward</a> v1.0 MVP 上线</strong> —— AI 陪伴式行动支持工具，为「行动力持续不足」人群设计：先接住情绪，再跟进行动。从 0 到 1 负责产品定义、交互、AI 接入与迭代决策。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2026.08</div>
+      <div class="tl-body">StepForward 迭代至 <strong>v2.2.8</strong>：新手引导、成长日记、睡前安心仪式；统一接入 6 家 LLM（多 Provider 降级），单次拆解 token 成本平均下降约 40-60%；建立双重危机安全边界，接入 3 条援助热线。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2026.09<span class="wnum">验证</span></div>
+      <div class="tl-body"><strong>完成第一轮内测（N=5）</strong>，「被接住」的情绪陪伴价值获确认，9 项问题识别、5 项已落地。
+        <div class="metric-row">
+          <div class="metric"><div class="metric-num">8.8<span class="unit">/10</span></div><div class="metric-label">推荐意愿均分</div></div>
+          <div class="metric"><div class="metric-num">9<span class="unit"> 项</span></div><div class="metric-label">问题识别</div></div>
+          <div class="metric"><div class="metric-num">4/5</div><div class="metric-label">「被接住」确认</div></div>
+          <div class="metric"><div class="metric-num">5<span class="unit"> 项</span></div><div class="metric-label">问题已落地</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot alt"></div>
+      <div class="tl-date">2026.10<span class="wnum">作品 02</span></div>
+      <div class="tl-body"><strong><a href="#">ListentoMe</a> v0.3.0 上线</strong> —— 英语精听练习工具：导入文本/PDF → 语块切分 → 逐句精听 → 跟读评分 → 标记复习。以 PRD → 技术方案 → ROADMAP 账本驱动迭代。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot alt"></div>
+      <div class="tl-date">2026.10<span class="wnum">作品 03</span></div>
+      <div class="tl-body"><strong><a href="#">蟲鸣岛</a> 上线</strong> —— 中英双语生态生活杂志站：故事地图、生态好物、活动日历与订阅；Supabase 后台 + 三级数据降级保证弱网可用。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot alt"></div>
+      <div class="tl-date">2026.10<span class="wnum">作品 04</span></div>
+      <div class="tl-body"><strong><a href="#">小栖</a> 上线</strong> —— AI 陪伴对话机制演示：人设锚、事件化记忆（含删除反向链路）、L1-L4 分层响应路由、危机击穿拦截与成本估算。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot hollow"></div>
+      <div class="tl-date">接下来</div>
+      <div class="tl-body">用真实行为数据验证 StepForward 的留存假设；让 ListentoMe 走完精听闭环打磨；继续做「连接」类产品。</div>
+    </div>
+  </div>
+
+  <div class="gallery-wrap">
+    <div class="gallery-label">作品实拍 · 点击进作品集看完整案例</div>
+    <div class="gallery-strip">
+      <a class="g-card" href="#">
+        <img src="assets/sf_home.jpg" alt="StepForward">
+        <div class="g-cap"><div class="g-num">01</div><div class="g-name">StepForward</div><div class="g-pos">AI 陪伴式行动支持</div></div>
+      </a>
+      <a class="g-card" href="#">
+        <img src="assets/ltm_practice_playing.png" alt="ListentoMe">
+        <div class="g-cap"><div class="g-num">02</div><div class="g-name">ListentoMe</div><div class="g-pos">英语精听练习工具</div></div>
+      </a>
+      <a class="g-card" href="#">
+        <img src="assets/chongming_home_hero.png" alt="蟲鸣岛">
+        <div class="g-cap"><div class="g-num">03</div><div class="g-name">蟲鸣岛</div><div class="g-pos">中英双语生态杂志</div></div>
+      </a>
+      <a class="g-card" href="#">
+        <img src="assets/xiaoqi_main.png" alt="小栖">
+        <div class="g-cap"><div class="g-num">04</div><div class="g-name">小栖</div><div class="g-pos">AI 陪伴机制演示</div></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="sec-head">
+    <div class="section-title serif">产品思考</div>
+    <a class="sec-link" href="#">查看所有文章 →</a>
+  </div>
+  <p class="sec-desc">做产品的过程中我写了一些 <a href="#">产品思考文章</a>，记录踩过的坑、做出的判断，和对 AI 产品的思考。</p>
+  <div class="feature-card">
+    <div class="feature-card-title">从女性向陪伴类游戏体验到依恋机制模式沉淀</div>
+    <div class="feature-card-text">基于恋与深空 / 光与夜之恋 / 恋与制作人的一手体验，拆解「可及性 → 回应性 → 心动」三层情感联结结构，提出「模型层制造回应性、系统层制造独占性」的 AI 陪伴设计框架。</div>
+  </div>
+  <div class="feature-card" style="margin-top:12px;">
+    <div class="feature-card-title">AI 陪伴者与用户的关系</div>
+    <div class="feature-card-text">从自身「行动力瘫痪」的真实经历出发，借依恋理论、共同调节、行为激活三个心理学框架，提出 AI 陪伴者的定位——「过渡性安全连接」。核心主张：不是替代，是过渡；不是依赖，是支撑。</div>
+  </div>
+  <div class="feature-card" style="margin-top:12px;">
+    <div class="feature-card-title">AI 人格设计与 Agent 适用边界</div>
+    <div class="feature-card-text">沉淀人格设计四机制：反空话套话、共享底线、长在用户身上、安全边界紧急熔断；并给出 Agent 化的判断标准——关键不在「AI 能不能做」，而在「用户会不会因此更舒服」。</div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="section-title serif">StepForward · 第一轮内测 <span class="view-all">小样本，真问题</span></div>
+  <div class="feature-card" style="background:var(--green-bg);border-color:#d8e8df;">
+    <div class="feature-card-title" style="font-size:14px;">如实说明局限</div>
+    <div class="feature-card-text" style="font-size:13px;">样本量小，仅作方向性参考；所有问题均在可容忍区间，无人选「严重到不想用」。北极星指标 + 4 条漏斗 + 20+ 埋点事件的度量体系已完成设计，待后端上线后用真实行为数据验证留存假设。<a href="#" style="color:var(--accent-dark);font-weight:500;">查看完整报告 →</a></div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="section-title serif">精选论文 <span class="view-all">学历背景</span></div>
+  <div class="pub-item"><div class="pub-venue">Cell Death &amp; Disease · SCI 一区 · IF≈12 · 第二作者</div><div class="pub-authors">Yuemei Wen, et al. ｜ 2026 · Accepted</div></div>
+  <div class="pub-item"><div class="pub-venue">Cell Reports · SCI 一区 · IF≈7 · 第四作者</div><div class="pub-authors">Yuemei Wen, et al. ｜ 2026 · Published</div></div>
+
+  <div class="section-divider"></div>
+
+  <div class="contact-strip">
+    <div class="cs-text"><strong>对我的作品感兴趣？</strong><br>欢迎来聊聊产品、协作或机会，也可以先到「作品集」页签在线体验四个作品。</div>
+    <a class="cs-btn" href="mailto:3414945315@qq.com">写邮件给我</a>
+  </div>
+
+</div>
+</body>
+</html>
