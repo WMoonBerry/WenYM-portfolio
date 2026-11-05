@@ -1,0 +1,78 @@
+diff --git a/index.html b/index.html
+index 6e9e697..c9e5651 100644
+--- a/index.html
++++ b/index.html
+@@ -663,7 +663,7 @@
+           <div class="cv-section" data-page-node-id="ngSY8x77ov6YqSy6ER42QI">
+             <div class="cv-section-title serif" data-page-node-id="L21XynbGbCwLbg3XkFUNcr">自我介绍</div>
+             <div class="cv-item" data-page-node-id="VHrLM2Gf0RxyBOKvsLIk9y">
+-              <div class="cv-item-desc" data-page-node-id="6W9s35w1ZF3Ji9lEfhyaOw"><strong data-page-node-id="cmgBg2fAH8KvnWRdMyWqnY">独立 AI 产品实践者</strong> | 生物科研背景，独立跑通 AI 情绪陪伴产品从 0 到 1。</div>
++              <div class="cv-item-desc" data-page-node-id="6W9s35w1ZF3Ji9lEfhyaOw"><strong data-page-node-id="cmgBg2fAH8KvnWRdMyWqnY">独立 AI 产品实践者</strong> | 生物科研背景，独立跑通 3 个 AI 产品从 0 到 1（任务陪伴 / 内容平台 / 听力学习工具）。</div>
+             </div>
+             <div class="cv-item" style="margin-top:6px;" data-page-node-id="Zp3b1QyyE8B4n4jvsW5kq5">
+               <div class="cv-item-desc" data-page-node-id="3YF6TNBsmzGoIb3QDbCUZW">独立产品开发：模型驱动的 AI 情绪陪伴产品（2 周 AI 协作开发从概念跑通 MVP，持续迭代 20+ 版本），发掘「模型层制造回应性、系统层制造独占性」的 AI 陪伴设计思想。</div>
+@@ -697,15 +697,41 @@
+               </div>
+               <div class="cv-item-desc" data-page-node-id="P9cyCIpO2J5I2p3zCWOnQf">
+                 <ul data-page-node-id="cVoB79xVtkANFAsHqHGMh9">
+-                  <li data-page-node-id="bMfNdqVsFzKMxdELQE9k2v"><strong data-page-node-id="K2VnsZFaVAOSkwPdNAaHbH">产品定义与闭环设计</strong>：面向「行动力持续不足」人群，从 0 到 1 主导产品定义、原型、AI 协作开发与迭代，v1.0 → v2.2.8 已上线 Netlify；设计「任务拆解确认循环 + 4 级情绪分级干预 + 成长日记沉淀」闭环，「温暖、不评判、去技术感」贯穿全文。</li>
+-                  <li data-page-node-id="2hJNrKnePPxYq1FYso9sGI"><strong data-page-node-id="g4TQyGoPTpUfZLzQpjroPV">安全与隐私边界</strong>：前端关键词硬编码 + AI 辅助识别双机制，接入 3 条 24h 援助热线，坚持「AI 不做治疗」。</li>
+-                  <li data-page-node-id="riNtj7CmBn6UXF94w4qVX8"><strong data-page-node-id="H67XctTf10LdONvUksZKVv">AI 架构选型与成本治理</strong>：多 Provider 接入（OpenAI 兼容 + Anthropic 双协议、6+ 服务商）支持 BYOK、分场景匹配模型、自动降级；SSE 流式降低首字等待感知；关闭思考模式，以 20 条测试 prompt 测算单次拆解 token 平均约降 40-60%。</li>
++                  <li data-page-node-id="bMfNdqVsFzKMxdELQE9k2v"><strong data-page-node-id="K2VnsZFaVAOSkwPdNAaHbH">产品定义与闭环设计</strong>：面向「行动力持续不足」人群，从 0 到 1 主导产品定义、原型、AI 协作开发与迭代，v1.0 → v2.3.12 已上线 Netlify；设计「任务拆解确认循环 + 4 级情绪分级干预 + 成长日记沉淀」闭环，并落地智能调度（任务冲突确定性顺延、自动避开用餐时段、指定时间锚点尊重）与 PWA「添加到主屏幕」（离线兜底页、新版本自动更新），「温暖、不评判、去技术感」贯穿全文。</li>
++                  <li data-page-node-id="2hJNrKnePPxYq1FYso9sGI"><strong data-page-node-id="g4TQyGoPTpUfZLzQpjroPV">安全与隐私边界</strong>：前端关键词硬编码 + AI 辅助识别双机制，接入 3 条 24h 援助热线，坚持「AI 不做治疗」；v2.2.10 完成安全加固——情绪分级与应对策略代码化、危机关键词强/弱分层、日志脱敏。</li>
++                  <li data-page-node-id="riNtj7CmBn6UXF94w4qVX8"><strong data-page-node-id="H67XctTf10LdONvUksZKVv">AI 架构选型与成本治理</strong>：多 Provider 接入（OpenAI 兼容 + Anthropic 双协议、6+ 服务商）支持 BYOK、分场景匹配模型、自动降级；后端化改造 Phase 1 已落地——Vercel Serverless 流式接口统一路由 6 大服务商并管理额度，System Prompt 迁移后端、核心逻辑不再暴露前端；SSE 流式降低首字等待感知；关闭思考模式，以 20 条测试 prompt 测算单次拆解 token 平均约降 40-60%。</li>
+                   <li data-page-node-id="78OdyTiIFDf8FFOMM0wwW2"><strong data-page-node-id="kT6XK1BfPQb36HyqSsUSAV">AI 能力边界与风险隔离</strong>：暂定位「AI 增强的 APP」而非自主 Agent，危机干预以规则为主，情绪场景 AI 绝不替用户做决定。</li>
+                   <li data-page-node-id="UhbBP61eO0L6GZZJKt03mc"><strong data-page-node-id="zXoxhinZpN34LRwhGGVwuV">迭代方法论</strong>：经历全面白屏事故后，从「想到什么加什么」转向「稳定基线 + 单条增量 + 发布前验证」，2 天 5 轮迭代修复 16+ 已知问题。</li>
+                   <li data-page-node-id="u3Zb1BEPLlA7jdlifscCMo"><strong data-page-node-id="jZ8P67wCKKMGY8v3eUzG7E">用户驱动迭代与度量</strong>：首批反馈定位并修复 5 项问题根因；轻量内测（5 样本）验证核心价值假设；北极星 + 4 漏斗 + 20+ 埋点已设计，待后端落地。</li>
+                 </ul>
+               </div>
+             </div>
++            <div class="cv-item" style="margin-top:18px;">
++              <div class="cv-item-header">
++                <span class="cv-item-title">蟲鸣岛生态小店 ｜ 双语内容平台 · 独立产品负责人</span>
++                <span class="cv-item-date">2026.10 – 至今</span>
++              </div>
++              <div class="cv-item-desc">
++                <ul>
++                  <li><strong>产品与内容架构</strong>：面向生态小店的「活动 / 故事 / 商品 / 地图」双语杂志站（原生 HTML/CSS/ES Module，无框架），配套 admin 管理面板（登录、增删改查、发布下架、图片上传、分类词典、地图坐标）；已上线并完成三轮试用反馈归档进迭代。</li>
++                  <li><strong>数据与工程</strong>：Supabase 数据层（5 表 + RLS 行级安全 + Storage 图片，patch-001~008 增量迁移）；「兜底先行 + 异步增强」策略——断网或未配置时回退本地数据不白屏；Netlify 上线（config 动态注入 + Secrets Scanner 白名单）。</li>
++                  <li><strong>工程方法论</strong>：文档驱动开发（需求清单 / ARCHITECTURE 施工日志 / TODO / 23 条问题发现与解决方案记录）；开 selfhost-pg 分支探索自建 PostgreSQL 替代方案，main 保持稳定版。</li>
++                </ul>
++              </div>
++            </div>
++            <div class="cv-item" style="margin-top:18px;">
++              <div class="cv-item-header">
++                <span class="cv-item-title">ListentoMe ｜ AI 听力学习工具 · 独立产品负责人</span>
++                <span class="cv-item-date">2026.10 · MVP 已冻结</span>
++              </div>
++              <div class="cv-item-desc">
++                <ul>
++                  <li><strong>产品定义</strong>：面向精听练习场景，「导入 → 切分 → 精听 → 跟读 AB 对比 → 标记复习」完整学习闭环，纯浏览器实现（Browser TTS + MediaRecorder 录音），零后端、零远程依赖。</li>
++                  <li><strong>核心引擎</strong>：语块切分引擎（标点硬边界 → 从句连接词 → 逗号兜底，目标 3–8 词），28 条真实长句标准答案题库防回归；存储层 schema v1→v2 版本化迁移。</li>
++                  <li><strong>工程质量</strong>：静态门禁 + 三套 headless 浏览器自驱动冒烟（48/48、23/23、46/46 端到端全链路）；键盘可达性——10 步操作 6 步专用快捷键、0 步强制鼠标。</li>
++                </ul>
++              </div>
++            </div>
+           </div>
+ 
+           <div class="cv-section" data-page-node-id="buj4dlHEy8IdXlvRB7F9Nz">
+@@ -717,7 +743,7 @@
+               </div>
+               <div class="skill-group" data-page-node-id="aG8cDSzzfEMdkBq2IyIr0H">
+                 <div class="skill-label" data-page-node-id="SySv7bfuRGzcyJaHrjig0z">AI 协作开发</div>
+-                <div class="skill-content" data-page-node-id="XJJrNgd5zqDAH5etvD7vVc">自然语言驱动 AI 实现全栈原型，主导需求拆解、验收标准与 Bug 闭环；多模型切换与交叉验证；GitHub + Netlify 部署</div>
++                <div class="skill-content" data-page-node-id="XJJrNgd5zqDAH5etvD7vVc">自然语言驱动 AI 实现全栈原型，主导需求拆解、验收标准与 Bug 闭环；多模型切换与交叉验证；GitHub + Netlify / Vercel 部署；Supabase（RLS 行级安全 + Storage）与 PWA 实践</div>
+               </div>
+               <div class="skill-group" data-page-node-id="MBOlr9IxBmw2XyGJNjKPP8">
+                 <div class="skill-label" data-page-node-id="djvqCf11qoaejD2TvLI2Mm">数据驱动与度量</div>
+@@ -727,6 +753,10 @@
+                 <div class="skill-label" data-page-node-id="RPf9EmeuPqJEfWECqA99YH">AI 产品视野</div>
+                 <div class="skill-content" data-page-node-id="8pNVKASEzip98U67WHS5QE">深度使用 AI 原生工具，经历多家模型 API 升级与端点变更，具备 AI 产品维护意识</div>
+               </div>
++              <div class="skill-group">
++                <div class="skill-label">工程与质量</div>
++                <div class="skill-content">静态门禁 / headless 自驱动冒烟 / 端到端验收（E2E）；版本化存储迁移；文档驱动开发（ARCHITECTURE / TODO / 问题与解决记录）</div>
++              </div>
+               <div class="skill-group" data-page-node-id="GJWHTvfMRADwsByN5b64b8">
+                 <div class="skill-label" data-page-node-id="XddlAHG8N6QsOqEnXesGkH">语言</div>
+                 <div class="skill-content" data-page-node-id="3AAbYLusrUjkElTGCBBQs2">CET-6，熟练阅读英文文献与技术文档</div>
