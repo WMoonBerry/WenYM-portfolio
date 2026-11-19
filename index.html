@@ -235,7 +235,7 @@
   .flow-sub { font-size: 12px; color: var(--muted); }
 
   /* Portfolio showcase windows (layout C) */
-  .window { display: flex; gap: 32px; align-items: center; margin-bottom: 56px; }
+  .window { display: flex; gap: 32px; align-items: center; margin-bottom: 56px; scroll-margin-top: 72px; }
   .window:last-child { margin-bottom: 0; }
   .window.flip { flex-direction: row-reverse; }
   .w-visual { flex: 1.35; min-width: 0; }
@@ -517,19 +517,19 @@
           <div class="gallery-wrap">
             <div class="gallery-label">作品实拍 · 点击进作品集看完整案例</div>
             <div class="gallery-strip">
-              <a class="g-card" href="#" data-jump="projects">
+              <a class="g-card" href="#" data-jump="projects" data-target="proj-stepforward">
                 <img src="Stepforward_产品截图/手机截图-任务拆解-行动鼓励-情绪陪伴/A-任务拆解模式-01-这里就是小步的主界面啦！在输入框输入你需要完成的事情，交给小步来帮你拆成一个个小步骤，不怕完不成！.jpg" alt="StepForward">
                 <div class="g-cap"><div class="g-num">01</div><div class="g-name">StepForward</div><div class="g-pos">AI 陪伴式行动支持</div></div>
               </a>
-              <a class="g-card" href="#" data-jump="projects">
+              <a class="g-card" href="#" data-jump="projects" data-target="proj-listentome">
                 <img src="assets/ltm_practice_playing.png" alt="ListentoMe">
                 <div class="g-cap"><div class="g-num">02</div><div class="g-name">ListentoMe</div><div class="g-pos">英语精听练习工具</div></div>
               </a>
-              <a class="g-card" href="#" data-jump="projects">
+              <a class="g-card" href="#" data-jump="projects" data-target="proj-chongming">
                 <img src="assets/chongming_home_hero.png" alt="蟲鸣岛">
                 <div class="g-cap"><div class="g-num">03</div><div class="g-name">蟲鸣岛</div><div class="g-pos">中英双语生态杂志</div></div>
               </a>
-              <a class="g-card" href="#" data-jump="projects">
+              <a class="g-card" href="#" data-jump="projects" data-target="proj-xiaoqi">
                 <img src="assets/xiaoqi_main.png" alt="小栖">
                 <div class="g-cap"><div class="g-num">04</div><div class="g-name">小栖</div><div class="g-pos">AI 陪伴机制演示</div></div>
               </a>
@@ -601,7 +601,7 @@
           <p style="color:var(--muted); font-size:14px; margin-bottom:32px;">四个作品，四种陪伴与连接的方式。</p>
 
           <!-- 01 StepForward -->
-          <div class="window">
+          <div class="window" id="proj-stepforward">
             <div class="w-visual">
               <div class="w-frame pair">
                 <img src="Stepforward_产品截图/手机截图-任务拆解-行动鼓励-情绪陪伴/A-任务拆解模式-01-这里就是小步的主界面啦！在输入框输入你需要完成的事情，交给小步来帮你拆成一个个小步骤，不怕完不成！.jpg" alt="任务拆解">
@@ -628,7 +628,7 @@
           <div class="w-divider"></div>
 
           <!-- 02 ListentoMe -->
-          <div class="window flip">
+          <div class="window flip" id="proj-listentome">
             <div class="w-visual">
               <div class="w-frame" style="padding:14px;">
                 <div class="ltm-stage" id="ltmStage">
@@ -665,7 +665,7 @@
           <div class="w-divider"></div>
 
           <!-- 03 蟲鸣岛 -->
-          <div class="window">
+          <div class="window" id="proj-chongming">
             <div class="w-visual">
               <div class="w-frame landscape"><img src="assets/chongming_home_hero.png" alt="蟲鸣岛首页"></div>
             </div>
@@ -689,7 +689,7 @@
           <div class="w-divider"></div>
 
           <!-- 04 小栖 -->
-          <div class="window flip">
+          <div class="window flip" id="proj-xiaoqi">
             <div class="w-visual">
               <div class="w-frame landscape"><img src="assets/xiaoqi_main.png" alt="小栖主界面"></div>
             </div>
@@ -969,6 +969,11 @@
       const pageId = el.getAttribute('data-jump');
       const btn = document.querySelector('.nav-item[data-page="' + pageId + '"]');
       switchPage(pageId, btn);
+      const targetId = el.getAttribute('data-target');
+      if (targetId) {
+        const target = document.getElementById(targetId);
+        if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+      }
     });
   });
 
