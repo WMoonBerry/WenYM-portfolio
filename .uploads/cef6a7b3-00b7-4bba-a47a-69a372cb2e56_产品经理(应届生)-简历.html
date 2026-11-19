@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>温玥美 - AI PM - 简历</title>
+<style>
+  :root {
+    --ink: #1f2937;
+    --ink-soft: #4b5563;
+    --muted: #6b7280;
+    --accent: #0f6b5f;
+    --accent-soft: #e6f2ef;
+    --line: #d8dee4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Source Han Sans SC", "Noto Sans SC", sans-serif;
+    color: var(--ink);
+    background: #eceff1;
+    font-size: 10.5pt;
+    line-height: 1.55;
+  }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 10mm auto;
+    background: #fff;
+    padding: 12mm 14mm;
+    box-shadow: 0 2px 12px rgba(0,0,0,.12);
+  }
+  /* ===== 头部 ===== */
+  .header { border-bottom: 2.5px solid var(--accent); padding-bottom: 4mm; }
+  .header-top { display: flex; justify-content: space-between; align-items: baseline; }
+  h1 { font-size: 20pt; letter-spacing: 2px; }
+  .intent {
+    color: var(--accent); font-weight: 700; font-size: 11.5pt; margin-top: 1mm;
+  }
+  .contact { color: var(--muted); font-size: 9.5pt; margin-top: 1.5mm; }
+  .summary {
+    margin-top: 2.5mm; color: var(--ink-soft); font-size: 10pt;
+    background: var(--accent-soft); border-left: 3px solid var(--accent);
+    padding: 2mm 3mm; border-radius: 0 2mm 2mm 0;
+  }
+  /* ===== 作品集入口 ===== */
+  .portfolio { margin-top: 2.5mm; font-size: 9.5pt; }
+  .portfolio .pf-title { font-weight: 700; color: var(--accent); }
+  .portfolio ul { list-style: none; margin-top: 1mm; }
+  .portfolio li { padding-left: 4mm; position: relative; color: var(--ink-soft); }
+  .portfolio li::before { content: "▪"; position: absolute; left: 0; color: var(--accent); font-size: 8pt; }
+  .portfolio a { color: #0b5c8a; text-decoration: none; word-break: break-all; }
+  /* ===== 区块 ===== */
+  section { margin-top: 4.5mm; }
+  h2 {
+    font-size: 12pt; color: var(--accent); letter-spacing: 1px;
+    border-bottom: 1px solid var(--line); padding-bottom: 1mm; margin-bottom: 2mm;
+  }
+  .job { margin-bottom: 2.5mm; }
+  .job-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; }
+  .job-title { font-weight: 700; font-size: 10.5pt; }
+  .job-meta { color: var(--muted); font-size: 9.5pt; }
+  .job-desc { color: var(--ink-soft); font-size: 9.8pt; margin-top: 1mm; }
+  ul.bullets { list-style: none; margin-top: 1.5mm; }
+  ul.bullets li {
+    padding-left: 4.5mm; position: relative; margin-bottom: 1.2mm; font-size: 9.8pt; color: var(--ink-soft);
+  }
+  ul.bullets li::before {
+    content: "▸"; position: absolute; left: .5mm; color: var(--accent); font-size: 8.5pt;
+  }
+  ul.bullets b { color: var(--ink); }
+  .research { margin-bottom: 2mm; font-size: 9.8pt; color: var(--ink-soft); }
+  .research b { color: var(--ink); }
+  .edu-row { display: flex; justify-content: space-between; font-size: 10pt; margin-bottom: 1mm; }
+  .edu-row .school { font-weight: 700; }
+  .edu-row .detail { color: var(--ink-soft); }
+  ul.plain { list-style: none; }
+  ul.plain li { padding-left: 4.5mm; position: relative; margin-bottom: 1mm; font-size: 9.8pt; color: var(--ink-soft); }
+  ul.plain li::before { content: "·"; position: absolute; left: 1mm; font-weight: 700; color: var(--accent); }
+  .footnote {
+    margin-top: 5mm; padding-top: 2mm; border-top: 1px dashed var(--line);
+    color: var(--muted); font-size: 8.5pt; font-style: italic;
+  }
+  /* ===== 打印 ===== */
+  @page { size: A4; margin: 0; }
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; box-shadow: none; width: auto; min-height: auto; padding: 10mm 12mm; }
+    .page-break { page-break-before: always; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <div class="header-top">
+      <h1>温玥美</h1>
+      <div class="contact">📞 181-4112-1316&nbsp;&nbsp;｜&nbsp;&nbsp;✉️ 3414945315@qq.com</div>
+    </div>
+    <div class="intent">求职意向：产品经理</div>
+    <div class="summary">
+      从生物科研转型的独立产品人：独立完成 3 个 AI 产品从 0 到 1（任务陪伴 / 内容平台 / 听力学习工具），擅长把模糊需求拆成可交付的小版本并持续迭代。
+    </div>
+    <div class="portfolio">
+      <span class="pf-title">作品集入口</span>
+      <ul>
+        <li>🌟 产品介绍：<a href=" https://WMoonBerry.github.io/stepforward-intro/"> https://WMoonBerry.github.io/stepforward-intro/</a></li>
+        <li>🌐 产品使用链接：<a href="https://stepforwardletsgo.netlify.app/">https://stepforwardletsgo.netlify.app/</a>（无需自主配置API，打开即用）</li>
+        <li>⭐ 个人主页：<a href="https://WMoonBerry.github.io/WenYM-portfolio/">https://WMoonBerry.github.io/WenYM-portfolio/</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="page-break">
+    <h2>教育背景</h2>
+    <div class="edu-row"><span class="school">大连医科大学 ｜ 硕士</span><span class="detail">生物化学与分子生物学 ｜ 2023.09 – 2026.06</span></div>
+    <div class="edu-row"><span class="school">南京航空航天大学 ｜ 本科</span><span class="detail">飞行器环境与生命保障工程 ｜ 2017.09 – 2021.06</span></div>
+  </section>
+
+  <section>
+    <h2>项目经历</h2>
+    <div class="job">
+      <div class="job-head">
+        <span class="job-title">StepForward（步步向前）｜ AI 任务拆解与成长陪伴产品 ｜ 独立产品负责人</span>
+        <span class="job-meta">2026.07 – 至今</span>
+      </div>
+      <div class="job-desc">面向"行动力持续不足"人群的 C 端 AI 原生 Web 产品。从 0 到 1 主导产品定义、原型设计、AI 协作开发、部署上线与迭代优化，已上线 Netlify，迭代 20+ 版本至 v2.3.12。</div>
+      <ul class="bullets">
+        <li><b>产品闭环</b>：设计「任务拆解确认 + 4 级情绪分级干预 + 成长日记」陪伴闭环，"温暖、不评判、去技术感"的产品语言贯穿文案、视觉与 AI 回应。</li>
+        <li><b>AI 架构与成本</b>：多 Provider 接入，支持OpenAI/Anthropic 双协议，BYOK模式满足用户不同模型体验需求；Prompt 升级单次拆解 token 成本下降 40–60%。</li>
+        <li><b>安全与体验</b>：危机关键词强/弱分层 + 3 条 24h 热线兜底；实现 PWA 安装接近原生 APP 体验。</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-head">
+        <span class="job-title">蟲鸣岛生态小店 ｜ 双语内容独立站平台 ｜ 全栈技术志愿者</span>
+        <span class="job-meta">2026.10 – 至今</span>
+      </div>
+      <div class="job-desc">面向生态小店的「活动 / 故事 / 商品 / 地图」双语杂志站，配套 admin 管理后台（登录、增删改查、发布下架、图片上传），已上线 Netlify。</div>
+      <ul class="bullets">
+        <li><b>全栈交付</b>：数据层采用 Supabase（RLS 行级安全 + Storage 图片），增量迁移保障存量数据平滑升级。</li>
+        <li><b>稳定性与沉淀</b>：以「兜底先行 + 异步增强」保证断网或未配置时不白屏，提升用户体验保障；vibe coding 协助 PostgreSQL 自建数据库替代 Supabase 方案；持续沉淀 23 条问题与解决方案记录，支撑三轮试用反馈迭代。</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-head">
+        <span class="job-title">ListentoMe ｜ AI 听力学习工具 ｜ 独立产品负责人</span>
+        <span class="job-meta">2026.10 · MVP 已冻结</span>
+      </div>
+      <div class="job-desc">面向精听练习场景的纯浏览器工具（Browser TTS + 录音），零后端、零远程依赖。</div>
+      <ul class="bullets">
+        <li><b>学习闭环</b>：完成「导入 → 切分 → 精听 → 跟读 AB 对比 → 复习」完整学习闭环。</li>
+        <li><b>引擎与质量</b>：自研语块切分引擎（目标 3–8 词，28 条真实长句题库防止回归）；静态门禁 + 三套自驱动冒烟测试保障交付质量。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>产品技能</h2>
+    <ul class="bullets">
+      <li><b>AI 产品设计</b>：LLM 应用选型与边界判断（Prompt/画像注入、模型选型，危机场景规则兜底）、情绪分级干预、安全边界与隐私设计、Human-in-the-loop 交互</li>
+      <li><b>AI 协作开发</b>：自然语言驱动 AI 实现全栈原型，主导需求拆解、验收标准与 Bug 闭环；根据任务类型与难易情况切换模型，多模型交叉验证评估方案风险；GitHub 分支开发+ Netlify 部署</li>
+      <li><b>数据驱动与度量</b>：北极星指标定义、漏斗分析、埋点体系设计</li>
+      <li><b>AI 产品视野</b>：深度使用 Trae/WorkBuddy 等 AI 原生工具，接触 DeepSeek Harness；经历多个服务商 API 升级与端点变更，具备产品维护意识；关注 Agent、多模态、端侧模型的产品化方向</li>
+      <li><b>语言</b>：CET-6，熟练阅读英文文献与技术文档</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>科研经历</h2>
+    <div class="research"><b>肠道免疫细胞分离体系建立 ｜ 独立负责人 ｜ 2024.06 – 2024.09</b><br>通过流程重构将核心质量指标提升至 95%、交付周期压缩 80%；输出标准化 SOP 并培训组内成员，被课题组 5 个独立项目长期复用。</div>
+    <div class="research"><b>同种异基因骨髓移植模型 ｜ 独立负责人 ｜ 2025.06 – 2025.11</b><br>协调 3 个外部团队打通全流程链路，在高风险低容错条件下完成 40+ 例交付，术后 16 周存活率仍为 100%、嵌合成功率约 95%。</div>
+    <div class="research"><b>抗肿瘤药效评价 ｜ 执行负责人 ｜ 2024.05 – 2024.09</b><br>独立管理 100+ 例样本全周期，成瘤率 &gt;95%、组内 CV&lt;25%；交付 3 份正式报告，为 2 篇 SCI 一区论文提供实验数据支撑。</div>
+  </section>
+
+  <section>
+    <h2>论文与校园实践</h2>
+    <ul class="plain">
+      <li>SCI 一区（IF≈12），第二作者，<i>Cell Death &amp; Disease</i>, 2026</li>
+      <li>SCI 一区（IF≈7），第四作者，<i>Cell Reports</i>, 2026</li>
+      <li>校新闻中心记者（10+ 篇通讯）；班级心理气象委员</li>
+    </ul>
+  </section>
+
+  <div class="footnote">说明：所有产品的技术实现是由 AI 协作完成（vibe coding 模式），本人独立负责产品方向、需求定义、交互体验、迭代决策与质量验收。</div>
+
+</div>
+</body>
+</html>
