@@ -473,7 +473,7 @@
             <div class="tl-item">
               <div class="tl-dot"></div>
               <div class="tl-date">2026.07<span class="wnum">作品 01</span></div>
-              <div class="tl-body"><strong><a href="#" data-jump="projects">StepForward</a> v1.0 MVP 上线</strong> —— AI 陪伴式行动支持工具，为「行动力持续不足」人群设计：先接住情绪，再跟进行动。从 0 到 1 负责产品定义、交互、AI 接入与迭代决策。</div>
+              <div class="tl-body"><strong><a href="#" data-jump="projects" data-target="proj-stepforward">StepForward</a> v1.0 MVP 上线</strong> —— AI 陪伴式行动支持工具，为「行动力持续不足」人群设计：先接住情绪，再跟进行动。从 0 到 1 负责产品定义、交互、AI 接入与迭代决策。</div>
             </div>
             <div class="tl-item">
               <div class="tl-dot"></div>
@@ -495,17 +495,17 @@
             <div class="tl-item">
               <div class="tl-dot alt"></div>
               <div class="tl-date">2026.10<span class="wnum">作品 02</span></div>
-              <div class="tl-body"><strong><a href="#" data-jump="projects">ListentoMe</a> v0.3.0 上线</strong> —— 英语精听练习工具：导入文本/PDF → 语块切分 → 逐句精听 → 跟读评分 → 标记复习。以 PRD → 技术方案 → ROADMAP 账本驱动迭代。</div>
+              <div class="tl-body"><strong><a href="#" data-jump="projects" data-target="proj-listentome">ListentoMe</a> v0.3.0 上线</strong> —— 英语精听练习工具：导入文本/PDF → 语块切分 → 逐句精听 → 跟读评分 → 标记复习。以 PRD → 技术方案 → ROADMAP 账本驱动迭代。</div>
             </div>
             <div class="tl-item">
               <div class="tl-dot alt"></div>
               <div class="tl-date">2026.10<span class="wnum">作品 03</span></div>
-              <div class="tl-body"><strong><a href="#" data-jump="projects">蟲鸣岛</a> 上线</strong> —— 中英双语生态生活杂志站：故事地图、生态好物、活动日历与订阅；Supabase 后台 + 三级数据降级保证弱网可用。</div>
+              <div class="tl-body"><strong><a href="#" data-jump="projects" data-target="proj-chongming">蟲鸣岛</a> 上线</strong> —— 中英双语生态生活杂志站：故事地图、生态好物、活动日历与订阅；Supabase 后台 + 三级数据降级保证弱网可用。</div>
             </div>
             <div class="tl-item">
               <div class="tl-dot alt"></div>
               <div class="tl-date">2026.10<span class="wnum">作品 04</span></div>
-              <div class="tl-body"><strong><a href="#" data-jump="projects">小栖</a> 上线</strong> —— AI 陪伴对话机制演示：人设锚、事件化记忆（含删除反向链路）、L1-L4 分层响应路由、危机击穿拦截与成本估算。</div>
+              <div class="tl-body"><strong><a href="#" data-jump="projects" data-target="proj-xiaoqi">小栖</a> 上线</strong> —— AI 陪伴对话机制演示：人设锚、事件化记忆（含删除反向链路）、L1-L4 分层响应路由、危机击穿拦截与成本估算。</div>
             </div>
             <div class="tl-item">
               <div class="tl-dot hollow"></div>
@@ -972,7 +972,14 @@
       const targetId = el.getAttribute('data-target');
       if (targetId) {
         const target = document.getElementById(targetId);
-        if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+        if (target) {
+          // Double rAF: wait until the newly-shown section is laid out & painted
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+          });
+        }
       }
     });
   });
